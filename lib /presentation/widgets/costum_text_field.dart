@@ -53,7 +53,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 borderSide: const BorderSide(
                     color: Colors.transparent,
                     style: BorderStyle.none,
-                    strokeAlign: StrokeAlign.center),
+                     ),
               ),
               suffixIcon: widget.suffix),
         ),
