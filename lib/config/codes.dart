@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 const EMAIL_ALREADY_IN_USE =
     'A user with this email already exist, contact your admin for clarity';
 const WEAK_PASSWORD =

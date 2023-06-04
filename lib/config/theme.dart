@@ -105,7 +105,9 @@ darkThemeData(BuildContext context) {
     dividerColor: const Color(0xff707070),
     canvasColor: Colors.black,
     // backgroundColor: HexColor('#F8F2F2'),
-    // errorColor: kErrorColor,
+    // errorColor:
+    // kErrorColor,
+
     // primaryTextTheme: getTextTheme(),
     // accentTextTheme: getTextTheme(),
     visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -133,10 +135,6 @@ darkThemeData(BuildContext context) {
 //   );
 // }
 
-// const KPrimaryColor = Color(0xffF76C6C);
-// const kSecondaryColor = Color(0xFFFE9901);
-// const kContentColorLightTheme = Color(0xFF1D1D35);
-// const kContentColorDarkTheme = Color(0xFFF5FCF9);
 const kWarningColor = Color(0xFFF3BB1C);
 // const kErrorColor = Color(0xFFF03738);
 const kDefaultPaddinglogs = 20.0;
