@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "program": "/Users/finn/Desktop/PROJECT TYLDC/tyldc_finaalisima/lib /main.dart",
+            "name": "tyldc_finaalisima",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug"
+        },
+        {
+            "program": "/Users/finn/Desktop/PROJECT TYLDC/tyldc_finaalisima/lib /main.dart",
+            "name": "tyldc_finaalisima (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "program": "/Users/finn/Desktop/PROJECT TYLDC/tyldc_finaalisima/lib /main.dart",
+            "name": "tyldc_finaalisima (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
