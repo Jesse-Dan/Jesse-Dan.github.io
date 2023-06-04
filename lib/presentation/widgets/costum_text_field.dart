@@ -50,10 +50,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
                 gapPadding: .0,
-                borderSide:  BorderSide(
+                borderSide: const BorderSide(
                     color: Colors.transparent,
                     style: BorderStyle.none,
-                    ),
+                     ),
               ),
               suffixIcon: widget.suffix),
         ),
