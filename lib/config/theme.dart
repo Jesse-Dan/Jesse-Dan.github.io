@@ -71,18 +71,17 @@ lightThemeData(BuildContext context) {
         ),
     fontFamily: "Aeonik",
     primaryColor: KPrimaryColor,
-    buttonColor: KPrimaryColor,
     indicatorColor: Colors.white,
     splashColor: Colors.white24,
     splashFactory: InkRipple.splashFactory,
     shadowColor: Theme.of(context).disabledColor,
     dividerColor: const Color(0xff707070),
     canvasColor: Colors.white,
-    backgroundColor: HexColor('#F8F2F2'),
+    // backgroundColor: HexColor('#F8F2F2'),
     scaffoldBackgroundColor: const Color(0xFFF5F5F5),
-    errorColor: kErrorColor,
-    primaryTextTheme: getTextTheme(),
-    accentTextTheme: getTextTheme(),
+    // errorColor: kErrorColor,
+    // primaryTextTheme: getTextTheme(),
+    // accentTextTheme: getTextTheme(),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     colorScheme:
         ColorScheme.light(primary: KPrimaryColor, secondary: kSecondaryColor)
@@ -105,34 +104,34 @@ darkThemeData(BuildContext context) {
     shadowColor: Theme.of(context).disabledColor,
     dividerColor: const Color(0xff707070),
     canvasColor: Colors.black,
-    backgroundColor: HexColor('#F8F2F2'),
-    errorColor: kErrorColor,
-    primaryTextTheme: getTextTheme(),
-    accentTextTheme: getTextTheme(),
+    // backgroundColor: HexColor('#F8F2F2'),
+    // errorColor: kErrorColor,
+    // primaryTextTheme: getTextTheme(),
+    // accentTextTheme: getTextTheme(),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     colorScheme: const ColorScheme.dark().copyWith(secondary: Colors.white),
   );
 }
 
-TextTheme getTextTheme() {
-  return const TextTheme(
-    bodyText1: TextStyle(fontFamily: "Aeonik"),
-    bodyText2: TextStyle(fontFamily: "Aeonik"),
-    headline1: TextStyle(fontFamily: "Aeonik"),
-    headline2: TextStyle(fontFamily: "Aeonik"),
-    headline3: TextStyle(fontFamily: "Aeonik"),
-    headline4: TextStyle(fontFamily: "Aeonik"),
-    headline5: TextStyle(fontFamily: "Aeonik"),
-    headline6: TextStyle(fontFamily: "Aeonik"),
-    subtitle1: TextStyle(fontFamily: "Aeonik"),
-    subtitle2: TextStyle(fontFamily: "Aeonik"),
-    button: TextStyle(
-      fontFamily: "Aeonik",
-    ),
-    caption: TextStyle(fontFamily: "Aeonik"),
-    overline: TextStyle(fontFamily: "Aeonik"),
-  );
-}
+// TextTheme getTextTheme() {
+//   return const TextTheme(
+//     bodyText1: TextStyle(fontFamily: "Aeonik"),
+//     bodyText2: TextStyle(fontFamily: "Aeonik"),
+//     headline1: TextStyle(fontFamily: "Aeonik"),
+//     headline2: TextStyle(fontFamily: "Aeonik"),
+//     headline3: TextStyle(fontFamily: "Aeonik"),
+//     headline4: TextStyle(fontFamily: "Aeonik"),
+//     headline5: TextStyle(fontFamily: "Aeonik"),
+//     headline6: TextStyle(fontFamily: "Aeonik"),
+//     subtitle1: TextStyle(fontFamily: "Aeonik"),
+//     subtitle2: TextStyle(fontFamily: "Aeonik"),
+//     button: TextStyle(
+//       fontFamily: "Aeonik",
+//     ),
+//     caption: TextStyle(fontFamily: "Aeonik"),
+//     overline: TextStyle(fontFamily: "Aeonik"),
+//   );
+// }
 
 // const KPrimaryColor = Color(0xffF76C6C);
 // const kSecondaryColor = Color(0xFFFE9901);
