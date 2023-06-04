@@ -8,7 +8,7 @@ import 'dart:convert';
 import 'atendee_model.dart';
 
 class GroupModel {
-  final String lea
+  // final String lea
   final String id;
   final String name;
   final String description;
