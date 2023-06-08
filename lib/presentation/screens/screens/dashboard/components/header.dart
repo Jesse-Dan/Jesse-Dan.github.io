@@ -31,27 +31,22 @@ class _HeaderState extends State<Header> {
           SizedBox(
             child: Padding(
               padding: const EdgeInsets.only(right: 8.0),
-              child: GestureDetector(
-                onTap: ()async {
-                  BlocProvider.of<MethodsCubit>(context).controlMenu();
-                  // _scaffoldKey.currentState!.openDrawer();
-                },
-                child: Tooltip(
-                    textStyle:
-                        GoogleFonts.dmSans(fontSize: 15, color: Palette.white),
-                    triggerMode: TooltipTriggerMode.tap,
-                    message: 'Swipe right to reaveal menu 📲',
-                    child:
-                        // IconButton(
-                        //     icon: const
-                        const Icon(
-                      Icons.keyboard_double_arrow_right_rounded,
-                      size: 20,
-                      color: primaryColor,
-                      // ),
-                      // onPressed: () {}),
-                    )),
-              ),
+              child: Tooltip(
+                  textStyle:
+                      GoogleFonts.dmSans(fontSize: 15, color: Palette.white),
+                  triggerMode: TooltipTriggerMode.tap,
+                  message: 'Swipe right to polo menu 📲',
+                  child: IconButton(
+                      splashColor: Colors.transparent,
+                      icon: const Icon(
+                        Icons.keyboard_double_arrow_right_rounded,
+                        size: 20,
+                        color: primaryColor,
+                      ),
+                      onPressed: () {
+                        _scaffoldKey.currentState?.openDrawer();
+                        // BlocProvider.of<MethodsCubit>(context).controlMenu();
+                      })),
             ),
           ),
         if (!Responsive.isMobile(context))
