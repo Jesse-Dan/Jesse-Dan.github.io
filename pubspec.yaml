@@ -110,9 +110,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-dependency_overrides:
-  plugin_platform_interface:
-    git:
-      url: https://github.com/buntagonalprism/plugins.git
-      ref: fix-platform-interface-token
-      path: packages/plugin_platform_interface
