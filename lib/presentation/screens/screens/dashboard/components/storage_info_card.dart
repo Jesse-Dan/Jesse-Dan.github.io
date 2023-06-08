@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../config/theme.dart';
 
-class StorageInfoCard extends StatelessWidget {
-  const StorageInfoCard({
+class AgeScematicsInfoCard extends StatelessWidget {
+  const AgeScematicsInfoCard({
     Key? key,
-     required this.title,
-     required this.svgSrc,
-     required this.amountOfFiles,
-     required this.numOfFiles,
+    required this.title,
+    required this.svgSrc,
+    required this.amountOfFiles,
+    required this.numOfAttendees,
   }) : super(key: key);
 
   final String title, svgSrc, amountOfFiles;
-  final int numOfFiles;
+  final int numOfAttendees;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: defaultPadding),
-      padding: EdgeInsets.all(defaultPadding),
+      margin: const EdgeInsets.only(top: defaultPadding),
+      padding: const EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
         border: Border.all(width: 2, color: primaryColor.withOpacity(0.15)),
         borderRadius: const BorderRadius.all(
@@ -41,21 +42,34 @@ class StorageInfoCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
+                    style: GoogleFonts.dmSans(
+                      color: kSecondaryColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    "$numOfFiles Files",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(color: Colors.white70),
+                    "$numOfAttendees Attendees",
+                    style: GoogleFonts.dmSans(
+                      color: kSecondaryColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          Text(amountOfFiles)
+          Text(
+            amountOfFiles,
+            style: GoogleFonts.dmSans(
+              color: kSecondaryColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          )
         ],
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,11 +45,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 })
         ]));
   }
-@override
-void initState() {
-  super.initState();
-  
-}
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthenticationBloc, AuthentictionState>(
@@ -64,7 +64,9 @@ void initState() {
       if (state is AuthentictionSuccesful) {
         Alertify.success(
             title: 'Login Successful', message: 'User Logged in sussecfully');
-        Navigator.pushReplacementNamed(context, MainScreen.routeName);
+        Navigator.pushNamedAndRemoveUntil(context, MainScreen.routeName, (_) {
+          return false;
+        });
       }
       if (state is AuthentictionFailed) {
         Navigator.pop(context);

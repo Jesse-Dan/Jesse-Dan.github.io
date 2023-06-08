@@ -24,7 +24,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
       if (auth != null) {
         emit(AuthentictionSuccesful());
       } else {
-        emit(AuthentictionFailed(CONTACT_ADMIN));
+        emit(const AuthentictionFailed(CONTACT_ADMIN));
       }
     });
   }
@@ -37,6 +37,10 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
           email: event.email,
           password: event.password,
         );
+        var actor = await DB(auth: auth).fetchAdminData();
+        await DB(auth: auth).sendNotificationData(
+            Notifier.login(data: '${actor.firstName} ${actor.lastName}'));
+
         emit(AuthentictionSuccesful());
       } on FirebaseAuthException catch (e) {
         if (e.code == 'invalid-email') {
@@ -75,10 +79,10 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
           print('Error occurred while signing in: ${e.message}');
         }
       } catch (e) {
-        emit(AuthentictionFailed('type error ' + e.toString()));
+        emit(AuthentictionFailed('type error $e'));
       }
     });
-}
+  }
 
   signup() async {
     on<SignUpEvent>((event, emit) async {
@@ -105,9 +109,12 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
               password: data.password,
               firstName: data.firstName,
               imageUrl: ''));
+          await DB(auth: auth).sendNotificationData(
+              Notifier.signUp(data: '${data.firstName} ${data.lastName}'));
+
           emit(AuthentictionSuccesful());
         } else {
-          emit(AuthentictionFailed(
+          emit(const AuthentictionFailed(
               'Admin Auth Code is  incorrect Contact Admin for support'));
         }
       } on FirebaseAuthException catch (e) {
@@ -148,6 +155,8 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
     on<LogoutEvent>((event, emit) async {
       try {
         emit(AuthentictionLoading());
+        await DB(auth: auth).sendNotificationData(
+            Notifier.logout(data: 'You ended your session'));
         await auth.signOut().then((value) => log('User Logged Out'));
         emit(AuthentictionSuccesful());
       } on FirebaseAuthException catch (e) {

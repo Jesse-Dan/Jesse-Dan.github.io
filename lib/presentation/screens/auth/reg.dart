@@ -218,7 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           firstName: firstNameCtl.text,
                           lastName: LastnameCtl.text,
                           email: emailCtl.text,
-                          phoneNumber: passwordCtl.text,
+                          phoneNumber:PhoneCtl .text,
                           gender: GenderCtl.text,
                           dept: DeptCtl.text,
                           role: RoleCtl.text,
@@ -228,13 +228,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           id: '',
                         )));
                       },
-                      child: const Text('Sign Up'),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
+                      child: const Text('Sign Up'),
                     ),
                     const SizedBox(height: 16),
                     toggleCreateAccount(),

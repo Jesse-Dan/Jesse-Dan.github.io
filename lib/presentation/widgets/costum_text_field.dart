@@ -7,16 +7,27 @@ import '../../config/theme.dart';
 class CustomTextField extends StatefulWidget {
   final String hint;
   final Widget suffix;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final TextInputType fieldsType;
   final int maxLines;
+  final bool enabled;
+  final bool obscureText;
+  final String? initialValue;
+  final Function()? onTap;
+  final bool readOnly;
+
   const CustomTextField(
       {Key? key,
+      this.enabled = true,
       required this.hint,
       required this.suffix,
-      required this.controller,
+      this.controller,
       this.fieldsType = TextInputType.text,
-      this.maxLines = 1})
+      this.maxLines = 1,
+      this.initialValue,
+      this.obscureText = false,
+      this.onTap,
+      this.readOnly = false})
       : super(key: key);
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -32,6 +43,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         height: 50,
         width: double.infinity,
         child: TextFormField(
+          obscureText: widget.obscureText,
+          onTap: widget.onTap,
+          readOnly: widget.readOnly,
+          // initialValue: widget.initialValue,
+          enabled: widget.enabled,
           keyboardType: widget.fieldsType,
           maxLines: widget.maxLines,
           controller: widget.controller,
@@ -51,9 +67,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 borderRadius: BorderRadius.circular(30),
                 gapPadding: .0,
                 borderSide: const BorderSide(
-                    color: Colors.transparent,
-                    style: BorderStyle.none,
-                     ),
+                  color: Colors.transparent,
+                  style: BorderStyle.none,
+                ),
               ),
               suffixIcon: widget.suffix),
         ),

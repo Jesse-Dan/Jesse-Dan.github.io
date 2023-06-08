@@ -9,6 +9,7 @@ import '../../../config/codes.dart';
 import '../../../models/atendee_model.dart';
 import '../../../models/group_model.dart';
 import '../../../models/non_admin_staff.dart';
+import '../../../models/notifier_model.dart';
 import '../../db/db.dart';
 
 part 'registeration_event.dart';
@@ -82,6 +83,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           emit(RegistrationLoading());
 
           await DB(auth: auth).createGroup(event.groupModel);
+          await DB(auth: auth).sendNotificationData(
+              Notifier.createGroup(data: event.groupModel.name));
+
           emit(const AttendeeRegistrationLoaded());
         } else {
           emit(const RegistrationFailed(
@@ -91,10 +95,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         }
       } on FirebaseAuthException catch (e) {
         log(e.toString());
-        emit(RegistrationFailed(error: e.toString()));
+        emit(RegistrationFailed(error: e.message.toString()));
       } catch (e) {
         log(e.toString());
-        emit(RegistrationFailed(error: e.toString()));
+        emit(const RegistrationFailed(error: 'an error occured try ag'));
       }
     });
   }

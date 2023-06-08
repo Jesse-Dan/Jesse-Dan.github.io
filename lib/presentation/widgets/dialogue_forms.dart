@@ -10,7 +10,8 @@ class FormWidget {
   Future<dynamic> buildBottomFormField(
       {required BuildContext context,
       required List<Widget> widgetsList,
-      required String title}) {
+      required String title,}) {
+        
     List<Widget> columnChilren = [];
     columnChilren.add(Padding(
       padding: const EdgeInsets.only(top: 15.0),
@@ -74,10 +75,10 @@ class FormWidget {
     required AlertType alertType,
     String onSubmitText2 = 'Done',
     required void Function() onSubmit2,
-    dynamic color1,
-    dynamic color2,
-    dynamic btNtype1,
-    dynamic btNtype2,
+    Color? color1,
+    Color? color2,
+    ButtonType? btNtype1,
+    ButtonType? btNtype2,
   }) {
     List<Widget> columnChilren = [];
     columnChilren.addAll(widgetsList);
@@ -89,19 +90,19 @@ class FormWidget {
             color: color1,
             btnText: onSubmitText,
             onTap: onSubmit,
-            btNtype: btNtype1,
+            btNtype: btNtype1 ?? ButtonType.long,
           )
         ];
       } else {
         return [
           CustomButton(
-            btNtype: btNtype1,
+            btNtype: btNtype1 ?? ButtonType.long,
             btnText: onSubmitText,
             onTap: onSubmit,
             color: color1,
           ),
           CustomButton(
-              btNtype: btNtype2,
+              btNtype: btNtype2 ?? ButtonType.long,
               btnText: onSubmitText2,
               onTap: onSubmit2,
               color: color2)
@@ -115,7 +116,8 @@ class FormWidget {
       context: context,
       builder: (builder) => AlertDialog(
         actionsAlignment: MainAxisAlignment.center,
-        insetPadding: const EdgeInsets.only(left: 2, right: 2),
+        insetPadding:
+            const EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(30.0))),
         titlePadding: const EdgeInsets.only(top: 20),

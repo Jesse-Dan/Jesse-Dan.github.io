@@ -32,10 +32,10 @@
               "client_type": 3
             },
             {
-              "client_id": "390567584749-b0tr8hsdvntoneae9jj2dtjmv9sq31l0.apps.googleusercontent.com",
+              "client_id": "390567584749-apousji8k0ocqr42ng7kdsqv60pd6qsv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.tyldcV2"
+                "bundle_id": "con.tyldc.finalisima"
               }
             }
           ]
@@ -68,10 +68,10 @@
               "client_type": 3
             },
             {
-              "client_id": "390567584749-b0tr8hsdvntoneae9jj2dtjmv9sq31l0.apps.googleusercontent.com",
+              "client_id": "390567584749-apousji8k0ocqr42ng7kdsqv60pd6qsv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.tyldcV2"
+                "bundle_id": "con.tyldc.finalisima"
               }
             }
           ]
@@ -104,10 +104,10 @@
               "client_type": 3
             },
             {
-              "client_id": "390567584749-b0tr8hsdvntoneae9jj2dtjmv9sq31l0.apps.googleusercontent.com",
+              "client_id": "390567584749-apousji8k0ocqr42ng7kdsqv60pd6qsv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.tyldcV2"
+                "bundle_id": "con.tyldc.finalisima"
               }
             }
           ]
@@ -140,10 +140,10 @@
               "client_type": 3
             },
             {
-              "client_id": "390567584749-b0tr8hsdvntoneae9jj2dtjmv9sq31l0.apps.googleusercontent.com",
+              "client_id": "390567584749-apousji8k0ocqr42ng7kdsqv60pd6qsv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.tyldcV2"
+                "bundle_id": "con.tyldc.finalisima"
               }
             }
           ]
@@ -176,10 +176,46 @@
               "client_type": 3
             },
             {
-              "client_id": "390567584749-b0tr8hsdvntoneae9jj2dtjmv9sq31l0.apps.googleusercontent.com",
+              "client_id": "390567584749-apousji8k0ocqr42ng7kdsqv60pd6qsv.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.tyldcV2"
+                "bundle_id": "con.tyldc.finalisima"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390567584749:android:1f15e4b8137d4660d57de4",
+        "android_client_info": {
+          "package_name": "com.tyldc.finnapps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390567584749-9hofjvgf4uo7facqhcmsgcdot6nvu5ki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqBMqLWDb9EyHVkD3qXq5XNDnT3fDUjdc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390567584749-9hofjvgf4uo7facqhcmsgcdot6nvu5ki.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "390567584749-apousji8k0ocqr42ng7kdsqv60pd6qsv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "con.tyldc.finalisima"
               }
             }
           ]

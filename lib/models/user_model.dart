@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 AdminModel adminModelFromJson(String str) =>
     AdminModel.fromMap(json.decode(str));

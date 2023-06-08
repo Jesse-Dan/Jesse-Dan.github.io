@@ -1,21 +1,25 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // To parse this JSON data, do
 //
 //     final groupModel = groupModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
+
+import 'package:meta/meta.dart';
 
 import 'atendee_model.dart';
 
 class GroupModel {
   // final String lea
-  final String id;
+  String id;
   final String name;
   final String description;
-  final List<dynamic> groupMembers;
+  final List<AttendeeModel> groupMembers;
   final String createdBy;
+  final String facilitator;
 
   GroupModel({
+    required this.facilitator,
     required this.id,
     required this.name,
     required this.description,
@@ -36,26 +40,33 @@ class GroupModel {
         groupMembers: groupMembers ?? this.groupMembers,
         id: this.id,
         createdBy: this.createdBy,
+        facilitator: '',
       );
 
-  factory GroupModel.fromRawJson(String str) =>
-      GroupModel.fromJson(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'description': description,
+      'groupMembers': groupMembers.map((x) => x.toJson()).toList(),
+      'createdBy': createdBy,
+      'facilitator': facilitator,
+    };
+  }
 
-  factory GroupModel.fromJson(Map<String, dynamic> json) => GroupModel(
-        name: json["name"],
-        description: json["description"],
-        groupMembers: List<dynamic>.from(json["group_members"].map((x) => x)),
-        id: json['id'],
-        createdBy: json['createdBy'],
-      );
+  factory GroupModel.fromMap(Map<String, dynamic> map) {
+    return GroupModel(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      description: map['description'] as String,
+      groupMembers: List<AttendeeModel>.from((map['groupMembers'] as List<dynamic>).map<AttendeeModel>((x) => AttendeeModel.fromMap(x as Map<String,dynamic>),),),
+      createdBy: map['createdBy'] as String,
+      facilitator: map['facilitator'] as String,
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        'createdBy': createdBy,
-        "id": id,
-        "name": name,
-        "description": description,
-        "group_members": List<dynamic>.from(groupMembers.map((x) => x)),
-      };
+  String toJson() => json.encode(toMap());
+
+  factory GroupModel.fromJson(String source) => GroupModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

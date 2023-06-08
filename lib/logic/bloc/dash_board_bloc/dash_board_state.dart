@@ -18,16 +18,22 @@ class DashBoardFetched extends DashBoardState {
   final List<AttendeeModel> campers;
   final List<AdminModel> admins;
   final List<GroupModel> groups;
+  final List<String> groupIds;
+  final List<String> userIds;
+  final List<Notifier> notifications;
 
   const DashBoardFetched(
-      {required this.admins,
+      {required this.userIds,
+      required this.groupIds,
+      required this.admins,
       required this.groups,
       required this.campers,
       required this.user,
       required this.attendeeModel,
-      required this.nonAdminModel});
+      required this.nonAdminModel,
+      required this.notifications});
   List<Object> get props =>
-      [user, attendeeModel, nonAdminModel, campers, groups, admins];
+      [user, attendeeModel, nonAdminModel, campers, groups, admins, groupIds,userIds,notifications];
 }
 
 class DashBoardFailed extends DashBoardState {

@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/constants/responsive.dart';
 import '../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
-import '../../../controllers/MenuAppController.dart';
 import '../../../widgets/alertify.dart';
 import '../dashboard/dashboard_screen.dart';
 import 'components/side_menu.dart';

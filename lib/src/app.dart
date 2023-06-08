@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tyldc_finaalisima/logic/bloc/group_management_bloc/group_management_bloc.dart';
 
 import '../config/constants/enums.dart';
 import '../config/routes.dart';
@@ -15,7 +16,12 @@ import '../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../presentation/screens/auth/login.dart';
 import '../presentation/screens/auth/reg.dart';
+import '../presentation/screens/screens/dashboard/admin_screen.dart';
+import '../presentation/screens/screens/dashboard/attendees_screen.dart';
 import '../presentation/screens/screens/dashboard/dashboard_screen.dart';
+import '../presentation/screens/screens/dashboard/groups_screen.dart';
+import '../presentation/screens/screens/dashboard/non_admins_screen.dart';
+import '../presentation/screens/screens/dashboard/notification_screen.dart';
 import '../presentation/screens/screens/main/main_screen.dart';
 import '../presentation/widgets/alertify.dart';
 
@@ -41,7 +47,8 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => RegistrationBloc(auth: widget.auth, storage: widget.storage),
+          create: (context) =>
+              RegistrationBloc(auth: widget.auth, storage: widget.storage),
         ),
         BlocProvider(
           create: (context) => AuthenticationBloc(auth: widget.auth),
@@ -53,6 +60,10 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) =>
               RegistrationBloc(auth: widget.auth, storage: widget.storage),
+        ),
+        BlocProvider(
+          create: (context) =>
+              GroupManagementBloc(auth: widget.auth, storage: widget.storage),
         ),
         BlocProvider(
           create: (context) => ConnectivityCubit(
@@ -112,7 +123,17 @@ class _MyAppState extends State<MyApp> {
                     case MainScreen.routeName:
                       return MainScreen();
                     case SignUpScreen.routeName:
-                      return SignUpScreen();
+                      return const SignUpScreen();
+                    case NotificationScreen.routeName:
+                      return const NotificationScreen();
+                    case AttendeesScreen.routeName:
+                      return const AttendeesScreen();
+                    case NonAdminScreen.routeName:
+                      return const NonAdminScreen();
+                    case GroupsScreen.routeName:
+                      return const GroupsScreen();
+                    case AdminScreen.routeName:
+                      return const AdminScreen();
                     case SignInScreen.routeName:
                       return SignInScreen();
                     default:

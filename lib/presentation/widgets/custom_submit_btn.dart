@@ -10,8 +10,8 @@ enum ButtonType { long, fill }
 
 class CustomButton extends StatefulWidget {
   final String btnText;
-  final void Function() onTap;
-  final dynamic color;
+  final void Function()? onTap;
+  final Color? color;
   final ButtonType btNtype;
   const CustomButton({
     Key? key,
@@ -39,7 +39,8 @@ class _CustomButtonState extends State<CustomButton> {
             horvered = _;
           });
         },
-        onTap: () => widget.onTap()
+        onTap: widget.onTap
+
         // log('CUSTOM BUTTON TAPPED');
         ,
         child: Container(

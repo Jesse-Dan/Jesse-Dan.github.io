@@ -1,25 +1,21 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import '../../models/RecentFile.dart';
-import '../../models/atendee_model.dart';
-import '../../models/group_model.dart';
-import '../../models/non_admin_staff.dart';
-import '../../models/user_model.dart';
+import 'package:tyldc_finaalisima/models/models.dart';
 
 class DB {
   final FirebaseAuth auth;
   final adminDB = FirebaseFirestore.instance.collection('Admins');
   final attendeeDB = FirebaseFirestore.instance.collection('Registee');
   final groupDB = FirebaseFirestore.instance.collection('Groups');
+  final notifierDB = FirebaseFirestore.instance.collection('Notifications');
   final nonAdminstrativeStaffDB =
       FirebaseFirestore.instance.collection('NonAdmin');
   final facilitatorsDB = FirebaseFirestore.instance.collection('Facilitators');
 
   var format = DateFormat.yMMMEd();
-  List getAdminsDocIds = [];
+  List getAttendeeDocIds = [];
 
   DB({required this.auth});
 
@@ -30,7 +26,6 @@ class DB {
           .doc(adminModel.id)
           .set(adminModel.toMap())
           .then((value) => log('Admin Created'));
-      // log(sed);
     } on FirebaseException catch (e) {
       log(e.toString());
     }
@@ -40,7 +35,7 @@ class DB {
   Future<void> sendRegisteeData(AttendeeModel attendeeModel) async {
     try {
       var sed = await attendeeDB
-          .add(attendeeModel.toJson())
+          .add(attendeeModel.toMap())
           .then((value) => log('Attendee Created'))
           .catchError((e) => log(e));
     } on FirebaseException catch (e) {
@@ -55,7 +50,6 @@ class DB {
           .add(nonAdminModel.toMap())
           .then((value) => log('Non-Admin Staff Created'))
           .catchError((e) => log(e));
-      log(sed.toString());
       return true;
     } on FirebaseException catch (e) {
       log(e.toString());
@@ -66,28 +60,10 @@ class DB {
   ///[GET NON-ADMIN STAFF ID]
   Future<List<NonAdminModel>> getNonAdminIDs() async {
     try {
-      List getadminDocIds = [];
-      var groups = await nonAdminstrativeStaffDB.get();
-      getadminDocIds.clear();
-
-      for (var group in groups.docs) {
-        getadminDocIds.add(group.reference.id);
-        log("[GET NON-ADMIN STAFF ID]: $getadminDocIds");
-      }
-
-      List<NonAdminModel> adminList = [];
-      adminList.clear();
-      for (var element in getadminDocIds) {
-        await nonAdminstrativeStaffDB.doc(element).get().then((value) {
-          log('==================>>  :::::$value');
-          adminList.add(NonAdminModel.fromMap(value.data()));
-          log("[GET NON-ADMIN STAFF DATA]: $adminList.toString()");
-          log('==================>>  :::::$value');
-        });
-      }
-
-      log("attedeesList $adminList");
-      return adminList;
+      var nonAdmins = await nonAdminstrativeStaffDB.get();
+      var data =
+          nonAdmins.docs.map((e) => NonAdminModel.fromMap(e.data())).toList();
+      return data;
     } catch (e) {
       log('error on [GET NON-ADMIN STAFF DATA] db:$e');
 
@@ -98,25 +74,23 @@ class DB {
   /// [GET ATTENDEES INFO]
   Future<List<AttendeeModel>> getAttendeeIDs() async {
     try {
-      List getAttendeeDocIds = [];
       var groups = await attendeeDB.get();
-      getAttendeeDocIds.clear();
+      var data =
+          groups.docs.map((e) => AttendeeModel.fromMap(e.data())).toList();
+      return data;
+    } catch (e) {
+      log('error on attendees db:$e');
 
-      for (var group in groups.docs) {
-        getAttendeeDocIds.add(group.reference.id);
-        log("getAttendeeDocIds $getAttendeeDocIds");
-      }
+      return [];
+    }
+  }
 
-      List<AttendeeModel> attedeesList = [];
-      attedeesList.clear();
-      for (var element in getAttendeeDocIds) {
-        await attendeeDB.doc(element).get().then((value) {
-          attedeesList.add(AttendeeModel.fromJson(value.data()));
-          log('value: $value');
-        });
-      }
-      log("attedeesList $attedeesList");
-      return attedeesList;
+  /// [GET ATTENDEES INFO]
+  Future<List> getAttendeesIdsOnly() async {
+    try {
+      var groups = await attendeeDB.get();
+      var data = groups.docs.map((e) => e.reference.id).toList();
+      return data;
     } catch (e) {
       log('error on db:$e');
 
@@ -127,26 +101,9 @@ class DB {
   ///[GET ADMIN STAFF ID]
   Future<List<AdminModel>> getAdminIDs() async {
     try {
-      List getadminDocIds = [];
       var groups = await adminDB.get();
-      getadminDocIds.clear();
-
-      for (var group in groups.docs) {
-        getadminDocIds.add(group.reference.id);
-        log("getAttendeeDocIds $getadminDocIds");
-      }
-
-      List<AdminModel> adminList = [];
-      adminList.clear();
-      for (var element in getadminDocIds) {
-        await adminDB.doc(element).get().then((value) {
-          adminList.add(AdminModel.fromMap(value.data()));
-          log('value: $value');
-        });
-      }
-
-      log("attedeesList $adminList");
-      return adminList;
+      var data = groups.docs.map((e) => AdminModel.fromMap(e.data())).toList();
+      return data;
     } catch (e) {
       log('error on db:$e');
 
@@ -157,25 +114,9 @@ class DB {
   /// [GET GROUPS INFO]
   Future<List<GroupModel>> getGroupsIDs() async {
     try {
-      List getGroupsDocIds = [];
       var groups = await groupDB.get();
-      getGroupsDocIds.clear();
-      for (var group in groups.docs) {
-        getGroupsDocIds.add(group.reference.id);
-        log("getAttendeeDocIds $getGroupsDocIds");
-      }
-
-      List<GroupModel> groupsList = [];
-      groupsList.clear();
-      for (var element in getGroupsDocIds) {
-        await groupDB.doc(element).get().then((value) {
-          groupsList.add(GroupModel.fromJson(value.data()!));
-          log('value: $value');
-        });
-      }
-
-      log("group list: $groupsList");
-      return groupsList;
+      var data = groups.docs.map((e) => GroupModel.fromMap(e.data())).toList();
+      return data;
     } catch (e) {
       log('error on group db:$e');
 
@@ -183,40 +124,31 @@ class DB {
     }
   }
 
+  /// [GET GROUPS INFO]
+  Future<List> getGroupsIDsOnly() async {
+    try {
+      var groups = await groupDB.get();
+      var data = groups.docs.map((e) => (e.reference.id)).toList();
+      return data;
+    } catch (e) {
+      log('error on group db:$e');
+      return [];
+    }
+  }
+
   /// [GET ATTENDEES 'CAMPERS' INFO]
   Future<List<AttendeeModel>> getCampersIDs() async {
     try {
-      List getAttendeeDocIds = [];
-      List<AttendeeModel> attedeesList = [];
-      var campers = <AttendeeModel>[];
-
       var groups = await attendeeDB.get();
-      getAttendeeDocIds.clear();
-      campers.clear();
-      attedeesList.clear();
-
-      for (var group in groups.docs) {
-        getAttendeeDocIds.add(group.reference.id);
-        log("getAttendeeDocIds $getAttendeeDocIds");
-      }
-
-      for (var element in getAttendeeDocIds) {
-        await attendeeDB.doc(element).get().then((value) {
-          attedeesList.add(AttendeeModel.fromJson(value.data()));
-          log('value: $value');
-        });
-      }
-      for (var element in attedeesList) {
-        if (element.wouldCamp.toString().toLowerCase() == 'yes') {
-          campers.add(element);
-        }
-      }
-
-      log("campers $attedeesList");
-      return campers;
+      var data = groups.docs
+          .map((e) => AttendeeModel.fromMap(e.data()))
+          .where((element) =>
+              element.wouldCamp.toString().toLowerCase().contains('yes') ||
+              element.wouldCamp.toString().toUpperCase().contains('yes'))
+          .toList();
+      return data;
     } catch (e) {
       log('error on campersdb:$e');
-
       return [];
     }
   }
@@ -237,23 +169,21 @@ class DB {
   ///[CREATE GROUP]
   Future<String> createGroup(GroupModel groupModel) async {
     try {
-      var sed = groupDB
-          .doc(groupModel.id)
-          .set(groupModel.toJson())
-          .then((value) => log('Attendee Created'))
-          .catchError((e) => log(e));
+      DocumentReference sed =
+          groupDB.add(groupModel.toMap()) as DocumentReference<Object?>;
+      // String docId = sed.id;
+      // groupModel.id = docId;
+      // await sed.update(groupModel.toJson());
       log(sed.toString());
-      return groupModel.id;
+      return sed.toString();
     } catch (e) {
-      if (kDebugMode) {
-        log('Failed to create group: $e');
-      }
       return '';
     }
   }
 
   /// [ADD MEMBER TO GROUP]
-  Future<bool> addMemberToGroup(String groupId, String memberId) async {
+  Future<bool> addMemberToGroup(
+      {required String groupId, required AttendeeModel memberId}) async {
     try {
       final DocumentReference groupRef = groupDB.doc(groupId);
       final DocumentSnapshot groupSnapshot = await groupRef.get();
@@ -261,11 +191,22 @@ class DB {
       if (groupSnapshot.exists) {
         final Map<String, dynamic> data =
             groupSnapshot.data() as Map<String, dynamic>;
-        final List<dynamic> members =
-            List.from(data['members'] as List<dynamic>);
+
+        final List<dynamic> memberDataList =
+            data['groupMembers'] as List<dynamic>;
+
+        final List<AttendeeModel> members = memberDataList
+            .map((member) => AttendeeModel.fromMap(member))
+            .toList();
+
         members.add(memberId);
 
-        await groupRef.update({'members': members});
+        final List<Map<String, dynamic>> updatedMemberDataList =
+            members.map((member) => member.toMap()).toList();
+
+        await groupRef.update({
+          'groupMembers': FieldValue.arrayUnion(updatedMemberDataList),
+        });
         return true;
       } else {
         log('Group does not exist');
@@ -277,30 +218,42 @@ class DB {
     }
   }
 
-  ///[REMOVE MEBER FROM GROUP]
-  Future<bool> removeMemberFromGroup(String groupId, String memberId) async {
-    try {
-      final DocumentReference groupRef = groupDB.doc(groupId);
-      final DocumentSnapshot groupSnapshot = await groupRef.get();
+/// [REMOVE MEMBER FROM GROUP]
+Future<bool> removeMemberFromGroup(
+    {required String groupId, required AttendeeModel membersIndex}) async {
+  try {
+    final DocumentReference groupRef = groupDB.doc(groupId);
+    final DocumentSnapshot groupSnapshot = await groupRef.get();
 
-      if (groupSnapshot.exists) {
-        final Map<String, dynamic> data =
-            groupSnapshot.data() as Map<String, dynamic>;
-        List<dynamic> members = List.from(data['members'] as List<dynamic>);
-        members.remove(memberId);
+    if (groupSnapshot.exists) {
+      final Map<String, dynamic> data =
+          groupSnapshot.data() as Map<String, dynamic>;
 
-        await groupRef.update({'members': members});
-        return true;
-      } else {
-        log('Group does not exist');
-        return false;
-      }
-    } catch (e) {
-      log('Failed to remove member from group: $e');
+      final List<dynamic> memberDataList =
+          data['groupMembers'] as List<dynamic>;
+
+      final List<AttendeeModel> members = memberDataList
+          .map((member) => AttendeeModel.fromMap(member))
+          .toList();
+
+      members.removeWhere((member) => member.id == membersIndex.id);
+
+      final List<Map<String, dynamic>> updatedMemberDataList =
+          members.map((member) => member.toMap()).toList();
+
+      await groupRef.update({
+        'groupMembers': updatedMemberDataList,
+      });
+      return true;
+    } else {
+      log('Group does not exist');
       return false;
     }
+  } catch (e) {
+    log('Failed to remove member from group: $e');
+    return false;
   }
-
+}
   /// [DELETE A GROUP]
   Future<bool> deleteGroup(String groupId) async {
     try {
@@ -312,24 +265,33 @@ class DB {
     }
   }
 
-  /// [GET ALL MEMBER OF A GROUP]
-  Future<List<String>> getAllMembersInGroup(String groupId) async {
-    try {
-      final DocumentReference groupRef = groupDB.doc(groupId);
-      final DocumentSnapshot groupSnapshot = await groupRef.get();
 
-      if (groupSnapshot.exists) {
-        final Map<String, dynamic> data =
-            groupSnapshot.data() as Map<String, dynamic>;
-        final List<AttendeeModel> members =
-            List<AttendeeModel>.from(data['members'] as List<AttendeeModel>);
-        return members.cast<String>();
-      } else {
-        log('Group does not exist');
-        return [];
-      }
+  ///[SEND NOTIFICATION]
+  Future<void> sendNotificationData(Notifier notification) async {
+    try {
+      await notifierDB
+          .doc(auth.currentUser!.uid)
+          .collection('notifications')
+          .add(notification.toMap())
+          .then((value) => log('Notification Sent '));
+    } on FirebaseException catch (e) {
+      log(e.toString());
+    }
+  }
+
+  /// [GET NOTIFICATION INFO]
+  Future<List<Notifier>> fetchNotifications() async {
+    try {
+      var notifications = await notifierDB
+          .doc(auth.currentUser!.uid)
+          .collection('notifications')
+          .orderBy('time', descending: true)
+          .get();
+      List<Notifier> data =
+          notifications.docs.map((e) => Notifier.fromMap(e.data())).toList();
+      return data;
     } catch (e) {
-      log('Failed to get members in group: $e');
+      log('error on db:$e');
       return [];
     }
   }

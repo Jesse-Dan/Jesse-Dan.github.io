@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tyldc_finaalisima/presentation/screens/screens/dashboard/groups_screen.dart';
 
 import '../../../../../config/theme.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
@@ -8,6 +9,11 @@ import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_state.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../auth/login.dart';
+import '../../dashboard/admin_screen.dart';
+import '../../dashboard/attendees_screen.dart';
+import '../../dashboard/non_admins_screen.dart';
+import '../../dashboard/notification_screen.dart';
+import '../main_screen.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
@@ -26,22 +32,43 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Dashboard",
             svgSrc: "assets/icons/menu_dashboard.svg",
+            press: () {
+              Navigator.pushReplacementNamed(context, MainScreen.routeName);
+            },
+          ),
+          DrawerListTile(
+            title: "Season",
+            svgSrc: "assets/icons/menu_tran.svg",
             press: () {},
           ),
           DrawerListTile(
             title: "Attendees",
             svgSrc: "assets/icons/menu_tran.svg",
-            press: () {},
+            press: () {
+              Navigator.pushReplacementNamed(
+                  context, AttendeesScreen.routeName);
+            },
+          ),
+          DrawerListTile(
+            title: "Groups",
+            svgSrc: "assets/icons/menu_task.svg",
+            press: () {
+              Navigator.pushReplacementNamed(context, GroupsScreen.routeName);
+            },
           ),
           DrawerListTile(
             title: "Administative Staffs",
             svgSrc: "assets/icons/menu_task.svg",
-            press: () {},
+            press: () {
+              Navigator.pushReplacementNamed(context, AdminScreen.routeName);
+            },
           ),
           DrawerListTile(
             title: "Non-Administative Staffs",
             svgSrc: "assets/icons/menu_task.svg",
-            press: () {},
+            press: () {
+              Navigator.pushReplacementNamed(context, NonAdminScreen.routeName);
+            },
           ),
           DrawerListTile(
             title: "Statistics",
@@ -51,7 +78,10 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Notification",
             svgSrc: "assets/icons/menu_notification.svg",
-            press: () {},
+            press: () {
+              Navigator.pushReplacementNamed(
+                  context, NotificationScreen.routeName);
+            },
           ),
           DrawerListTile(
             title: "Profile",
