@@ -7,6 +7,7 @@ import '../../../../../config/theme.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_state.dart';
+import '../../../../../logic/bloc/cubit/methods_cubit.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../auth/login.dart';
 import '../../dashboard/admin_screen.dart';
@@ -15,10 +16,17 @@ import '../../dashboard/non_admins_screen.dart';
 import '../../dashboard/notification_screen.dart';
 import '../main_screen.dart';
 
-class SideMenu extends StatelessWidget {
+class SideMenu extends StatefulWidget {
   const SideMenu({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<SideMenu> createState() => _SideMenuState();
+}
+
+class _SideMenuState extends State<SideMenu> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +34,14 @@ class SideMenu extends StatelessWidget {
       backgroundColor: bgColor,
       child: ListView(
         children: [
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: ()async {
+              BlocProvider.of<MethodsCubit>(context).controlMenu();
+
+              // _scaffoldKey.currentState!.closeDrawer();
+            },
+          ),
           DrawerHeader(
             child: Image.asset("assets/images/logo.png"),
           ),

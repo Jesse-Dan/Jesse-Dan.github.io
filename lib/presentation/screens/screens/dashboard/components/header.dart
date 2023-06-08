@@ -21,6 +21,8 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -29,21 +31,27 @@ class _HeaderState extends State<Header> {
           SizedBox(
             child: Padding(
               padding: const EdgeInsets.only(right: 8.0),
-              child: Tooltip(
-                  textStyle:
-                      GoogleFonts.dmSans(fontSize: 15, color: Palette.white),
-                  triggerMode: TooltipTriggerMode.tap,
-                  message: 'Swipe right to reaveal menu 📲',
-                  child:
-                      // IconButton(
-                      //     icon: const
-                      const Icon(
-                    Icons.keyboard_double_arrow_right_rounded,
-                    size: 20,
-                    color: primaryColor,
-                    // ),
-                    // onPressed: () {}),
-                  )),
+              child: GestureDetector(
+                onTap: ()async {
+                  BlocProvider.of<MethodsCubit>(context).controlMenu();
+                  // _scaffoldKey.currentState!.openDrawer();
+                },
+                child: Tooltip(
+                    textStyle:
+                        GoogleFonts.dmSans(fontSize: 15, color: Palette.white),
+                    triggerMode: TooltipTriggerMode.tap,
+                    message: 'Swipe right to reaveal menu 📲',
+                    child:
+                        // IconButton(
+                        //     icon: const
+                        const Icon(
+                      Icons.keyboard_double_arrow_right_rounded,
+                      size: 20,
+                      color: primaryColor,
+                      // ),
+                      // onPressed: () {}),
+                    )),
+              ),
             ),
           ),
         if (!Responsive.isMobile(context))

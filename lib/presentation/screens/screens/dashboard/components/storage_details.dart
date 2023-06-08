@@ -34,7 +34,7 @@ class _StorageDetailsState extends State<StorageDetails> {
     DateTime limitDate = currentDate.subtract(Duration(seconds: ageLimit));
 
     List<AttendeeModel> ageGroup = listOfAttendees
-        .where((element) => element.dob.isAtSameMomentAs(limitDate))
+        .where((element) => element.dob!.isAtSameMomentAs(limitDate))
         .toList();
     int finalAgeLimitCount = ageGroup.length;
     return finalAgeLimitCount;

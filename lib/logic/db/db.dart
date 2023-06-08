@@ -131,7 +131,7 @@ class DB {
       var data = groups.docs.map((e) => (e.reference.id)).toList();
       return data;
     } catch (e) {
-      log('error on group db:$e');
+      // log('error on group db:$e');
       return [];
     }
   }

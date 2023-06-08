@@ -378,7 +378,7 @@ class RegistrationForms extends FormWidget {
               fieldsType: const TextInputType.numberWithOptions(),
               hint: 'Date of Birth',
               suffix: const Icon(Icons.calendar_view_day_rounded),
-              initialValue: dateWithoutTIme.format((attendee.dob))),
+              initialValue: dateWithoutTIme.format((attendee.dob!))),
           CustomViewTextField(
             initialValue: attendee.phoneNo,
             fieldsType: const TextInputType.numberWithOptions(),
