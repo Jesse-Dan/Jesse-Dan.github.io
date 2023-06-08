@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site":"tyldc_portal",
     "public": "web",
     "ignore": [
       "firebase.json",
