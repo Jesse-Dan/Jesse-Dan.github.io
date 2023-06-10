@@ -21,11 +21,13 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return AppBar(
+      title: Row(
       children: [
         if (!Responsive.isDesktop(context))
           SizedBox(
@@ -44,8 +46,8 @@ class _HeaderState extends State<Header> {
                         color: primaryColor,
                       ),
                       onPressed: () {
-                        _scaffoldKey.currentState?.openDrawer();
-                        // BlocProvider.of<MethodsCubit>(context).controlMenu();
+                        // _scaffoldKey.currentState?.openDrawer();
+                        BlocProvider.of<MethodsCubit>(context).controlMenu(globalKey: _scaffoldKey);
                       })),
             ),
           ),
@@ -59,7 +61,7 @@ class _HeaderState extends State<Header> {
         const Expanded(child: SearchField()),
         const ProfileCard()
       ],
-    );
+    ));
   }
 }
 

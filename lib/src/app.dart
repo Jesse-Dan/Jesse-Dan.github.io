@@ -42,6 +42,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -55,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) =>
-              MethodsCubit(globalKey: GlobalKey<ScaffoldState>()),
+              MethodsCubit(),
         ),
         BlocProvider(
           create: (context) =>
@@ -94,6 +96,7 @@ class _MyAppState extends State<MyApp> {
             //     title: 'Network Connection');
           }
           return MaterialApp(
+            key: _scaffoldKey,
             navigatorObservers: [BotToastNavigatorObserver()],
             builder: BotToastInit(),
             debugShowCheckedModeBanner: false,

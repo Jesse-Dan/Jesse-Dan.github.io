@@ -41,7 +41,7 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                     const Center(child: CircularProgressIndicator()));
           }
 
-          if (state is NonAdminRegistrationLoaded) {
+          if (state is NonAdminRegistrationLoaded) { 
             Alertify.success();
             Navigator.of(context).pop();
           }

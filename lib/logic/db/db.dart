@@ -119,7 +119,6 @@ class DB {
       return data;
     } catch (e) {
       log('error on group db:$e');
-
       return [];
     }
   }
@@ -218,42 +217,43 @@ class DB {
     }
   }
 
-/// [REMOVE MEMBER FROM GROUP]
-Future<bool> removeMemberFromGroup(
-    {required String groupId, required AttendeeModel membersIndex}) async {
-  try {
-    final DocumentReference groupRef = groupDB.doc(groupId);
-    final DocumentSnapshot groupSnapshot = await groupRef.get();
+  /// [REMOVE MEMBER FROM GROUP]
+  Future<bool> removeMemberFromGroup(
+      {required String groupId, required AttendeeModel membersIndex}) async {
+    try {
+      final DocumentReference groupRef = groupDB.doc(groupId);
+      final DocumentSnapshot groupSnapshot = await groupRef.get();
 
-    if (groupSnapshot.exists) {
-      final Map<String, dynamic> data =
-          groupSnapshot.data() as Map<String, dynamic>;
+      if (groupSnapshot.exists) {
+        final Map<String, dynamic> data =
+            groupSnapshot.data() as Map<String, dynamic>;
 
-      final List<dynamic> memberDataList =
-          data['groupMembers'] as List<dynamic>;
+        final List<dynamic> memberDataList =
+            data['groupMembers'] as List<dynamic>;
 
-      final List<AttendeeModel> members = memberDataList
-          .map((member) => AttendeeModel.fromMap(member))
-          .toList();
+        final List<AttendeeModel> members = memberDataList
+            .map((member) => AttendeeModel.fromMap(member))
+            .toList();
 
-      members.removeWhere((member) => member.id == membersIndex.id);
+        members.removeWhere((member) => member.id == membersIndex.id);
 
-      final List<Map<String, dynamic>> updatedMemberDataList =
-          members.map((member) => member.toMap()).toList();
+        final List<Map<String, dynamic>> updatedMemberDataList =
+            members.map((member) => member.toMap()).toList();
 
-      await groupRef.update({
-        'groupMembers': updatedMemberDataList,
-      });
-      return true;
-    } else {
-      log('Group does not exist');
+        await groupRef.update({
+          'groupMembers': updatedMemberDataList,
+        });
+        return true;
+      } else {
+        log('Group does not exist');
+        return false;
+      }
+    } catch (e) {
+      log('Failed to remove member from group: $e');
       return false;
     }
-  } catch (e) {
-    log('Failed to remove member from group: $e');
-    return false;
   }
-}
+
   /// [DELETE A GROUP]
   Future<bool> deleteGroup(String groupId) async {
     try {
@@ -264,7 +264,6 @@ Future<bool> removeMemberFromGroup(
       return false;
     }
   }
-
 
   ///[SEND NOTIFICATION]
   Future<void> sendNotificationData(Notifier notification) async {

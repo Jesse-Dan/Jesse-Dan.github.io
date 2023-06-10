@@ -36,8 +36,9 @@ class _SideMenuState extends State<SideMenu> {
         children: [
           IconButton(
             icon: Icon(Icons.close),
-            onPressed: ()async {
-              BlocProvider.of<MethodsCubit>(context).controlMenu();
+            onPressed: () async {
+              BlocProvider.of<MethodsCubit>(context)
+                  .controlMenu(globalKey: _scaffoldKey);
 
               // _scaffoldKey.currentState!.closeDrawer();
             },

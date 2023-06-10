@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 part 'methods_state.dart';
 
 class MethodsCubit extends Cubit<MethodsState> {
-  final GlobalKey<ScaffoldState> globalKey;
-  MethodsCubit({required this.globalKey}) : super(MethodsInitial()) {
-    controlMenu();
+  MethodsCubit() : super(MethodsInitial()) {
   }
-  void controlMenu() {
+  Future<void> controlMenu({required GlobalKey<ScaffoldState> globalKey}) async{
     try {
       if (globalKey.currentState!.isDrawerOpen) {
-        globalKey.currentState!.openDrawer();
+       globalKey.currentState!.openDrawer();
         emit(MethodsDone(true));
+        print('opened');
       } else {
         globalKey.currentState!.closeDrawer();
+        print('closed');
         emit(MethodsDone(false));
       }
     } catch (e) {
