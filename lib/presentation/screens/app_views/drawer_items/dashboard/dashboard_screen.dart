@@ -7,7 +7,7 @@ import '../../components/header.dart';
 
 import '../../components/my_files.dart';
 import '../../components/recent_registrations.dart';
-import '../../components/storage_details.dart';
+import '../../components/attendees_stats.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const routeName = '/main.screen.dashboard';
@@ -42,7 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         if (Responsive.isMobile(context))
                           const SizedBox(height: defaultPadding),
                         if (Responsive.isMobile(context))
-                          const StorageDetails(
+                          const AttendeesStatsDetails(
                             defaultPadding: defaultPadding,
                           ),
                       ],
@@ -54,7 +54,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   if (!Responsive.isMobile(context))
                     const Expanded(
                       flex: 2,
-                      child: StorageDetails(
+                      child: AttendeesStatsDetails(
                         defaultPadding: defaultPadding,
                       ),
                     ),

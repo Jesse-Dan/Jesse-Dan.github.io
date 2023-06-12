@@ -3,47 +3,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import 'package:tyldc_finaalisima/models/models.dart';
-import 'package:date_time_format/date_time_format.dart';
-
 import '../../../../config/theme.dart';
 import 'chart.dart';
-import 'storage_info_card.dart';
+import '../../app_views/components/attendees_stats_info_card.dart';
 
-class StorageDetails extends StatefulWidget {
+class AttendeesStatsDetails extends StatefulWidget {
   final double? defaultPadding;
 
-  const StorageDetails({
+  const AttendeesStatsDetails({
     Key? key,
     this.defaultPadding,
   }) : super(key: key);
 
   @override
-  State<StorageDetails> createState() => _StorageDetailsState();
+  State<AttendeesStatsDetails> createState() => _AttendeesStatsDetailsState();
 }
 
-class _StorageDetailsState extends State<StorageDetails> {
-  int calculateAgeInSeconds(int age) {
-    int secondsInAYear = 365 * 24 * 60 * 60;
-    int ageInSeconds = age * secondsInAYear;
-    return ageInSeconds;
-  }
-
-  int getAge(
-      {required int ageLimit, required List<AttendeeModel> listOfAttendees}) {
-    DateTime currentDate = DateTime.now();
-    DateTime limitDate = currentDate.subtract(Duration(seconds: ageLimit));
-
-    List<AttendeeModel> ageGroup = listOfAttendees
-        .where((element) => element.dob!.isAtSameMomentAs(limitDate))
-        .toList();
-    int finalAgeLimitCount = ageGroup.length;
-    return finalAgeLimitCount;
-  }
-
+class _AttendeesStatsDetailsState extends State<AttendeesStatsDetails> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DashBoardBloc, DashBoardState>(
       builder: (context, state) {
+        bool fetched = state is DashBoardFetched;
+        bool error = state is DashBoardFailed;
+        bool loading = state is DashBoardLoading;
+        bool initial = state is DashBoardInitial;
+
         return Container(
           padding: EdgeInsets.all(widget.defaultPadding!),
           decoration: const BoxDecoration(
@@ -114,7 +99,7 @@ class _StorageDetailsState extends State<StorageDetails> {
               AgeScematicsInfoCard(
                 svgSrc: "assets/icons/Documents.svg",
                 title: "Age 18+",
-                amountOfFiles: state is DashBoardFetched
+                amountOfFiles: fetched
                     ? "${getAge(
                         ageLimit: calculateAgeInSeconds(18),
                         listOfAttendees: state.attendeeModel,
@@ -127,5 +112,23 @@ class _StorageDetailsState extends State<StorageDetails> {
         );
       },
     );
+  }
+
+  int calculateAgeInSeconds(int age) {
+    int secondsInAYear = 365 * 24 * 60 * 60;
+    int ageInSeconds = age * secondsInAYear;
+    return ageInSeconds;
+  }
+
+  int getAge(
+      {required int ageLimit, required List<AttendeeModel> listOfAttendees}) {
+    DateTime currentDate = DateTime.now();
+    DateTime limitDate = currentDate.subtract(Duration(seconds: ageLimit));
+
+    List<AttendeeModel> ageGroup = listOfAttendees
+        .where((element) => element.dob!.isAtSameMomentAs(limitDate))
+        .toList();
+    int finalAgeLimitCount = ageGroup.length;
+    return finalAgeLimitCount;
   }
 }
