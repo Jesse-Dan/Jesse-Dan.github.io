@@ -27,7 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              const Header(),
+              // const Header(),
               const SizedBox(height: defaultPadding),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

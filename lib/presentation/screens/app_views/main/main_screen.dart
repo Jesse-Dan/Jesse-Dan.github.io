@@ -7,7 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../config/constants/responsive.dart';
 import '../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../widgets/alertify.dart';
-import '../dashboard/dashboard_screen.dart';
+import '../drawer_items/components/header.dart';
+import '../drawer_items/components/prefered_size_widget.dart';
+import '../drawer_items/dashboard_screen.dart';
 import 'components/side_menu.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -30,6 +32,7 @@ class _MainScreenState extends State<MainScreen> {
     BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
@@ -66,6 +69,16 @@ class _MainScreenState extends State<MainScreen> {
         }
       },
       child: Scaffold(
+        appBar: (Responsive.isMobile(context))
+            ? CustomPreferredSizeWidget(
+                preferredHeight: 100,
+                preferredWidth: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.all(kdefaultPadding),
+                  child: Header( onPressed: () {
+                  }),
+                ))
+            : null,
         resizeToAvoidBottomInset: false,
         backgroundColor: bgColor,
         drawer: const SideMenu(),

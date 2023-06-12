@@ -1,5 +1,5 @@
 export 'user_model.dart';
-export 'MyFiles.dart';
+export 'stats_card.dart';
 export 'group_model.dart';
 export 'non_admin_staff.dart';
 export 'teachings_model.dart';

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '../presentation/screens/screens/dashboard/dashboard_screen.dart';
-import '../presentation/screens/screens/main/main_screen.dart';
+import '../presentation/screens/app_views/drawer_items/dashboard_screen.dart';
+import '../presentation/screens/app_views/main/main_screen.dart';
 
 List<GetPage> appRoutes = [
   GetPage(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/components/prefered_size_widget.dart';
 
 import '../../../../../config/constants/responsive.dart';
 import '../../../../../config/palette.dart';
@@ -14,54 +15,68 @@ import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 class Header extends StatefulWidget {
   const Header({
     Key? key,
+    this.onPressed,
   }) : super(key: key);
-
+  final dynamic onPressed;
   @override
   State<Header> createState() => _HeaderState();
 }
 
 class _HeaderState extends State<Header> {
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: Row(
-      children: [
-        if (!Responsive.isDesktop(context))
-          SizedBox(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Tooltip(
-                  textStyle:
-                      GoogleFonts.dmSans(fontSize: 15, color: Palette.white),
-                  triggerMode: TooltipTriggerMode.tap,
-                  message: 'Swipe right to polo menu 📲',
-                  child: IconButton(
-                      splashColor: Colors.transparent,
-                      icon: const Icon(
-                        Icons.keyboard_double_arrow_right_rounded,
-                        size: 20,
-                        color: primaryColor,
-                      ),
-                      onPressed: () {
-                        // _scaffoldKey.currentState?.openDrawer();
-                        BlocProvider.of<MethodsCubit>(context).controlMenu(globalKey: _scaffoldKey);
-                      })),
+    return Responsive.isDesktop(context)
+        ? Row(children: [
+            if (!Responsive.isMobile(context))
+              Text(
+                "Dashboard",
+                style: GoogleFonts.dmSans(fontSize: 30, color: primaryColor),
+              ),
+            if (!Responsive.isMobile(context))
+              Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
+            const Expanded(child: SearchField()),
+            const ProfileCard()
+          ])
+        : AppBar(
+            iconTheme: const IconThemeData(color: primaryColor),
+
+            backgroundColor: Colors.transparent,
+            // foregroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            elevation: 0,
+            leading: // if (!Responsive.isDesktop(context))
+                SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: IconButton(
+                        focusColor: Colors.transparent,
+                        color: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        icon: const Icon(
+                          Icons.menu_open,
+                          size: 30,
+                          color: primaryColor,
+                        ),
+                        onPressed: () => Scaffold.of(context).openDrawer())
+              ),
             ),
-          ),
-        if (!Responsive.isMobile(context))
-          Text(
-            "Dashboard",
-            style: GoogleFonts.dmSans(fontSize: 30, color: primaryColor),
-          ),
-        if (!Responsive.isMobile(context))
-          Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
-        const Expanded(child: SearchField()),
-        const ProfileCard()
-      ],
-    ));
+            title: Row(
+              children: [
+                if (!Responsive.isMobile(context))
+                  Text(
+                    "Dashboard",
+                    style:
+                        GoogleFonts.dmSans(fontSize: 30, color: primaryColor),
+                  ),
+                if (!Responsive.isMobile(context))
+                  Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
+                const Expanded(child: SearchField()),
+                const ProfileCard()
+              ],
+            ),
+            automaticallyImplyLeading: false,
+          );
   }
 }
 
@@ -135,7 +150,7 @@ class SearchField extends StatelessWidget {
         filled: true,
         border: const OutlineInputBorder(
           borderSide: BorderSide.none,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: BorderRadius.all(Radius.circular(30)),
         ),
         suffixIcon: InkWell(
           onTap: () {},
@@ -144,7 +159,11 @@ class SearchField extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
             decoration: const BoxDecoration(
               color: primaryColor,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(20)),
             ),
             child: SvgPicture.asset("assets/icons/Search.svg"),
           ),

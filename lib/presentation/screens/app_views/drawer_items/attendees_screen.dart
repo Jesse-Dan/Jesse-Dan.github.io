@@ -4,32 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/models/models.dart';
-import 'package:tyldc_finaalisima/presentation/screens/screens/main/components/side_menu.dart';
-import 'package:tyldc_finaalisima/presentation/screens/screens/main/main_screen.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/main/components/side_menu.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/main/main_screen.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/forms/forms.dart';
 
 import '../../../../../config/constants/responsive.dart';
 import '../../../../../config/theme.dart';
 import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../models/atendee_model.dart';
-import '../../../../config/date_time_formats.dart';
 import '../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../widgets/alertify.dart';
 import '../../../widgets/customm_text_btn.dart';
 
-class NotificationScreen extends StatefulWidget {
-  static const routeName = '/main.notification';
+class AttendeesScreen extends StatefulWidget {
+  static const routeName = '/main.attendees';
 
-  const NotificationScreen({
+  const AttendeesScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<NotificationScreen> createState() => _NotificationScreenState();
+  State<AttendeesScreen> createState() => _AttendeesScreenState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class _AttendeesScreenState extends State<AttendeesScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
@@ -112,14 +110,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Notifications",
+              "All Registrations",
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 20),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
+              children: [
                 TextBtn(
+                  icon: Icons.person_add,
+                  text: 'Add Attendee',
+                  onTap: () {
+                    RegistrationForms(context: context)
+                        .registerNewAttandeeForm(title: 'Attendee');
+                  },
+                ),
+                const TextBtn(
                   icon: Icons.filter_list,
                   text: 'Filter',
                 )
@@ -147,67 +153,75 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     columns: Responsive.isMobile(context)
                         ? [
                             DataColumn(
-                              label: FittedBox(
-                                child: Text(
-                                  "Activity",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                              label: Text(
+                                "Fullname",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
                             DataColumn(
-                              label: FittedBox(
-                                child: Text(
-                                  "time",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                              label: Text(
+                                "CamperStatus",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
                             DataColumn(
-                              label: FittedBox(
-                                child: Text(
-                                  "Description",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                              label: Text(
+                                "Sex",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
                             )
                           ]
                         : [
                             DataColumn(
                               label: Text(
-                                "Activity",
+                                "Fullname",
                                 style: GoogleFonts.dmSans(
                                     color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
                             DataColumn(
                               label: Text(
-                                "time",
+                                "CamperStatus",
                                 style: GoogleFonts.dmSans(
                                     color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
                             DataColumn(
                               label: Text(
-                                "Description",
+                                "Code",
                                 style: GoogleFonts.dmSans(
                                     color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
                             DataColumn(
                               label: Text(
-                                "Performed by | Action",
+                                "Phone",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Disability Cluster",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Commitment Fee",
                                 style: GoogleFonts.dmSans(
                                     color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
                           ],
                     rows: List.generate(
-                      state.notifications.length,
+                      state.attendeeModel.length,
                       (index) => (recentFileDataRow(
-                          state.notifications[index], context)),
+                          state.attendeeModel[index], context)),
                     ),
                   ),
                 );
@@ -224,47 +238,55 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 }
 
-DataRow recentFileDataRow(Notifier notice, context) {
+DataRow recentFileDataRow(AttendeeModel registerdUser, context) {
   return DataRow(
     onLongPress: () {
-      // RegistrationForms(context: context).viewSelectedAttendeeData(
-      //     title: '${registerdUser.firstName} ${registerdUser.lastName}',
-      //     attendee: registerdUser);
+      RegistrationForms(context: context).viewSelectedAttendeeData(
+          title: '${registerdUser.firstName} ${registerdUser.lastName}',
+          attendee: registerdUser);
     },
     cells: Responsive.isMobile(context)
         ? [
             DataCell(
               Text(
-                notice.action,
+                '${registerdUser.firstName.toLowerCase()} ${registerdUser.lastName.toLowerCase()}',
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),
             DataCell(Text(
-              dateWithoutTimeButPosition(date: notice.time!).toLowerCase(),
+              registerdUser.wouldCamp.toLowerCase(),
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
-              notice.description..toLowerCase(),
+              registerdUser.gender.toLowerCase(),
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
           ]
         : [
             DataCell(
               Text(
-                notice.action,
+                registerdUser.firstName.toLowerCase(),
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),
             DataCell(Text(
-              dateWithTime.format(notice.time!).toLowerCase(),
+              registerdUser.wouldCamp.toLowerCase(),
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
-              notice.description..toLowerCase(),
+              registerdUser.id,
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
-              notice.data,
+              registerdUser.phoneNo,
+              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+            )),
+            DataCell(Text(
+              registerdUser.disabilityCluster,
+              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+            )),
+            DataCell(Text(
+              registerdUser.commitmentFee.toLowerCase(),
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
           ],

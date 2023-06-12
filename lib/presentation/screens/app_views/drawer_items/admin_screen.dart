@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/models/user_model.dart';
-import 'package:tyldc_finaalisima/presentation/screens/screens/main/components/side_menu.dart';
-import 'package:tyldc_finaalisima/presentation/screens/screens/main/main_screen.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/main/components/side_menu.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/main/main_screen.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/forms/forms.dart';
 
 import '../../../../../config/constants/responsive.dart';

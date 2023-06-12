@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tyldc_finaalisima/presentation/screens/screens/dashboard/groups_screen.dart';
+import 'package:tyldc_finaalisima/config/constants/responsive.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/groups_screen.dart';
 
 import '../../../../../config/theme.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_state.dart';
-import '../../../../../logic/bloc/cubit/methods_cubit.dart';
+// import '../../../../../logic/bloc/cubit/methods_cubit.dart';
 import '../../../../widgets/alertify.dart';
-import '../../../auth/login.dart';
-import '../../dashboard/admin_screen.dart';
-import '../../dashboard/attendees_screen.dart';
-import '../../dashboard/non_admins_screen.dart';
-import '../../dashboard/notification_screen.dart';
+import '../../../auth_views/login.dart';
+import '../../drawer_items/admin_screen.dart';
+import '../../drawer_items/attendees_screen.dart';
+import '../../drawer_items/non_admins_screen.dart';
+import '../../drawer_items/notification_screen.dart';
 import '../main_screen.dart';
 
 class SideMenu extends StatefulWidget {
@@ -26,23 +27,34 @@ class SideMenu extends StatefulWidget {
 }
 
 class _SideMenuState extends State<SideMenu> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: bgColor,
       child: ListView(
         children: [
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () async {
-              BlocProvider.of<MethodsCubit>(context)
-                  .controlMenu(globalKey: _scaffoldKey);
-
-              // _scaffoldKey.currentState!.closeDrawer();
-            },
-          ),
+          if (Responsive.isMobile(context) || Responsive.isTablet(context))
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: IconButton(
+                  focusColor: Colors.transparent,
+                  color: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  icon: const Icon(
+                    Icons.close,
+                    size: 30,
+                    color: primaryColor,
+                  ),
+                  onPressed: () async {
+                    Scaffold.of(context).closeDrawer();
+                    // Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ),
           DrawerHeader(
             child: Image.asset("assets/images/logo.png"),
           ),
@@ -50,7 +62,8 @@ class _SideMenuState extends State<SideMenu> {
             title: "Dashboard",
             svgSrc: "assets/icons/menu_dashboard.svg",
             press: () {
-              Navigator.pushReplacementNamed(context, MainScreen.routeName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, MainScreen.routeName, (_) => false);
             },
           ),
           DrawerListTile(
@@ -62,29 +75,32 @@ class _SideMenuState extends State<SideMenu> {
             title: "Attendees",
             svgSrc: "assets/icons/menu_tran.svg",
             press: () {
-              Navigator.pushReplacementNamed(
-                  context, AttendeesScreen.routeName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, AttendeesScreen.routeName, (_) => false);
             },
           ),
           DrawerListTile(
             title: "Groups",
             svgSrc: "assets/icons/menu_task.svg",
             press: () {
-              Navigator.pushReplacementNamed(context, GroupsScreen.routeName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, GroupsScreen.routeName, (_) => false);
             },
           ),
           DrawerListTile(
             title: "Administative Staffs",
             svgSrc: "assets/icons/menu_task.svg",
             press: () {
-              Navigator.pushReplacementNamed(context, AdminScreen.routeName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, AdminScreen.routeName, (_) => false);
             },
           ),
           DrawerListTile(
             title: "Non-Administative Staffs",
             svgSrc: "assets/icons/menu_task.svg",
             press: () {
-              Navigator.pushReplacementNamed(context, NonAdminScreen.routeName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, NonAdminScreen.routeName, (_) => false);
             },
           ),
           DrawerListTile(
@@ -96,8 +112,8 @@ class _SideMenuState extends State<SideMenu> {
             title: "Notification",
             svgSrc: "assets/icons/menu_notification.svg",
             press: () {
-              Navigator.pushReplacementNamed(
-                  context, NotificationScreen.routeName);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, NotificationScreen.routeName, (_) => false);
             },
           ),
           DrawerListTile(
@@ -117,13 +133,14 @@ class _SideMenuState extends State<SideMenu> {
                 showDialog(
                     context: context,
                     builder: ((context) =>
-                        Center(child: CircularProgressIndicator())));
+                        const Center(child: CircularProgressIndicator())));
               }
               if (state is AuthentictionSuccesful) {
                 Alertify.success(
                     title: 'Ending Session Success',
                     message: 'Session Ended sussecfully');
-                Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, SignInScreen.routeName, (_) => false);
               }
               if (state is AuthentictionFailed) {
                 Navigator.pop(context);

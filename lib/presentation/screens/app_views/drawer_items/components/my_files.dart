@@ -5,7 +5,7 @@ import '../../../../../config/constants/responsive.dart';
 import '../../../../../config/palette.dart';
 import '../../../../../config/theme.dart';
 import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
-import '../../../../../models/MyFiles.dart';
+import '../../../../../models/stats_card.dart';
 import '../../../../widgets/costum_text_field.dart';
 import '../../../../widgets/dialogue_forms.dart';
 import '../../../../widgets/forms/forms.dart';

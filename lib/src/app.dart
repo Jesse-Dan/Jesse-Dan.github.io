@@ -14,15 +14,15 @@ import '../logic/bloc/connectivity_cubit/connectivity_cubit.dart';
 import '../logic/bloc/cubit/methods_cubit.dart';
 import '../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../logic/bloc/registeration_bloc/registeration_bloc.dart';
-import '../presentation/screens/auth/login.dart';
-import '../presentation/screens/auth/reg.dart';
-import '../presentation/screens/screens/dashboard/admin_screen.dart';
-import '../presentation/screens/screens/dashboard/attendees_screen.dart';
-import '../presentation/screens/screens/dashboard/dashboard_screen.dart';
-import '../presentation/screens/screens/dashboard/groups_screen.dart';
-import '../presentation/screens/screens/dashboard/non_admins_screen.dart';
-import '../presentation/screens/screens/dashboard/notification_screen.dart';
-import '../presentation/screens/screens/main/main_screen.dart';
+import '../presentation/screens/auth_views/login.dart';
+import '../presentation/screens/auth_views/reg.dart';
+import '../presentation/screens/app_views/drawer_items/admin_screen.dart';
+import '../presentation/screens/app_views/drawer_items/attendees_screen.dart';
+import '../presentation/screens/app_views/drawer_items/dashboard_screen.dart';
+import '../presentation/screens/app_views/drawer_items/groups_screen.dart';
+import '../presentation/screens/app_views/drawer_items/non_admins_screen.dart';
+import '../presentation/screens/app_views/drawer_items/notification_screen.dart';
+import '../presentation/screens/app_views/main/main_screen.dart';
 import '../presentation/widgets/alertify.dart';
 
 class MyApp extends StatefulWidget {
