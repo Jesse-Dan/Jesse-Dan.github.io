@@ -64,9 +64,6 @@ class _SignInScreenState extends State<SignInScreen> {
       if (state is AuthentictionSuccesful) {
         Alertify.success(
             title: 'Login Successful', message: 'User Logged in sussecfully');
-        Navigator.pushNamedAndRemoveUntil(context, MainScreen.routeName, (_) {
-          return false;
-        });
       }
       if (state is AuthentictionFailed) {
         Navigator.pop(context);
@@ -124,6 +121,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       onPressed: () {
                         BlocProvider.of<AuthenticationBloc>(context).add(
                             LoginEvent(
+                              context,
                                 email: emailCtl.text.trim(),
                                 password: passwordCtl.text.trim()));
 

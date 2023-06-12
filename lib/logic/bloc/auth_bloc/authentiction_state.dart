@@ -18,3 +18,7 @@ class AuthentictionFailed extends AuthentictionState {
 
   const AuthentictionFailed(this.error);
 }
+
+class AuthentictionLostSession extends AuthentictionState {}
+
+class AuthentictionFoundSession extends AuthentictionState {}

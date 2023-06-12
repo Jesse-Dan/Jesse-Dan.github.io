@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tyldc_finaalisima/models/non_admin_staff.dart';
+import 'non_admin_staff.dart';
 import '../../config/date_time_formats.dart';
 
 class Notifier {

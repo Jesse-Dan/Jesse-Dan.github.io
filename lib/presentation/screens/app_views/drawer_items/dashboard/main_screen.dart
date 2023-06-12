@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tyldc_finaalisima/logic/bloc/auth_bloc/authentiction_bloc.dart';
 
 import '../../../../../config/constants/responsive.dart';
 import '../../../../../config/theme.dart';
+import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
+import '../../../../../logic/build/bloc_aler_notifier.dart';
 import '../../../../widgets/alertify.dart';
 import '../../components/header.dart';
 import '../../components/prefered_size_widget.dart';
@@ -29,44 +32,18 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   _initializeAppAndCalls() {
+    BlocProvider.of<AuthenticationBloc>(context).add(CheckStatusEvent(context));
     BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
   }
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        if (state is RegistrationInitial) {
-          print('initial');
-        }
-        if (state is RegistrationLoading) {
-          showDialog(
-              context: context,
-              builder: (builder) =>
-                  const Center(child: CircularProgressIndicator()));
-        }
-
-        if (state is GroupRegistrationLoaded) {
-          Navigator.of(context).pop();
-
-          Alertify.success();
-        }
-        if (state is NonAdminRegistrationLoaded) {
-          Navigator.of(context).pop();
-
-          Alertify.success();
-        }
-        if (state is AttendeeRegistrationLoaded) {
-          Navigator.of(context).pop();
-
-          Alertify.success();
-        }
-        if (state is RegistrationFailed) {
-          Navigator.of(context).pop();
-
-          Alertify.error(title: 'An Error occured', message: state.error);
-        }
+        getSessionState(state: state, context: context);
+        getLoadingBlocState(state: state, context: context);
+        getSuccessBlocState(state: state, context: context);
+        getFailedBlocState(state: state, context: context);
       },
       child: Scaffold(
         appBar: (Responsive.isMobile(context))
@@ -74,9 +51,8 @@ class _MainScreenState extends State<MainScreen> {
                 preferredHeight: 100,
                 preferredWidth: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.all(kdefaultPadding),
-                  child: Header( onPressed: () {
-                  }),
+                  padding: const EdgeInsets.all(kdefaultPadding),
+                  child: Header(onPressed: () {}),
                 ))
             : null,
         resizeToAvoidBottomInset: false,

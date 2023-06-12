@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
-import 'package:tyldc_finaalisima/models/models.dart';
+import '../../models/models.dart';
 
 class DB {
   final FirebaseAuth auth;

@@ -1,8 +1,13 @@
+// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously
+
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../config/codes.dart';
 import '../../../models/models.dart';
+import '../../../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
+import '../../../presentation/screens/auth_views/login.dart';
 import '../../db/db.dart';
 import 'authentiction_event.dart';
 import 'authentiction_state.dart';
@@ -17,14 +22,12 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
     signup();
   }
 
-  void checkAuthenticationStatus() async {
-    on<CheckStatusEvent>((event, emit) {
-      emit(AuthentictionLoading());
-
-      if (auth != null) {
-        emit(AuthentictionSuccesful());
+  checkAuthenticationStatus() async {
+    on<CheckStatusEvent>((event, emit) async {
+      if (auth.currentUser == null) {
+        emit(AuthentictionLostSession());
       } else {
-        emit(const AuthentictionFailed(CONTACT_ADMIN));
+        emit(AuthentictionFoundSession());
       }
     });
   }
@@ -40,43 +43,35 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
         var actor = await DB(auth: auth).fetchAdminData();
         await DB(auth: auth).sendNotificationData(
             Notifier.login(data: '${actor.firstName} ${actor.lastName}'));
+        Navigator.pushNamedAndRemoveUntil(
+            event.context, MainScreen.routeName, (_) => false);
 
         emit(AuthentictionSuccesful());
       } on FirebaseAuthException catch (e) {
         if (e.code == 'invalid-email') {
           emit(AuthentictionFailed(e.message.toString()));
-          print('Invalid email address.');
+          log('Invalid email address.');
         } else if (e.code == 'wrong-password') {
           emit(AuthentictionFailed(e.message.toString()));
-          print('Incorrect password.');
+          log('Incorrect password.');
         } else if (e.code == 'user-not-found') {
           emit(AuthentictionFailed(e.message.toString()));
-          // There is no user corresponding to the email address.
-          print('No user found for that email.');
+          log('No user found for that email.');
         } else if (e.code == 'user-disabled') {
           emit(AuthentictionFailed(e.message.toString()));
-          // The user account has been disabled by an administrator.
-          print('User account has been disabled.');
+          log('User account has been disabled.');
         } else if (e.code == 'too-many-requests') {
           emit(AuthentictionFailed(e.message.toString()));
-
-          // There have been too many unsuccessful sign-in attempts.
-          print('Too many unsuccessful sign-in attempts. Try again later.');
+          log('Too many unsuccessful sign-in attempts. Try again later.');
         } else if (e.code == 'operation-not-allowed') {
           emit(AuthentictionFailed(e.message.toString()));
-
-          // The requested sign-in method is not enabled for the Firebase project.
-          print('Sign-in method is not enabled.');
+          log('Sign-in method is not enabled.');
         } else if (e.code == 'email-already-in-use') {
           emit(AuthentictionFailed(e.message.toString()));
-
-          // The email address is already associated with a different user account.
-          print('Email address is already in use.');
+          log('Email address is already in use.');
         } else {
           emit(AuthentictionFailed(e.message.toString()));
-
-          // Handle other exceptions.
-          print('Error occurred while signing in: ${e.message}');
+          log('Error occurred while signing in: ${e.message}');
         }
       } catch (e) {
         emit(AuthentictionFailed('type error $e'));
@@ -111,7 +106,8 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
               imageUrl: ''));
           await DB(auth: auth).sendNotificationData(
               Notifier.signUp(data: '${data.firstName} ${data.lastName}'));
-
+          Navigator.pushNamedAndRemoveUntil(
+              event.context, SignInScreen.routeName, (_) => false);
           emit(AuthentictionSuccesful());
         } else {
           emit(const AuthentictionFailed(
@@ -120,29 +116,19 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
       } on FirebaseAuthException catch (e) {
         if (e.code == 'invalid-email') {
           emit(AuthentictionFailed(e.message.toString()));
-
-          // The email address is invalid.
-          print('Invalid email address.');
+          log('Invalid email address.');
         } else if (e.code == 'email-already-in-use') {
           emit(AuthentictionFailed(e.message.toString()));
-
-          // The email address is already associated with a different user account.
-          print('Email address is already in use.');
+          log('Email address is already in use.');
         } else if (e.code == 'operation-not-allowed') {
           emit(AuthentictionFailed(e.message.toString()));
-
-          // The requested sign-up method is not enabled for the Firebase project.
-          print('Sign-up method is not enabled.');
+          log('Sign-up method is not enabled.');
         } else if (e.code == 'weak-password') {
           emit(AuthentictionFailed(e.message.toString()));
-
-          // The password is too weak.
-          print('Password is too weak.');
+          log('Password is too weak.');
         } else {
           emit(AuthentictionFailed(e.message.toString()));
-
-          // Handle other exceptions.
-          print('Error occurred while signing up: ${e.message}');
+          log('Error occurred while signing up: ${e.message}');
         }
       } catch (e) {
         log(e.toString());

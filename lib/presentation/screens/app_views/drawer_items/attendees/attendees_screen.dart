@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/presentation/widgets/forms/forms.dart';
+import '../../../../widgets/custom_floating_action_btn.dart';
+import '../../../../widgets/data_table.dart';
+import '../../../../widgets/forms/forms.dart';
 
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
@@ -13,6 +15,7 @@ import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../dashboard/components/side_menu.dart';
+import 'forms/reg_form.dart';
 
 class AttendeesScreen extends StatefulWidget {
   static const routeName = '/main.attendees';
@@ -63,180 +66,123 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                   child: SideMenu(),
                 ),
               Expanded(
-                // It takes 5/6 part of the screen
-                flex: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                      padding: const EdgeInsets.all(defaultPadding),
-                      decoration: const BoxDecoration(
-                        color: cardColors,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                  // It takes 5/6 part of the screen
+                  flex: 5,
+                  child: BlocConsumer<DashBoardBloc, DashBoardState>(
+                      listener: (context, state) {
+                    if (state is DashBoardFetched) {
+                      for (var element in state.nonAdminModel) {
+                        log(element.firstName!);
+                      }
+                    }
+                  }, builder: (context, state) {
+                    bool fetched = state is DashBoardFetched;
+                    return DataTableWidget(
+                      columns: Responsive.isMobile(context)
+                          ? [
+                              DataColumn(
+                                label: Text(
+                                  "Fullname",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "CamperStatus",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Sex",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                              )
+                            ]
+                          : [
+                              DataColumn(
+                                label: Text(
+                                  "Fullname",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "CamperStatus",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Code",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Phone",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Disability Cluster",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  "Commitment Fee",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                              ),
+                            ],
+                      row: List.generate(
+                        fetched ? state.attendeeModel.length : 0,
+                        (index) => (recentFileDataRow(
+                            fetched ? state.attendeeModel[index] : null,
+                            context)),
                       ),
-                      child: buildTable()),
-                ),
-              ),
+                      title: 'Registered Attendees',
+                      actions: [
+                        TextBtn(
+                          icon: Icons.person_add,
+                          text: 'Add Attendee',
+                          onTap: () {
+                            AttendeeRegistrationForms(context: context)
+                                .registerNewAttandeeForm(title: 'Attendee');
+                          },
+                        ),
+                        const TextBtn(
+                          icon: Icons.filter_list,
+                          text: 'Filter',
+                        )
+                      ],
+                    );
+                  })),
             ],
           ),
         ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
-          child: FloatingActionButton.extended(
-            backgroundColor: cardColors,
-            onPressed: () {
-              BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
-            },
-            label: Text(
-              "Refresh Table",
-              style: GoogleFonts.dmSans(color: primaryColor, fontSize: 18),
-            ),
-            icon: const Icon(
-              Icons.refresh,
-              color: primaryColor,
-            ),
-          ),
+        floatingActionButton: CustomFloatingActionBtn(
+          onPressed: () {
+            BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+          },
         ),
       ),
     );
   }
-
-  Column buildTable() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "All Registrations",
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 20),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextBtn(
-                  icon: Icons.person_add,
-                  text: 'Add Attendee',
-                  onTap: () {
-                    RegistrationForms(context: context)
-                        .registerNewAttandeeForm(title: 'Attendee');
-                  },
-                ),
-                const TextBtn(
-                  icon: Icons.filter_list,
-                  text: 'Filter',
-                )
-              ],
-            ),
-          ],
-        ),
-        SingleChildScrollView(
-          child: BlocConsumer<DashBoardBloc, DashBoardState>(
-            listener: (context, state) {
-              if (state is DashBoardFetched) {
-                for (var element in state.attendeeModel) {
-                  log(element.firstName);
-                }
-              }
-            },
-            builder: (context, state) {
-              if (state is DashBoardFetched) {
-                return SizedBox(
-                  width: double.infinity,
-                  child: DataTable(
-                    showCheckboxColumn: true,
-                    columnSpacing: defaultPadding,
-                    // minWidth: 600,
-                    columns: Responsive.isMobile(context)
-                        ? [
-                            DataColumn(
-                              label: Text(
-                                "Fullname",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "CamperStatus",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Sex",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            )
-                          ]
-                        : [
-                            DataColumn(
-                              label: Text(
-                                "Fullname",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "CamperStatus",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Code",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Phone",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Disability Cluster",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Commitment Fee",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                          ],
-                    rows: List.generate(
-                      state.attendeeModel.length,
-                      (index) => (recentFileDataRow(
-                          state.attendeeModel[index], context)),
-                    ),
-                  ),
-                );
-              } else {
-                return const Align(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator());
-              }
-            },
-          ),
-        ),
-      ],
-    );
-  }
 }
 
-DataRow recentFileDataRow(AttendeeModel registerdUser, context) {
+DataRow recentFileDataRow(AttendeeModel? registerdUser, context) {
   return DataRow(
     onLongPress: () {
       RegistrationForms(context: context).viewSelectedAttendeeData(
@@ -247,7 +193,7 @@ DataRow recentFileDataRow(AttendeeModel registerdUser, context) {
         ? [
             DataCell(
               Text(
-                '${registerdUser.firstName.toLowerCase()} ${registerdUser.lastName.toLowerCase()}',
+                '${registerdUser!.firstName.toLowerCase()} ${registerdUser.lastName.toLowerCase()}',
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),
@@ -263,7 +209,7 @@ DataRow recentFileDataRow(AttendeeModel registerdUser, context) {
         : [
             DataCell(
               Text(
-                registerdUser.firstName.toLowerCase(),
+                registerdUser!.firstName.toLowerCase(),
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),

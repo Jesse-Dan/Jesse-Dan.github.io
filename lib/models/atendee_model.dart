@@ -7,7 +7,6 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 class AttendeeModel extends Equatable {
   const AttendeeModel({

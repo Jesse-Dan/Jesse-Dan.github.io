@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/models/models.dart';
+import '../../../../../models/models.dart';
 
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
@@ -10,7 +10,9 @@ import '../../../../../config/date_time_formats.dart';
 import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../widgets/alertify.dart';
+import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/customm_text_btn.dart';
+import '../../../../widgets/data_table.dart';
 import '../../components/header.dart';
 import '../../components/prefered_size_widget.dart';
 import '../dashboard/components/side_menu.dart';
@@ -56,7 +58,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 preferredHeight: 100,
                 preferredWidth: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.all(kdefaultPadding),
+                  padding: const EdgeInsets.all(kdefaultPadding),
                   child: Header(onPressed: () {}),
                 ))
             : null,
@@ -72,85 +74,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   // and it takes 1/6 part of the screen
                   child: SideMenu(),
                 ),
-              Expanded(
-                // It takes 5/6 part of the screen
-                flex: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                      padding: const EdgeInsets.all(defaultPadding),
-                      decoration: const BoxDecoration(
-                        color: cardColors,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: buildTable()),
-                ),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
-          child: FloatingActionButton.extended(
-            backgroundColor: cardColors,
-            onPressed: () {
-              BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
-            },
-            label: Text(
-              "Refresh Table",
-              style: GoogleFonts.dmSans(color: primaryColor, fontSize: 18),
-            ),
-            icon: const Icon(
-              Icons.refresh,
-              color: primaryColor,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Column buildTable() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Notifications",
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 20),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                TextBtn(
-                  icon: Icons.filter_list,
-                  text: 'Filter',
-                )
-              ],
-            ),
-          ],
-        ),
-        SingleChildScrollView(
-          child: BlocConsumer<DashBoardBloc, DashBoardState>(
-            listener: (context, state) {
-              if (state is DashBoardFetched) {
-                for (var element in state.attendeeModel) {
-                  log(element.firstName);
-                }
-              }
-            },
-            builder: (context, state) {
-              if (state is DashBoardFetched) {
-                return SizedBox(
-                  width: double.infinity,
-                  child: SingleChildScrollView(
-                    child: DataTable(
-                      showCheckboxColumn: true,
-                      columnSpacing: defaultPadding,
-                      // minWidth: 600,
+              BlocConsumer<DashBoardBloc, DashBoardState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  bool fetched = state is DashBoardFetched;
+                  return DataTableWidget(
                       columns: Responsive.isMobile(context)
                           ? [
                               DataColumn(
@@ -211,39 +139,36 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 ),
                               ),
                             ],
-                      rows: List.generate(
-                        state.notifications.length,
+                      row: List.generate(
+                        fetched ? state.notifications.length : 0,
                         (index) => (recentFileDataRow(
-                            state.notifications[index], context)),
+                            fetched ? state.notifications[index] : null,
+                            context)),
                       ),
-                    ),
-                  ),
-                );
-              } else {
-                return const Align(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator());
-              }
-            },
+                      title: 'Notifications');
+                },
+              ),
+            ],
           ),
         ),
-      ],
+        floatingActionButton: CustomFloatingActionBtn(
+          onPressed: () {
+            BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+          },
+        ),
+      ),
     );
   }
 }
 
-DataRow recentFileDataRow(Notifier notice, context) {
+DataRow recentFileDataRow(Notifier? notice, context) {
   return DataRow(
-    onLongPress: () {
-      // RegistrationForms(context: context).viewSelectedAttendeeData(
-      //     title: '${registerdUser.firstName} ${registerdUser.lastName}',
-      //     attendee: registerdUser);
-    },
+    onLongPress: () {},
     cells: Responsive.isMobile(context)
         ? [
             DataCell(
               Text(
-                notice.action,
+                notice!.action,
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),
@@ -259,7 +184,7 @@ DataRow recentFileDataRow(Notifier notice, context) {
         : [
             DataCell(
               Text(
-                notice.action,
+                notice!.action,
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),

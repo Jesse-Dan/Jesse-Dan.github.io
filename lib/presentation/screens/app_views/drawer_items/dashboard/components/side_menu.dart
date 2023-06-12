@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tyldc_finaalisima/config/constants/responsive.dart';
-import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/groups/groups_screen.dart';
+import '../../../../../../config/constants/responsive.dart';
+import '../../groups/groups_screen.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../../../../logic/bloc/auth_bloc/authentiction_event.dart';

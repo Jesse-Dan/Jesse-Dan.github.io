@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/config/theme.dart';
-import 'package:tyldc_finaalisima/models/atendee_model.dart';
-import 'package:tyldc_finaalisima/presentation/widgets/forms/forms.dart';
+import '../../config/theme.dart';
+import '../../models/atendee_model.dart';
+import 'forms/forms.dart';
 import '../../config/hex_method.dart';
 import '../../logic/bloc/group_management_bloc/group_management_bloc.dart';
 

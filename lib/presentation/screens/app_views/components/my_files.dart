@@ -9,7 +9,8 @@ import '../../../../models/stats_card.dart';
 import '../../../widgets/costum_text_field.dart';
 import '../../../widgets/dialogue_forms.dart';
 import '../../../widgets/forms/forms.dart';
-import 'file_info_card.dart';
+import '../drawer_items/attendees/forms/reg_form.dart';
+import 'dashboard_info_card.dart';
 
 double calculatePercentage(double value) {
   return (value / 100) * 100;
@@ -46,7 +47,7 @@ class _MyFilesState extends State<MyFiles> {
                 ),
               ),
               onPressed: () {
-                RegistrationForms(context: context)
+                AttendeeRegistrationForms(context: context)
                     .registerNewAttandeeForm(title: 'Attendee');
               },
               icon: const Icon(Icons.person_add_rounded),
@@ -113,16 +114,13 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                       percentage: calculatePercentage(
                           state.attendeeModel.length.toDouble()),
                       onTap: () {
-                        RegistrationForms(context: context)
+                        AttendeeRegistrationForms(context: context)
                             .registerNewAttandeeForm(title: 'Attendee');
                       }))
               : emptyState(
                   title: 'Attendee',
                   img: 'assets/icons/Documents.svg',
-                  method: () {
-                    RegistrationForms(context: context)
-                        .registerNewAttandeeForm(title: 'Attendee');
-                  }),
+                  method: () {}),
           state is DashBoardFetched && state.nonAdminModel.isNotEmpty
               ? FileInfoCard(
                   info: StatisticsCard(

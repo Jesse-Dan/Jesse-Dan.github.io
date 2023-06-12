@@ -10,9 +10,10 @@ class AuthentictionEvent extends Equatable {
 
 class LoginEvent extends AuthentictionEvent {
   final String email;
+  final BuildContext context;
   final String password;
 
-  LoginEvent(
+  LoginEvent(this.context,
       {AdminModel? adminModel, required this.email, required this.password});
   @override
   List<Object> get props => [email, password];
@@ -20,8 +21,10 @@ class LoginEvent extends AuthentictionEvent {
 
 class SignUpEvent extends AuthentictionEvent {
   final AdminModel adminModel;
+  final BuildContext context;
 
-  SignUpEvent({
+  SignUpEvent(
+    this.context, {
     required this.adminModel,
   });
   @override
@@ -35,9 +38,8 @@ class LogoutEvent extends AuthentictionEvent {
 }
 
 class CheckStatusEvent extends AuthentictionEvent {
-  CheckStatusEvent(
-    AdminModel adminModel,
-  );
+  final BuildContext context;
+  CheckStatusEvent( this.context);
   @override
   List<Object> get props => [];
 }

@@ -62,7 +62,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           emit(RegistrationLoading());
 
           await DB(auth: auth).sendNoneAdminData(event.nonAdminModel);
-          emit(const AttendeeRegistrationLoaded());
+          emit(const NonAdminRegistrationLoaded());
           await DB(auth: auth).sendNotificationData(Notifier.addNonAdmin(
               data:
                   '${event.nonAdminModel.firstName} ${event.nonAdminModel.lastName}'));
@@ -92,7 +92,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           await DB(auth: auth).sendNotificationData(Notifier.registerAttendee(
               data:
                   '${event.groupModel.name} ${event.groupModel.description}'));
-          emit(const AttendeeRegistrationLoaded());
+          emit(const GroupRegistrationLoaded());
         } else {
           emit(const RegistrationFailed(
               error:

@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:tyldc_finaalisima/logic/db/db.dart';
+import '../../db/db.dart';
 
 import '../../../models/atendee_model.dart';
 

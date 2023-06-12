@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/models/user_model.dart';
-import 'package:tyldc_finaalisima/presentation/widgets/forms/forms.dart';
+import '../../../../../models/user_model.dart';
+import '../../../../widgets/custom_floating_action_btn.dart';
+import '../../../../widgets/forms/forms.dart';
 
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
@@ -56,22 +57,10 @@ class _AdminScreenState extends State<AdminScreen> {
           ],
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
-        child: FloatingActionButton.extended(
-          backgroundColor: cardColors,
-          onPressed: () {
-            BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
-          },
-          label: Text(
-            "Refresh Table",
-            style: GoogleFonts.dmSans(color: primaryColor, fontSize: 18),
-          ),
-          icon: const Icon(
-            Icons.refresh,
-            color: primaryColor,
-          ),
-        ),
+      floatingActionButton: CustomFloatingActionBtn(
+        onPressed: () {
+          BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+        },
       ),
     );
   }

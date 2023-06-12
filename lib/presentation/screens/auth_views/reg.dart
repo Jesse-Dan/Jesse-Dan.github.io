@@ -214,6 +214,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onPressed: () {
                         BlocProvider.of<AuthenticationBloc>(context)
                             .add(SignUpEvent(
+                              context,
                                 adminModel: AdminModel(
                           firstName: firstNameCtl.text,
                           lastName: LastnameCtl.text,
