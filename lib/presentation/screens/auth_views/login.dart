@@ -9,7 +9,7 @@ import '../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_state.dart';
 import '../../widgets/alertify.dart';
-import '../app_views/main/main_screen.dart';
+import '../app_views/drawer_items/dashboard/main_screen.dart';
 import 'reg.dart';
 
 class SignInScreen extends StatefulWidget {

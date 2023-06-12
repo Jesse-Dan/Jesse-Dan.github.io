@@ -5,7 +5,7 @@ import 'package:tyldc_finaalisima/logic/bloc/dash_board_bloc/dash_board_bloc.dar
 import 'package:tyldc_finaalisima/models/models.dart';
 import 'package:date_time_format/date_time_format.dart';
 
-import '../../../../../config/theme.dart';
+import '../../../../config/theme.dart';
 import 'chart.dart';
 import 'storage_info_card.dart';
 

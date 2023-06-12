@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../config/constants/responsive.dart';
-import '../../../../config/theme.dart';
-import '../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
-import 'components/header.dart';
+import '../../../../../config/constants/responsive.dart';
+import '../../../../../config/theme.dart';
+import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
+import '../../components/header.dart';
 
-import 'components/my_files.dart';
-import 'components/recent_registrations.dart';
-import 'components/storage_details.dart';
+import '../../components/my_files.dart';
+import '../../components/recent_registrations.dart';
+import '../../components/storage_details.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const routeName = '/main.screen.dashboard';

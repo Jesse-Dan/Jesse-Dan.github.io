@@ -6,11 +6,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../config/constants/responsive.dart';
-import '../../../../../config/theme.dart';
-import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
-import '../../../../../models/atendee_model.dart';
-import '../attendees_screen.dart';
+import '../../../../config/constants/responsive.dart';
+import '../../../../config/theme.dart';
+import '../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
+import '../../../../models/atendee_model.dart';
+import '../drawer_items/attendees/attendees_screen.dart';
 
 class RecentFiles extends StatefulWidget {
   const RecentFiles({

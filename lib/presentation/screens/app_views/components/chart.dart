@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 
-import '../../../../../config/theme.dart';
+import '../../../../config/theme.dart';
 
 class Chart extends StatefulWidget {
   const Chart({

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../config/theme.dart';
-import '../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../config/constants/responsive.dart';
-import '../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
-import '../../../widgets/alertify.dart';
-import '../drawer_items/components/header.dart';
-import '../drawer_items/components/prefered_size_widget.dart';
-import '../drawer_items/dashboard_screen.dart';
+import '../../../../../config/constants/responsive.dart';
+import '../../../../../config/theme.dart';
+import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
+import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
+import '../../../../widgets/alertify.dart';
+import '../../components/header.dart';
+import '../../components/prefered_size_widget.dart';
 import 'components/side_menu.dart';
+import 'dashboard_screen.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 

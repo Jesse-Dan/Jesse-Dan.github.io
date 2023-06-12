@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../config/theme.dart';
-import '../../../../../models/stats_card.dart';
+import '../../../../config/theme.dart';
+import '../../../../models/stats_card.dart';
 
 
 class FileInfoCard extends StatefulWidget {

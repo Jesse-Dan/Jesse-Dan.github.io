@@ -1,24 +1,19 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/models/models.dart';
-import 'package:tyldc_finaalisima/presentation/screens/app_views/main/components/side_menu.dart';
-import 'package:tyldc_finaalisima/presentation/screens/app_views/main/main_screen.dart';
-import 'package:tyldc_finaalisima/presentation/widgets/forms/forms.dart';
 
-import '../../../../../config/constants/responsive.dart';
-import '../../../../../config/theme.dart';
+import '../../../../../../config/constants/responsive.dart';
+import '../../../../../../config/theme.dart';
+import '../../../../../config/date_time_formats.dart';
 import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
-import '../../../../../models/atendee_model.dart';
-import '../../../../config/date_time_formats.dart';
-import '../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
-import '../../../widgets/alertify.dart';
-import '../../../widgets/customm_text_btn.dart';
-import 'components/header.dart';
-import 'components/prefered_size_widget.dart';
+import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
+import '../../../../widgets/alertify.dart';
+import '../../../../widgets/customm_text_btn.dart';
+import '../../components/header.dart';
+import '../../components/prefered_size_widget.dart';
+import '../dashboard/components/side_menu.dart';
 
 class NotificationScreen extends StatefulWidget {
   static const routeName = '/main.notification';

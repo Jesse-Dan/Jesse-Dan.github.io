@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tyldc_finaalisima/config/constants/responsive.dart';
-import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/groups_screen.dart';
-
-import '../../../../../config/theme.dart';
-import '../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
-import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
-import '../../../../../logic/bloc/auth_bloc/authentiction_state.dart';
-// import '../../../../../logic/bloc/cubit/methods_cubit.dart';
-import '../../../../widgets/alertify.dart';
-import '../../../auth_views/login.dart';
-import '../../drawer_items/admin_screen.dart';
-import '../../drawer_items/attendees_screen.dart';
-import '../../drawer_items/non_admins_screen.dart';
-import '../../drawer_items/notification_screen.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/groups/groups_screen.dart';
+import '../../../../../../config/theme.dart';
+import '../../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
+import '../../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
+import '../../../../../../logic/bloc/auth_bloc/authentiction_state.dart';
+import '../../../../../widgets/alertify.dart';
+import '../../../../auth_views/login.dart';
+import '../../admin/admin_screen.dart';
+import '../../attendees/attendees_screen.dart';
+import '../../non_admin/non_admins_screen.dart';
+import '../../notification/notification_screen.dart';
 import '../main_screen.dart';
 
 class SideMenu extends StatefulWidget {

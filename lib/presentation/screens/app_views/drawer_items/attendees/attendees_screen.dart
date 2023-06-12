@@ -3,102 +3,101 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/presentation/screens/app_views/main/components/side_menu.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/forms/forms.dart';
 
-import '../../../../../config/constants/responsive.dart';
-import '../../../../../config/theme.dart';
-import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
+import '../../../../../../config/constants/responsive.dart';
+import '../../../../../../config/theme.dart';
+import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
+import '../../../../../../models/atendee_model.dart';
+import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
+import '../../../../widgets/alertify.dart';
+import '../../../../widgets/customm_text_btn.dart';
+import '../dashboard/components/side_menu.dart';
 
-import '../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
-import '../../../../models/non_admin_staff.dart';
-import '../../../widgets/alertify.dart';
-import '../../../widgets/customm_text_btn.dart';
+class AttendeesScreen extends StatefulWidget {
+  static const routeName = '/main.attendees';
 
-class NonAdminScreen extends StatefulWidget {
-  static const routeName = '/main.non.admins';
-
-  const NonAdminScreen({
+  const AttendeesScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<NonAdminScreen> createState() => _NonAdminScreenState();
+  State<AttendeesScreen> createState() => _AttendeesScreenState();
 }
 
-class _NonAdminScreenState extends State<NonAdminScreen> {
+class _AttendeesScreenState extends State<AttendeesScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
-        listener: (context, state) {
-          if (state is RegistrationInitial) {
-            print('initial');
-          }
-          if (state is RegistrationLoading) {
-            showDialog(
-                context: context,
-                builder: (builder) =>
-                    const Center(child: CircularProgressIndicator()));
-          }
+      listener: (context, state) {
+        if (state is RegistrationInitial) {
+          print('initial');
+        }
+        if (state is RegistrationLoading) {
+          showDialog(
+              context: context,
+              builder: (builder) =>
+                  const Center(child: CircularProgressIndicator()));
+        }
 
-          if (state is NonAdminRegistrationLoaded) { 
-            Alertify.success();
-            Navigator.of(context).pop();
-          }
-          if (state is RegistrationFailed) {
-            Alertify.error(title: 'An Error occured', message: state.error);
-            Navigator.of(context).pop();
-          }
-        },
-        child: Scaffold(
-          backgroundColor: bgColor,
-          body: SafeArea(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // We want this side menu only for large screen
-                if (Responsive.isDesktop(context))
-                  const Expanded(
-                    // default flex = 1
-                    // and it takes 1/6 part of the screen
-                    child: SideMenu(),
-                  ),
-                Expanded(
-                  // It takes 5/6 part of the screen
-                  flex: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                        padding: const EdgeInsets.all(defaultPadding),
-                        decoration: const BoxDecoration(
-                          color: cardColors,
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        child: buildTable()),
-                  ),
+        if (state is AttendeeRegistrationLoaded) {
+          Alertify.success();
+          Navigator.of(context).pop();
+        }
+        if (state is RegistrationFailed) {
+          Alertify.error(title: 'An Error occured', message: state.error);
+          Navigator.of(context).pop();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: bgColor,
+        body: SafeArea(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // We want this side menu only for large screen
+              if (Responsive.isDesktop(context))
+                const Expanded(
+                  // default flex = 1
+                  // and it takes 1/6 part of the screen
+                  child: SideMenu(),
                 ),
-              ],
+              Expanded(
+                // It takes 5/6 part of the screen
+                flex: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                      padding: const EdgeInsets.all(defaultPadding),
+                      decoration: const BoxDecoration(
+                        color: cardColors,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: buildTable()),
+                ),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
+          child: FloatingActionButton.extended(
+            backgroundColor: cardColors,
+            onPressed: () {
+              BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+            },
+            label: Text(
+              "Refresh Table",
+              style: GoogleFonts.dmSans(color: primaryColor, fontSize: 18),
+            ),
+            icon: const Icon(
+              Icons.refresh,
+              color: primaryColor,
             ),
           ),
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
-            child: FloatingActionButton.extended(
-              backgroundColor: cardColors,
-              onPressed: () {
-                BlocProvider.of<DashBoardBloc>(context)
-                    .add(DashBoardDataEvent());
-              },
-              label: Text(
-                "Refresh Table",
-                style: GoogleFonts.dmSans(color: primaryColor, fontSize: 18),
-              ),
-              icon: const Icon(
-                Icons.refresh,
-                color: primaryColor,
-              ),
-            ),
-          ),
-        ));
+        ),
+      ),
+    );
   }
 
   Column buildTable() {
@@ -109,7 +108,7 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Non Administrative Staffs ",
+              "All Registrations",
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 20),
             ),
             Row(
@@ -118,10 +117,10 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
               children: [
                 TextBtn(
                   icon: Icons.person_add,
-                  text: 'Add Non admin',
+                  text: 'Add Attendee',
                   onTap: () {
                     RegistrationForms(context: context)
-                        .registerNonAdminForm(title: 'Non Admin');
+                        .registerNewAttandeeForm(title: 'Attendee');
                   },
                 ),
                 const TextBtn(
@@ -136,8 +135,8 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
           child: BlocConsumer<DashBoardBloc, DashBoardState>(
             listener: (context, state) {
               if (state is DashBoardFetched) {
-                for (var element in state.nonAdminModel) {
-                  log(element.firstName!);
+                for (var element in state.attendeeModel) {
+                  log(element.firstName);
                 }
               }
             },
@@ -160,14 +159,14 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                             ),
                             DataColumn(
                               label: Text(
-                                "Department",
+                                "CamperStatus",
                                 style: GoogleFonts.dmSans(
                                     color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
                             DataColumn(
                               label: Text(
-                                "Role",
+                                "Sex",
                                 style: GoogleFonts.dmSans(
                                     color: kSecondaryColor, fontSize: 15),
                               ),
@@ -183,21 +182,14 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                             ),
                             DataColumn(
                               label: Text(
-                                "Department",
+                                "CamperStatus",
                                 style: GoogleFonts.dmSans(
                                     color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
                             DataColumn(
                               label: Text(
-                                "Id",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Role",
+                                "Code",
                                 style: GoogleFonts.dmSans(
                                     color: kSecondaryColor, fontSize: 15),
                               ),
@@ -211,23 +203,23 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                             ),
                             DataColumn(
                               label: Text(
-                                "Gender",
+                                "Disability Cluster",
                                 style: GoogleFonts.dmSans(
                                     color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
                             DataColumn(
                               label: Text(
-                                "Created By",
+                                "Commitment Fee",
                                 style: GoogleFonts.dmSans(
                                     color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
                           ],
                     rows: List.generate(
-                      state.nonAdminModel.length,
+                      state.attendeeModel.length,
                       (index) => (recentFileDataRow(
-                          state.nonAdminModel[index], context)),
+                          state.attendeeModel[index], context)),
                     ),
                   ),
                 );
@@ -244,59 +236,55 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
   }
 }
 
-DataRow recentFileDataRow(NonAdminModel registerdNonAdmin, context) {
+DataRow recentFileDataRow(AttendeeModel registerdUser, context) {
   return DataRow(
     onLongPress: () {
-      RegistrationForms(context: context).viewSelectedNonAdminStaffData(
-          title: '${registerdNonAdmin.firstName} ${registerdNonAdmin.lastName}',
-          nonAdmin: registerdNonAdmin);
+      RegistrationForms(context: context).viewSelectedAttendeeData(
+          title: '${registerdUser.firstName} ${registerdUser.lastName}',
+          attendee: registerdUser);
     },
     cells: Responsive.isMobile(context)
         ? [
             DataCell(
               Text(
-                '${registerdNonAdmin.firstName!.toLowerCase()} ${registerdNonAdmin.lastName!.toLowerCase()}',
+                '${registerdUser.firstName.toLowerCase()} ${registerdUser.lastName.toLowerCase()}',
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),
             DataCell(Text(
-              registerdNonAdmin.dept!.toLowerCase(),
+              registerdUser.wouldCamp.toLowerCase(),
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
-              registerdNonAdmin.role!.toLowerCase(),
+              registerdUser.gender.toLowerCase(),
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
           ]
         : [
             DataCell(
               Text(
-                registerdNonAdmin.firstName!.toLowerCase(),
+                registerdUser.firstName.toLowerCase(),
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),
             DataCell(Text(
-              registerdNonAdmin.dept!.toLowerCase(),
+              registerdUser.wouldCamp.toLowerCase(),
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
-              registerdNonAdmin.id!,
+              registerdUser.id,
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
-              registerdNonAdmin.role!,
+              registerdUser.phoneNo,
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
-              registerdNonAdmin.phoneNumber!,
+              registerdUser.disabilityCluster,
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
-              registerdNonAdmin.gender!.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdNonAdmin.createdBy!.toLowerCase(),
+              registerdUser.commitmentFee.toLowerCase(),
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
           ],
