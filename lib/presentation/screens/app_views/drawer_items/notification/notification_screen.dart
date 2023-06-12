@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../logic/build/bloc_aler_notifier.dart';
 import '../../../../../models/models.dart';
 
 import '../../../../../../config/constants/responsive.dart';
@@ -33,24 +34,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        if (state is RegistrationInitial) {
-          print('initial');
-        }
-        if (state is RegistrationLoading) {
-          showDialog(
-              context: context,
-              builder: (builder) =>
-                  const Center(child: CircularProgressIndicator()));
-        }
-
-        if (state is AttendeeRegistrationLoaded) {
-          Alertify.success();
-          // Navigator.of(context).pop();
-        }
-        if (state is RegistrationFailed) {
-          Alertify.error(title: 'An Error occured', message: state.error);
-          Navigator.of(context).pop();
-        }
+        updateSessionState(state: state, context: context);
+        updateLoadingBlocState(state: state, context: context);
+        updatetSuccessBlocState(state: state, context: context);
+        updateFailedBlocState(state: state, context: context);
       },
       child: Scaffold(
         appBar: (Responsive.isMobile(context))

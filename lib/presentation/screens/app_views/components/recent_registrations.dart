@@ -64,11 +64,7 @@ class _RecentFilesState extends State<RecentFiles> {
           SingleChildScrollView(
             child: BlocConsumer<DashBoardBloc, DashBoardState>(
               listener: (context, state) {
-                if (state is DashBoardFetched) {
-                  for (var element in state.attendeeModel) {
-                    log(element.firstName);
-                  }
-                }
+                
               },
               builder: (context, state) {
                 if (state is DashBoardFetched) {

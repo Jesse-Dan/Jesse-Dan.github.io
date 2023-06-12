@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/index_blocs.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/alertify.dart';
 
@@ -8,7 +9,7 @@ import '../../presentation/screens/app_views/drawer_items/dashboard/main_screen.
 import '../../presentation/screens/auth_views/login.dart';
 
 /// [DISPLAY ERROR ON SPECIFIC ERROR STATE EMITTED]
-getFailedBlocState({state, context}) {
+updateFailedBlocState({state, context}) {
   log(state.toString());
   switch (state.runtimeType) {
     /// Failed States
@@ -44,40 +45,36 @@ getFailedBlocState({state, context}) {
 }
 
 /// [DISPLAY ALERT ON SPECIFIC SUCCESS STATE EMITTED]
-getSuccessBlocState({state, context}) {
+updatetSuccessBlocState({state, context}) {
   log(state.toString());
   switch (state.runtimeType) {
     /// Success States
     case DashBoardFetched:
       Navigator.of(context).pop();
-      Alertify.success();
-
       break;
     case GroupRegistrationLoaded:
+      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
       Navigator.of(context).pop();
 
       Alertify.success();
       break;
     case AuthentictionSuccesful:
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
-
       Alertify.success();
       break;
     case AttendeeRegistrationLoaded:
+      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-
       Alertify.success();
       break;
     case GroupManagementLoaded:
+      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
-      Navigator.of(context).pop();
-
       Alertify.success();
       break;
     case NonAdminRegistrationLoaded:
+      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
       Navigator.of(context).pop();
 
@@ -88,7 +85,7 @@ getSuccessBlocState({state, context}) {
 }
 
 /// [DISPLAY ERROR ON SPECIFIC LOADING STATE EMITTED]
-getLoadingBlocState({state, context}) {
+updateLoadingBlocState({state, context}) {
   log(state.toString());
   switch (state.runtimeType) {
     /// Failed States
@@ -97,7 +94,6 @@ getLoadingBlocState({state, context}) {
           context: context,
           builder: (builder) =>
               const Center(child: CircularProgressIndicator()));
-
       break;
     case RegistrationLoading:
       showDialog(
@@ -122,7 +118,7 @@ getLoadingBlocState({state, context}) {
   }
 }
 
-getSessionState({state, context}) {
+updateSessionState({state, context}) {
   log(state.toString());
   switch (state.runtimeType) {
     case AuthentictionFoundSession:

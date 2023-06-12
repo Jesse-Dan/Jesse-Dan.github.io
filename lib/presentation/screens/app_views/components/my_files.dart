@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/logic/bloc/registeration_bloc/registeration_bloc.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/groups/form/group_reg_form.dart';
 import '../../../../config/constants/responsive.dart';
 import '../../../../config/palette.dart';
 import '../../../../config/theme.dart';
@@ -8,8 +10,8 @@ import '../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../models/stats_card.dart';
 import '../../../widgets/costum_text_field.dart';
 import '../../../widgets/dialogue_forms.dart';
-import '../../../widgets/forms/forms.dart';
 import '../drawer_items/attendees/forms/reg_form.dart';
+import '../drawer_items/non_admin/forms/reg_forms.dart';
 import 'dashboard_info_card.dart';
 
 double calculatePercentage(double value) {
@@ -132,7 +134,7 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                       percentage: calculatePercentage(
                           state.nonAdminModel.length.toDouble()),
                       onTap: () {
-                        RegistrationForms(context: context)
+                        NonAdminsRegistrationForms(context: context)
                             .registerNonAdminForm(title: 'Non-Admin Staff');
                       }),
                 )
@@ -140,7 +142,7 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                   title: 'Non-Admin Staffs',
                   img: 'assets/icons/google_drive.svg',
                   method: () {
-                    RegistrationForms(context: context)
+                    NonAdminsRegistrationForms(context: context)
                         .registerNonAdminForm(title: 'Non-Admin Staff');
                   }),
           state is DashBoardFetched && state.admins.isNotEmpty
@@ -183,13 +185,13 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                       percentage:
                           calculatePercentage(state.groups.length.toDouble()),
                       onTap: () {
-                        RegistrationForms(context: context)
+                        GroupsRegistrationForms(context: context)
                             .registerGroupForm(title: 'Groups');
                       }),
                 )
               : emptyState(
                   method: () {
-                    RegistrationForms(context: context)
+                    GroupsRegistrationForms(context: context)
                         .registerGroupForm(title: 'Groups');
                   },
                   title: 'Groups',

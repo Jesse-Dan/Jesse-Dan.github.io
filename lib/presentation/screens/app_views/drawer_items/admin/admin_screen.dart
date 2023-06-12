@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../logic/build/bloc_aler_notifier.dart';
 import '../../../../../models/user_model.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
-import '../../../../widgets/forms/forms.dart';
 
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
@@ -12,6 +12,7 @@ import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../dashboard/components/side_menu.dart';
+import 'forms/reg_form.dart';
 
 class AdminScreen extends StatefulWidget {
   static const routeName = '/main.admins';
@@ -86,7 +87,7 @@ class _AdminScreenState extends State<AdminScreen> {
                       icon: Icons.person_add,
                       text: 'Set Admin auth Code',
                       onTap: () {
-                        RegistrationForms(context: context).viewAuthCodeData(
+                        AdminsRegistrationForms(context: context).viewAuthCodeData(
                             title: 'EDIT ADMIN AUTH CODE',
                             admin:
                                 state is DashBoardFetched ? state.user : null);
@@ -105,19 +106,10 @@ class _AdminScreenState extends State<AdminScreen> {
         SingleChildScrollView(
           child: BlocListener<RegistrationBloc, RegistrationState>(
             listener: (context, state) {
-              if (state is RegistrationInitial) {
-                print('initial');
-              }
-              if (state is RegistrationLoading) {
-                showDialog(
-                    context: context,
-                    builder: (builder) =>
-                        const Center(child: CircularProgressIndicator()));
-              }
-              if (state is RegistrationFailed) {
-                Alertify.error(title: 'An Error occured', message: state.error);
-                Navigator.of(context).pop();
-              }
+              updateSessionState(state: state, context: context);
+              updateLoadingBlocState(state: state, context: context);
+              updatetSuccessBlocState(state: state, context: context);
+              updateFailedBlocState(state: state, context: context);
             },
             child: BlocBuilder<DashBoardBloc, DashBoardState>(
               builder: (context, state) {
@@ -220,7 +212,7 @@ class _AdminScreenState extends State<AdminScreen> {
 DataRow recentFileDataRow(AdminModel registerdAdmin, context) {
   return DataRow(
     onLongPress: () {
-      RegistrationForms(context: context).viewSelectedAdminStaffData(
+      AdminsRegistrationForms(context: context).viewSelectedAdminStaffData(
           title: registerdAdmin.firstName, admin: registerdAdmin);
     },
     cells: Responsive.isMobile(context)

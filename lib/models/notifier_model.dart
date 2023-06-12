@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'group_model.dart';
 import 'non_admin_staff.dart';
 import '../../config/date_time_formats.dart';
 
@@ -21,6 +22,13 @@ class Notifier {
     this.description = 'Non Admin Created Successfully',
     this.action = 'Non Admin Registration',
   });
+  Notifier.groupActtivity({
+    this.data = '',
+    this.time,
+    this.description = 'An action was performed in a group',
+    this.action = 'Group Action ',
+  });
+
   Notifier.createGroup({
     this.data = '',
     this.time,

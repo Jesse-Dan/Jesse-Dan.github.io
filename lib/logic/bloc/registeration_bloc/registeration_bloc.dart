@@ -37,7 +37,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           emit(const AttendeeRegistrationLoaded());
           await DB(auth: auth).sendNotificationData(Notifier.registerAttendee(
               data:
-                  '${event.attendeeModel.firstName} ${event.attendeeModel.lastName}'));
+                  'New attendee ${event.attendeeModel.firstName} ${event.attendeeModel.lastName} was created'));
         } else {
           emit(const RegistrationFailed(
               error:
@@ -65,7 +65,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           emit(const NonAdminRegistrationLoaded());
           await DB(auth: auth).sendNotificationData(Notifier.addNonAdmin(
               data:
-                  '${event.nonAdminModel.firstName} ${event.nonAdminModel.lastName}'));
+                  'Non Admin ${event.nonAdminModel.firstName} ${event.nonAdminModel.lastName} was Created'));
         } else {
           emit(const RegistrationFailed(
               error:
@@ -89,9 +89,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           emit(RegistrationLoading());
 
           await DB(auth: auth).createGroup(event.groupModel);
-          await DB(auth: auth).sendNotificationData(Notifier.registerAttendee(
+          await DB(auth: auth).sendNotificationData(Notifier.createGroup(
               data:
-                  '${event.groupModel.name} ${event.groupModel.description}'));
+                  'Group ${event.groupModel.name} with description: ${event.groupModel.description} was created'));
           emit(const GroupRegistrationLoaded());
         } else {
           emit(const RegistrationFailed(

@@ -6,6 +6,7 @@ import 'custom_submit_btn.dart';
 ///[DETERMINE THE DESIGN FORMAT BY THE AMOUNT OF BUTTON YOU ALLOW]
 enum AlertType { oneBtn, twoBtns }
 
+
 class FormWidget {
   Future<dynamic> buildBottomFormField(
       {required BuildContext context,
@@ -64,6 +65,7 @@ class FormWidget {
                 ));
           });
         });
+        
   }
 
   Future<dynamic> buildCenterFormField({
@@ -114,31 +116,35 @@ class FormWidget {
       barrierDismissible: true,
       barrierColor: Colors.black12,
       context: context,
-      builder: (builder) => AlertDialog(
-        actionsAlignment: MainAxisAlignment.center,
-        insetPadding:
-            const EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30.0))),
-        titlePadding: const EdgeInsets.only(top: 20),
-        contentPadding: const EdgeInsets.all(0),
-        scrollable: true,
-        titleTextStyle: GoogleFonts.gochiHand(
-            color: kSecondaryColor, fontSize: 43, fontWeight: FontWeight.w600),
-        title: Text(
-          title,
-          textAlign: TextAlign.center,
-        ),
-        clipBehavior: Clip.antiAlias,
-        backgroundColor: bgColor,
-        actions: getbtn(alertType),
-        content: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: (columnChilren),
-          ),
-        ),
+      builder: (builder) => StatefulBuilder(
+        builder: (context,putState) {
+          return AlertDialog(
+            actionsAlignment: MainAxisAlignment.center,
+            insetPadding:
+                const EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30.0))),
+            titlePadding: const EdgeInsets.only(top: 20),
+            contentPadding: const EdgeInsets.all(0),
+            scrollable: true,
+            titleTextStyle: GoogleFonts.gochiHand(
+                color: kSecondaryColor, fontSize: 43, fontWeight: FontWeight.w600),
+            title: Text(
+              title,
+              textAlign: TextAlign.center,
+            ),
+            clipBehavior: Clip.antiAlias,
+            backgroundColor: bgColor,
+            actions: getbtn(alertType),
+            content: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: (columnChilren),
+              ),
+            ),
+          );
+        }
       ),
     );
   }

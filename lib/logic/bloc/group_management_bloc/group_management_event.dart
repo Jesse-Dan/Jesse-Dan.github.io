@@ -9,20 +9,28 @@ abstract class GroupManagementEvent extends Equatable {
 
 class AddTOGroupEvent extends GroupManagementEvent {
   final String groupId;
-  final AttendeeModel userId;
+  final GroupModel groupModel;
+  final AttendeeModel attendees;
 
-  const AddTOGroupEvent({required this.groupId, required this.userId});
+  const AddTOGroupEvent(
+      {required this.groupModel,
+      required this.groupId,
+      required this.attendees});
 }
 
 class RemoveFromGroupEvent extends GroupManagementEvent {
   final String groupId;
+  final GroupModel groupModel;
+
   final AttendeeModel userId;
 
-  const RemoveFromGroupEvent({required this.groupId, required this.userId});
+  const RemoveFromGroupEvent(
+      {required this.groupModel, required this.groupId, required this.userId});
 }
 
 class DeleteGroupEvent extends GroupManagementEvent {
   final String groupId;
+  final GroupModel groupModel;
 
-  const DeleteGroupEvent({required this.groupId});
+  const DeleteGroupEvent({required this.groupModel, required this.groupId});
 }

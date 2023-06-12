@@ -3,9 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/attendees/forms/view_form.dart';
+import '../../../../../logic/build/bloc_aler_notifier.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
-import '../../../../widgets/forms/forms.dart';
 
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
@@ -33,24 +34,10 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        if (state is RegistrationInitial) {
-          print('initial');
-        }
-        if (state is RegistrationLoading) {
-          showDialog(
-              context: context,
-              builder: (builder) =>
-                  const Center(child: CircularProgressIndicator()));
-        }
-
-        if (state is AttendeeRegistrationLoaded) {
-          Alertify.success();
-          Navigator.of(context).pop();
-        }
-        if (state is RegistrationFailed) {
-          Alertify.error(title: 'An Error occured', message: state.error);
-          Navigator.of(context).pop();
-        }
+        updateSessionState(state: state, context: context);
+        updateLoadingBlocState(state: state, context: context);
+        updatetSuccessBlocState(state: state, context: context);
+        updateFailedBlocState(state: state, context: context);
       },
       child: Scaffold(
         backgroundColor: bgColor,
@@ -185,7 +172,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
 DataRow recentFileDataRow(AttendeeModel? registerdUser, context) {
   return DataRow(
     onLongPress: () {
-      RegistrationForms(context: context).viewSelectedAttendeeData(
+      AttendeeViewForms(context: context).viewSelectedAttendeeData(
           title: '${registerdUser.firstName} ${registerdUser.lastName}',
           attendee: registerdUser);
     },

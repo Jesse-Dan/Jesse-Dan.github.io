@@ -13,11 +13,15 @@ class CustomTextField extends StatefulWidget {
   final bool enabled;
   final bool obscureText;
   final String? initialValue;
+  final Function(String)? onChanged;
+    final Function()? onEditingComplete;
   final Function()? onTap;
   final bool readOnly;
 
   const CustomTextField(
       {Key? key,
+      this.onChanged,
+      this.onEditingComplete,
       this.enabled = true,
       required this.hint,
       required this.suffix,
@@ -51,6 +55,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
           keyboardType: widget.fieldsType,
           maxLines: widget.maxLines,
           controller: widget.controller,
+          onChanged: widget.onChanged,
+          onEditingComplete:widget.onEditingComplete ,
           style: GoogleFonts.dmSans(
               fontWeight: FontWeight.w600, color: kSecondaryColor),
           decoration: InputDecoration(

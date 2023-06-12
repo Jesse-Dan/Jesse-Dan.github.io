@@ -1,26 +1,22 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/logic/bloc/auth_bloc/authentiction_bloc.dart';
-import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../../../logic/bloc/group_management_bloc/group_management_bloc.dart';
+import '../../../../../logic/build/bloc_aler_notifier.dart';
 import '../../../../../models/group_model.dart';
-import '../../../../../models/user_model.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
-import '../../../../widgets/forms/forms.dart';
 
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
-import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../dashboard/components/side_menu.dart';
+import 'form/group_reg_form.dart';
+import 'form/group_view_form.dart';
 
 class GroupsScreen extends StatefulWidget {
   static const routeName = '/main.groups';
@@ -40,44 +36,17 @@ class _GroupsScreenState extends State<GroupsScreen> {
         listeners: [
           BlocListener<GroupManagementBloc, GroupManagementState>(
               listener: (context, state) {
-            if (state is GroupManagementInitial) {
-              print('initial');
-            }
-            if (state is GroupManagementLoading) {
-              showDialog(
-                  context: context,
-                  builder: (builder) =>
-                      const Center(child: CircularProgressIndicator()));
-            }
-            if (state is GroupManagementLoaded) {
-              Navigator.of(context).pop();
-
-              Alertify.success();
-            }
-            if (state is GroupManagementFailed) {
-              Alertify.error(title: 'An Error occured', message: 'state.error');
-              Navigator.of(context).pop();
-            }
+            updateSessionState(state: state, context: context);
+            updateLoadingBlocState(state: state, context: context);
+            updatetSuccessBlocState(state: state, context: context);
+            updateFailedBlocState(state: state, context: context);
           }),
           BlocListener<RegistrationBloc, RegistrationState>(
             listener: (context, state) {
-              if (state is RegistrationInitial) {
-                if (kDebugMode) {
-                  print('initial');
-                }
-              }
-              if (state is RegistrationLoading) {
-                showDialog(
-                    context: context,
-                    builder: (builder) =>
-                        const Center(child: CircularProgressIndicator()));
-              }
-
-              if (state is GroupRegistrationLoaded) {
-                Navigator.of(context).pop();
-
-                Alertify.success();
-              }
+              updateSessionState(state: state, context: context);
+              updateLoadingBlocState(state: state, context: context);
+              updatetSuccessBlocState(state: state, context: context);
+              updateFailedBlocState(state: state, context: context);
             },
           ),
         ],
@@ -97,11 +66,10 @@ class _GroupsScreenState extends State<GroupsScreen> {
                 //table
                 BlocConsumer<DashBoardBloc, DashBoardState>(
                     listener: (context, state) {
-                  if (state is DashBoardFetched) {
-                    for (var element in state.nonAdminModel) {
-                      log(element.firstName!);
-                    }
-                  }
+                  updateSessionState(state: state, context: context);
+                  updateLoadingBlocState(state: state, context: context);
+                  updatetSuccessBlocState(state: state, context: context);
+                  updateFailedBlocState(state: state, context: context);
                 }, builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
                   return DataTableWidget(
@@ -189,7 +157,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
                         icon: Icons.people_alt_rounded,
                         text: 'Create Group',
                         onTap: () {
-                          RegistrationForms(context: context)
+                          GroupsRegistrationForms(context: context)
                               .registerGroupForm(title: 'Group');
                         },
                       ),
@@ -220,7 +188,7 @@ DataRow recentFileDataRow(
     specificGroupId}) {
   return DataRow(
     onLongPress: () {
-      RegistrationForms(context: context).viewGroupData(
+      GroupsViewForms(context: context).viewGroupData(
           presenttGroupId: groupsId,
           title: '${registerdGroup.name} Group',
           presentGroupModel: registerdGroup,
@@ -276,12 +244,12 @@ DataRow recentFileDataRow(
                 size: 20,
               ),
               onPressed: () {
-                RegistrationForms(context: context).verifyAction(
+                GroupsViewForms(context: context).verifyAction(
                   text: 'Do you wish to proceed to delete this group?',
                   title: '${registerdGroup.name} Group',
                   action: () {
                     BlocProvider.of<GroupManagementBloc>(context)
-                        .add(DeleteGroupEvent(groupId: specificGroupId));
+                        .add(DeleteGroupEvent(groupId: specificGroupId, groupModel:registerdGroup));
                   },
                 );
               },

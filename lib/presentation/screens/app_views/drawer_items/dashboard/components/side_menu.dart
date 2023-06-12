@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+
 import '../../../../../../config/constants/responsive.dart';
+import '../../../../../../logic/build/bloc_aler_notifier.dart';
 import '../../groups/groups_screen.dart';
+
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
+
 import '../../../../../../logic/bloc/auth_bloc/authentiction_state.dart';
 import '../../../../../widgets/alertify.dart';
 import '../../../../auth_views/login.dart';
+
 import '../../admin/admin_screen.dart';
 import '../../attendees/attendees_screen.dart';
 import '../../non_admin/non_admins_screen.dart';
+
 import '../../notification/notification_screen.dart';
 import '../main_screen.dart';
 
@@ -120,19 +126,15 @@ class _SideMenuState extends State<SideMenu> {
             press: () {},
           ),
           DrawerListTile(
-            ///[ABILITY TO CHANGE ADMIN CODE]
             title: "Settings",
             svgSrc: "assets/icons/menu_setting.svg",
             press: () {},
           ),
           BlocListener<AuthenticationBloc, AuthentictionState>(
             listener: (context, state) {
-              if (state is AuthentictionLoading) {
-                showDialog(
-                    context: context,
-                    builder: ((context) =>
-                        const Center(child: CircularProgressIndicator())));
-              }
+              updateSessionState(state: state, context: context);
+              updateLoadingBlocState(state: state, context: context);
+              updateFailedBlocState(state: state, context: context);
               if (state is AuthentictionSuccesful) {
                 Alertify.success(
                     title: 'Ending Session Success',

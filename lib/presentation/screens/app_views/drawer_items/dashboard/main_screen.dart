@@ -40,10 +40,11 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        getSessionState(state: state, context: context);
-        getLoadingBlocState(state: state, context: context);
-        getSuccessBlocState(state: state, context: context);
-        getFailedBlocState(state: state, context: context);
+        if (state is DashBoardFetched) Navigator.of(context).pop();
+        updateSessionState(state: state, context: context);
+        updateLoadingBlocState(state: state, context: context);
+        updatetSuccessBlocState(state: state, context: context);
+        updateFailedBlocState(state: state, context: context);
       },
       child: Scaffold(
         appBar: (Responsive.isMobile(context))

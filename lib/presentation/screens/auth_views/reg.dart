@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_statements
+// ignore_for_file: unnecessary_statements, non_constant_identifier_names
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +11,6 @@ import '../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_state.dart';
 import '../../../models/user_model.dart';
 import '../../widgets/alertify.dart';
-import '../../widgets/costum_text_field.dart';
-import '../../widgets/custom_submit_btn.dart';
-import '../../widgets/dialogue_forms.dart';
 import 'login.dart';
 
 class SignUpScreen extends StatefulWidget {

@@ -3,9 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/non_admin/forms/view_forms.dart';
+import '../../../../../logic/build/bloc_aler_notifier.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
-import '../../../../widgets/forms/forms.dart';
 
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
@@ -16,6 +17,7 @@ import '../../../../../models/non_admin_staff.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../dashboard/components/side_menu.dart';
+import 'forms/reg_forms.dart';
 
 class NonAdminScreen extends StatefulWidget {
   static const routeName = '/main.non.admins';
@@ -33,24 +35,10 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
         listener: (context, state) {
-          if (state is RegistrationInitial) {
-            print('initial');
-          }
-          if (state is RegistrationLoading) {
-            showDialog(
-                context: context,
-                builder: (builder) =>
-                    const Center(child: CircularProgressIndicator()));
-          }
-
-          if (state is NonAdminRegistrationLoaded) {
-            Alertify.success();
-            Navigator.of(context).pop();
-          }
-          if (state is RegistrationFailed) {
-            Alertify.error(title: 'An Error occured', message: state.error);
-            Navigator.of(context).pop();
-          }
+          updateSessionState(state: state, context: context);
+          updateLoadingBlocState(state: state, context: context);
+          updatetSuccessBlocState(state: state, context: context);
+          updateFailedBlocState(state: state, context: context);
         },
         child: Scaffold(
           backgroundColor: bgColor,
@@ -163,7 +151,7 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                         icon: Icons.person_add,
                         text: 'Add Non admin',
                         onTap: () {
-                          RegistrationForms(context: context)
+                          NonAdminsRegistrationForms(context: context)
                               .registerNonAdminForm(title: 'Non Admin');
                         },
                       ),
@@ -189,7 +177,7 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
 DataRow recentFileDataRow(NonAdminModel? registerdNonAdmin, context) {
   return DataRow(
     onLongPress: () {
-      RegistrationForms(context: context).viewSelectedNonAdminStaffData(
+      NonAdminViewForms(context: context).viewSelectedNonAdminStaffData(
           title: '${registerdNonAdmin.firstName} ${registerdNonAdmin.lastName}',
           nonAdmin: registerdNonAdmin);
     },

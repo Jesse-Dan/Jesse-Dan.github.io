@@ -5,7 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../config/theme.dart';
 import '../../models/atendee_model.dart';
-import 'forms/forms.dart';
+import '../../models/group_model.dart';
+import '../screens/app_views/drawer_items/attendees/forms/view_form.dart';
 import '../../config/hex_method.dart';
 import '../../logic/bloc/group_management_bloc/group_management_bloc.dart';
 
@@ -14,14 +15,16 @@ class TransactionCard extends StatefulWidget {
     Key? key,
     this.onSlideToLeft,
     required this.data,
+    required this.groupData,
     this.onTap,
-    required this.presenttGroupId,
+    required this.presentGroupId,
   }) : super(key: key);
 
-  final AttendeeModel data;
+  final AttendeeModel? data;
+  final GroupModel? groupData;
   final void Function(BuildContext)? onSlideToLeft;
   final Function()? onTap;
-  final String presenttGroupId;
+  final String presentGroupId;
 
   @override
   State<TransactionCard> createState() => _TransactionCardState();
@@ -60,14 +63,15 @@ class _TransactionCardState extends State<TransactionCard> {
             // A SlidableAction can have an icon and/or a label.
             SlidableAction(
               onPressed: (_) =>
-                  RegistrationForms(context: context).verifyAction(
+                  AttendeeViewForms(context: context).verifyAction(
                       text: 'Do you want to proceed to edit this GROUP USER?',
-                      title: 'Delete user ${widget.data.firstName}  ',
+                      title: 'Delete user ${widget.data!.firstName}  ',
                       action: () {
                         BlocProvider.of<GroupManagementBloc>(context).add(
                             RemoveFromGroupEvent(
-                                groupId: widget.presenttGroupId,
-                                userId: widget.data));
+                                groupModel: widget.groupData!,
+                                groupId: widget.presentGroupId,
+                                userId: widget.data!));
                       }),
               backgroundColor: const Color(0xFFFE4A49),
               foregroundColor: Colors.white,
@@ -76,9 +80,10 @@ class _TransactionCardState extends State<TransactionCard> {
             ),
             SlidableAction(
               onPressed: (_) {
-                RegistrationForms(context: context).viewSelectedAttendeeData(
-                    attendee: widget.data,
-                    title: '${widget.data.firstName} ${widget.data.lastName}');
+                AttendeeViewForms(context: context).viewSelectedAttendeeData(
+                    attendee: widget.data!,
+                    title:
+                        '${widget.data!.firstName} ${widget.data!.lastName}');
               },
               backgroundColor: const Color(0xFF21B7CA),
               foregroundColor: Colors.white,
@@ -131,7 +136,7 @@ class _TransactionCardState extends State<TransactionCard> {
                     child: Padding(
                       padding: EdgeInsets.all(4.0),
                       child: CircleAvatar(
-                        child: Icon(widget.data.gender.toLowerCase() == 'male'
+                        child: Icon(widget.data!.gender.toLowerCase() == 'male'
                             ? Icons.male
                             : Icons.female),
                       ),
@@ -142,7 +147,7 @@ class _TransactionCardState extends State<TransactionCard> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        '${widget.data.firstName} ${widget.data.middleName} ${widget.data.lastName}',
+                        '${widget.data!.firstName} ${widget.data!.middleName} ${widget.data!.lastName}',
                         style: GoogleFonts.dmSans(
                           fontSize: kMidiText,
                           fontWeight: FontWeight.w700,
@@ -150,11 +155,11 @@ class _TransactionCardState extends State<TransactionCard> {
                         ),
                       ),
                       Text(
-                        '• ${widget.data.phoneNo}',
+                        '• ${widget.data!.phoneNo}',
                         style: GoogleFonts.dmSans(
                           fontSize: kSmallText + 1,
                           fontWeight: FontWeight.w600,
-                          color: getColor(widget.data.gender),
+                          color: getColor(widget.data!.gender),
                         ),
                       ),
                     ],
@@ -163,7 +168,7 @@ class _TransactionCardState extends State<TransactionCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        ('Address : ${widget.data.homeAddress}'),
+                        ('Address : ${widget.data!.homeAddress}'),
                         style: GoogleFonts.dmSans(
                           fontSize: kSmallText - 1,
                           fontWeight: FontWeight.w400,
@@ -171,7 +176,7 @@ class _TransactionCardState extends State<TransactionCard> {
                         ),
                       ),
                       Text(
-                        'Camper: ${widget.data.wouldCamp.toString().toLowerCase()}',
+                        'Camper: ${widget.data!.wouldCamp.toString().toLowerCase()}',
                         style: GoogleFonts.dmSans(
                           fontSize: kSmallText - 1,
                           fontWeight: FontWeight.w500,
