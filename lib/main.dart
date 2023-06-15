@@ -18,7 +18,7 @@ void main() async {
   BlocOverrides.runZoned(() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
-    setOrientation(); 
+    setOrientation();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]).then((_) {
