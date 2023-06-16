@@ -41,6 +41,7 @@ class Notifier {
     this.description = 'Attendee registration was ',
     this.action = 'Attendee registeration',
   });
+   
   Notifier.addFacilitator({
     this.data = '',
     this.time,

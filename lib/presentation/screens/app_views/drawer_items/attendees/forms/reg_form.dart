@@ -1,11 +1,8 @@
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../../../../../config/date_time_formats.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
@@ -15,31 +12,7 @@ import '../../../../../widgets/index.dart';
 class AttendeeRegistrationForms extends FormWidget {
   AttendeeRegistrationForms({required this.context});
 
-  Widget getBody(text) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(text,
-          style: GoogleFonts.gochiHand(
-              color: kSecondaryColor,
-              fontSize: 17,
-              fontWeight: FontWeight.w500)),
-    );
-  }
-
-  String getNextCode() {
-    int count = 0;
-    List<String> codes = [];
-    Stream<String>.periodic(Duration.zero, (index) {
-      count++;
-      String code = 'CATY_${count.toString().padLeft(3, '0')}';
-      return code;
-    }).listen((code) {
-      codes.clear();
-      codes.add(code);
-      print(code);
-    });
-    return codes[0];
-  }
+  RxString newCode = ''.obs;
 
   final BuildContext context;
 
@@ -65,7 +38,8 @@ class AttendeeRegistrationForms extends FormWidget {
   final Rx<DateTime> picked = DateTime.now().obs;
   final Rx<DateTime> viewPicked = DateTime.now().obs;
 
-  registerNewAttandeeForm({required String title}) {
+  registerNewAttandeeForm(
+      {required String title, length, List<AttendeeModel>? attendees}) {
     buildBottomFormField(
       context: context,
       title: title,
@@ -167,11 +141,21 @@ class AttendeeRegistrationForms extends FormWidget {
             color: Colors.green,
             btnText: 'Register',
             onTap: () {
+              String generateCode() {
+                String code = 'CATY${(length + 1).toString().padLeft(3, '0')}';
+                bool codeExists = attendees!.any((attendee) => attendee.id == code);
+                if (codeExists) {
+                  return 'CATY${(length + 2).toString().padLeft(3, '0')}';
+                } else {
+                  return code;
+                }
+              }
+
               BlocProvider.of<RegistrationBloc>(context).add(
                 RegisterAttendeeEvent(
                   authCodeController.text,
                   attendeeModel: AttendeeModel(
-                    id: getNextCode(),
+                    id: generateCode(),
                     createdBy: createdBy.text,
                     firstName: firstName.text,
                     middleName: middleName.text,
@@ -186,7 +170,7 @@ class AttendeeRegistrationForms extends FormWidget {
                     parentConsent: parentConsent.text,
                     passIssued: passIssued.text,
                     wouldCamp: wouldCamp.text,
-                    dob: picked.value,
+                    dob: picked.value, userGroups: [],
                   ),
                 ),
               );

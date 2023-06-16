@@ -4,11 +4,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
 import '../../../config/palette.dart';
 import '../../../config/theme.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_state.dart';
+import '../../../models/auth_code_model.dart';
 import '../../../models/user_model.dart';
 import '../../widgets/alertify.dart';
 import 'login.dart';
@@ -23,6 +25,11 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // BlocProvider.of<AdminManagemetBloc>(context).add(const GetCodeEvent());
+  }
   RichText toggleCreateAccount() {
     return RichText(
         textAlign: TextAlign.center,
@@ -210,21 +217,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ElevatedButton(
                       onPressed: () {
                         BlocProvider.of<AuthenticationBloc>(context)
-                            .add(SignUpEvent(
-                              context,
+                            .add(SignUpEvent(context,
                                 adminModel: AdminModel(
-                          firstName: firstNameCtl.text,
-                          lastName: LastnameCtl.text,
-                          email: emailCtl.text,
-                          phoneNumber:PhoneCtl .text,
-                          gender: GenderCtl.text,
-                          dept: DeptCtl.text,
-                          role: RoleCtl.text,
-                          authCode: AuthCodeCtl.text,
-                          password: passwordCtl.text,
-                          imageUrl: '',
-                          id: '',
-                        )));
+                                  firstName: firstNameCtl.text,
+                                  lastName: LastnameCtl.text,
+                                  email: emailCtl.text,
+                                  phoneNumber: PhoneCtl.text,
+                                  gender: GenderCtl.text,
+                                  dept: DeptCtl.text,
+                                  role: RoleCtl.text,
+                                  authCode: AuthCodeCtl.text,
+                                  password: passwordCtl.text,
+                                  imageUrl: '',
+                                  id: '',
+                                )));
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),

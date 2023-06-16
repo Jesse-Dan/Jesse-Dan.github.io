@@ -5,21 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "program": "/Users/mac/DEV/TYLDC/tyldc_portal/lib/main.dart",
+            "program": "lib/main.dart",
             "name": "tyldc_finaalisima",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug"
         },
         {
-            "program": "/Users/mac/DEV/TYLDC/tyldc_portal/lib/main.dart",
+            "program": "lib/main.dart",
             "name": "tyldc_finaalisima (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "program": "/Users/mac/DEV/TYLDC/tyldc_portal/lib/main.dart",
+            "program": "lib/main.dart",
             "name": "tyldc_finaalisima (release mode)",
             "request": "launch",
             "type": "dart",

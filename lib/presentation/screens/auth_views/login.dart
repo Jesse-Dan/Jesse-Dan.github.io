@@ -5,11 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../config/palette.dart';
 import '../../../config/theme.dart';
+import '../../../logic/bloc/admin_management/admin_managemet_bloc.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_state.dart';
+import '../../../models/auth_code_model.dart';
 import '../../widgets/alertify.dart';
-import '../app_views/drawer_items/dashboard/main_screen.dart';
 import 'reg.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -22,7 +23,11 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController emailCtl = TextEditingController();
   final TextEditingController passwordCtl = TextEditingController();
-
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AdminManagemetBloc>(context).add(const GetCodeEvent());
+  }
   RichText toggleCreateAccount() {
     return RichText(
         textAlign: TextAlign.center,
@@ -44,11 +49,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   Navigator.of(context).pushNamed(SignUpScreen.routeName);
                 })
         ]));
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -120,8 +120,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ElevatedButton(
                       onPressed: () {
                         BlocProvider.of<AuthenticationBloc>(context).add(
-                            LoginEvent(
-                              context,
+                            LoginEvent(context,
                                 email: emailCtl.text.trim(),
                                 password: passwordCtl.text.trim()));
 

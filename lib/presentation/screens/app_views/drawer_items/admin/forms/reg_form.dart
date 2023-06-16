@@ -5,6 +5,7 @@ import '../../../../../../models/user_model.dart';
 import '../../../../../widgets/CustomViewTextField.dart';
 import '../../../../../widgets/custom_submit_btn.dart';
 import '../../../../../widgets/dialogue_forms.dart';
+import '../../../../../widgets/verify_action_dialogue.dart';
 
 class AdminsRegistrationForms extends FormWidget {
   AdminsRegistrationForms({required this.context});
@@ -41,28 +42,6 @@ class AdminsRegistrationForms extends FormWidget {
   final TextEditingController firstNameCtlNonAdminReg = TextEditingController();
   final TextEditingController createdBy = TextEditingController();
 
-  verifyAction({
-    title,
-    text,
-    action,
-  }) {
-    buildCenterFormField(
-      title: title,
-      context: context,
-      widgetsList: [getBody(text)],
-      onSubmit: () {
-        Navigator.of(context).pop();
-      },
-      btNtype1: ButtonType.fill,
-      color1: (Colors.green),
-      onSubmitText: 'Cancel',
-      onSubmitText2: 'Proceed',
-      color2: (Colors.red),
-      btNtype2: ButtonType.fill,
-      alertType: AlertType.twoBtns,
-      onSubmit2: action,
-    );
-  }
   viewSelectedAdminStaffData({title, required AdminModel admin}) {
     buildCenterFormField(
         title: title,
@@ -178,6 +157,10 @@ class AdminsRegistrationForms extends FormWidget {
         onSubmit2: () {
           verifyAction(
               title: title,
-              text: 'Do you want to proceed to edit the ADMIN AUTH CODE?');
+              text: 'Do you want to proceed to edit the ADMIN AUTH CODE?',
+              action: () {
+                
+              });
         });
-  }}
+  }
+}

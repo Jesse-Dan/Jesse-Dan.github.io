@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/attendees/forms/view_form.dart';
 import '../../../../../logic/build/bloc_aler_notifier.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
@@ -15,6 +16,7 @@ import '../../../../../../models/atendee_model.dart';
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
+import '../../../../widgets/verify_action_dialogue.dart';
 import '../dashboard/components/side_menu.dart';
 import 'forms/reg_form.dart';
 
@@ -32,13 +34,25 @@ class AttendeesScreen extends StatefulWidget {
 class _AttendeesScreenState extends State<AttendeesScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
-        updateSessionState(state: state, context: context);
-        updateLoadingBlocState(state: state, context: context);
-        updatetSuccessBlocState(state: state, context: context);
-        updateFailedBlocState(state: state, context: context);
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RegistrationBloc, RegistrationState>(
+          listener: (context, state) {
+            updateSessionState(state: state, context: context);
+            updateLoadingBlocState(state: state, context: context);
+            updatetSuccessBlocState(state: state, context: context);
+            updateFailedBlocState(state: state, context: context);
+          },
+        ),
+        BlocListener<UserManagementBloc, UserManagementState>(
+          listener: (context, state) {
+            updateSessionState(state: state, context: context);
+            updateLoadingBlocState(state: state, context: context);
+            updatetSuccessBlocState(state: state, context: context);
+            updateFailedBlocState(state: state, context: context);
+          },
+        ),
+      ],
       child: Scaffold(
         backgroundColor: bgColor,
         body: SafeArea(
@@ -54,7 +68,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                 ),
               Expanded(
                   // It takes 5/6 part of the screen
-                  flex: 5,
+                  flex: 9,
                   child: BlocConsumer<DashBoardBloc, DashBoardState>(
                       listener: (context, state) {
                     if (state is DashBoardFetched) {
@@ -132,12 +146,20 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
                               ),
+                              DataColumn(
+                                label: Text(
+                                  "Action",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                              ),
                             ],
                       row: List.generate(
                         fetched ? state.attendeeModel.length : 0,
                         (index) => (recentFileDataRow(
                             fetched ? state.attendeeModel[index] : null,
-                            context)),
+                            context,
+                            id: fetched ? state.userIds[index] : '')),
                       ),
                       title: 'Registered Attendees',
                       actions: [
@@ -146,7 +168,11 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                           text: 'Add Attendee',
                           onTap: () {
                             AttendeeRegistrationForms(context: context)
-                                .registerNewAttandeeForm(title: 'Attendee');
+                                .registerNewAttandeeForm(
+                              attendees: fetched ? state.attendeeModel : null,
+                              title: 'Attendee',
+                              length: fetched ? state.attendeeModel.length : 0,
+                            );
                           },
                         ),
                         const TextBtn(
@@ -161,6 +187,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
         ),
         floatingActionButton: CustomFloatingActionBtn(
           onPressed: () {
+            // AttendeeRegistrationForms(context: context).getNextCode();
             BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
           },
         ),
@@ -169,7 +196,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
   }
 }
 
-DataRow recentFileDataRow(AttendeeModel? registerdUser, context) {
+DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {id}) {
   return DataRow(
     onLongPress: () {
       AttendeeViewForms(context: context).viewSelectedAttendeeData(
@@ -219,6 +246,27 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context) {
             DataCell(Text(
               registerdUser.commitmentFee.toLowerCase(),
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+            )),
+            DataCell(IconButton(
+              splashRadius: 5,
+              icon: Icon(
+                Icons.delete,
+                color: kSecondaryColor,
+                size: 20,
+              ),
+              onPressed: () {
+                verifyAction(
+                  context: context,
+                  text: 'Do you wish to proceed to delete this Attendee?',
+                  title:
+                      'Attendee ${registerdUser.firstName} ${registerdUser.lastName}',
+                  action: () {
+                    BlocProvider.of<UserManagementBloc>(context).add(
+                        DeleteUserEvent(
+                            attendeeID: id, attendeeModel: registerdUser));
+                  },
+                );
+              },
             )),
           ],
   );

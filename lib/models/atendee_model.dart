@@ -8,6 +8,8 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
+import 'group_model.dart';
+
 class AttendeeModel extends Equatable {
   const AttendeeModel({
     required this.createdBy,
@@ -26,6 +28,7 @@ class AttendeeModel extends Equatable {
     required this.parentConsent,
     required this.passIssued,
     required this.wouldCamp,
+    required this.userGroups,
   });
 
   final String createdBy;
@@ -44,6 +47,7 @@ class AttendeeModel extends Equatable {
   final String parentConsent;
   final String passIssued;
   final String wouldCamp;
+  final List<UserGroups> userGroups;
 
   @override
   List<Object?> get props => [
@@ -80,6 +84,9 @@ class AttendeeModel extends Equatable {
       parentConsent: map['parentConsent'] as String,
       passIssued: map['passIssued'] as String,
       wouldCamp: map['wouldCamp'] as String,
+      userGroups: (map['userGroups'] as List<dynamic>)
+          .map((group) => UserGroups.fromMap(group as Map<String, dynamic>))
+          .toList(),
     );
   }
 
@@ -103,6 +110,7 @@ class AttendeeModel extends Equatable {
       'parentConsent': parentConsent,
       'passIssued': passIssued,
       'wouldCamp': wouldCamp,
+      'userGroups': userGroups.map((e) => e.toMap()).toList(),
     };
   }
 
@@ -110,4 +118,30 @@ class AttendeeModel extends Equatable {
 
   factory AttendeeModel.fromJson(String source) =>
       AttendeeModel.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
+class UserGroups {
+  final String groupId;
+  final GroupModel groupModel;
+
+  UserGroups({required this.groupId, required this.groupModel});
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'groupId': groupId,
+      'groupModel': groupModel.toMap(),
+    };
+  }
+
+  factory UserGroups.fromMap(Map<String, dynamic> map) {
+    return UserGroups(
+      groupId: map['groupId'] as String,
+      groupModel: GroupModel.fromMap(map['groupModel'] as Map<String, dynamic>),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserGroups.fromJson(String source) =>
+      UserGroups.fromMap(json.decode(source) as Map<String, dynamic>);
 }

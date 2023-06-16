@@ -2,7 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/index_blocs.dart';
+import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
+import 'package:tyldc_finaalisima/models/auth_code_model.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/alertify.dart';
 
 import '../../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
@@ -14,6 +17,14 @@ updateFailedBlocState({state, context}) {
   switch (state.runtimeType) {
     /// Failed States
     case DashBoardFailed:
+      Navigator.of(context).pop();
+      Alertify.error(
+          title: 'DashBoard Data Error',
+          message:
+              'An error occured Loading the dashboard ERROR:${state.error}');
+      break;
+
+    case UserManagementFailed:
       Navigator.of(context).pop();
       Alertify.error(
           title: 'DashBoard Data Error',
@@ -68,6 +79,17 @@ updatetSuccessBlocState({state, context}) {
       Navigator.of(context).pop();
       Alertify.success();
       break;
+    case AdminManagemetLoaded:
+    
+      break;
+
+    case UserManagementLoaded:
+      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+      Alertify.success();
+      break;
+
     case GroupManagementLoaded:
       BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
@@ -96,6 +118,12 @@ updateLoadingBlocState({state, context}) {
               const Center(child: CircularProgressIndicator()));
       break;
     case RegistrationLoading:
+      showDialog(
+          context: context,
+          builder: (builder) =>
+              const Center(child: CircularProgressIndicator()));
+      break;
+    case UserManagementLoading:
       showDialog(
           context: context,
           builder: (builder) =>

@@ -1,21 +1,26 @@
-// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously
+// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously, unrelated_type_equality_checks
 
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tyldc_finaalisima/config/validators.dart';
 import '../../../config/codes.dart';
+import '../../../models/auth_code_model.dart';
 import '../../../models/models.dart';
 import '../../../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
 import '../../../presentation/screens/auth_views/login.dart';
 import '../../db/db.dart';
+import '../../local_storage_service.dart/local_storage.dart';
 import 'authentiction_event.dart';
 import 'authentiction_state.dart';
 
 class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
   final FirebaseAuth auth;
+  final LocalStorageService localStorageService;
 
-  AuthenticationBloc({required this.auth}) : super(AuthentictionInitial()) {
+  AuthenticationBloc({required this.auth, required this.localStorageService})
+      : super(AuthentictionInitial()) {
     checkAuthenticationStatus();
     login();
     logout();
@@ -82,12 +87,12 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
   signup() async {
     on<SignUpEvent>((event, emit) async {
       emit(AuthentictionLoading());
-
       var data = event.adminModel;
       try {
-        if (data.authCode == ADMIN_AUTH_CODE) {
+        log(data.authCode);
+        if (await Validators(localStorageService: localStorageService)
+            .validateAdminAuthCode(data.authCode)) {
           emit(AuthentictionLoading());
-
           await auth.createUserWithEmailAndPassword(
             email: data.email,
             password: data.password,
@@ -131,7 +136,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
           log('Error occurred while signing up: ${e.message}');
         }
       } catch (e) {
-        log(e.toString());
+        log("MESINK : $e");
         emit(AuthentictionFailed(e.toString()));
       }
     });

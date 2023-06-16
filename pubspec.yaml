@@ -57,6 +57,8 @@ dependencies:
   flutter_svg: ^1.1.6
   flutter_slidable: ^3.0.0
   date_time_format: ^2.0.1
+  get_storage: ^2.1.1
+  shared_preferences: ^2.1.2
 
 
 dev_dependencies:

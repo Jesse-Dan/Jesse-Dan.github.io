@@ -2,10 +2,12 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:tyldc_finaalisima/models/auth_code_model.dart';
 import '../../models/models.dart';
 
 class DB {
   final FirebaseAuth auth;
+  final adminCodesDB = FirebaseFirestore.instance.collection('AdminCodes');
   final adminDB = FirebaseFirestore.instance.collection('Admins');
   final attendeeDB = FirebaseFirestore.instance.collection('Registee');
   final groupDB = FirebaseFirestore.instance.collection('Groups');
@@ -33,12 +35,10 @@ class DB {
 
   /// [REGISTER ATTENDEE]
   Future<void> sendRegisteeData(AttendeeModel attendeeModel) async {
-    try {
-      var sed = await attendeeDB
-          .add(attendeeModel.toMap())
-          .then((value) => log('Attendee Created'))
-          .catchError((e) => log(e));
-    } on FirebaseException catch (e) {
+    await attendeeDB
+        .add(attendeeModel.toMap())
+        .then((value) => log('Attendee Created'));
+    try {} on FirebaseException catch (e) {
       log(e.toString());
     }
   }
@@ -46,7 +46,7 @@ class DB {
   /// [CREATE NON STAFF]
   Future<bool> sendNoneAdminData(NonAdminModel nonAdminModel) async {
     try {
-      var sed = nonAdminstrativeStaffDB
+      nonAdminstrativeStaffDB
           .add(nonAdminModel.toMap())
           .then((value) => log('Non-Admin Staff Created'))
           .catchError((e) => log(e));
@@ -265,6 +265,28 @@ class DB {
     }
   }
 
+  /// [DELETE A USER]
+  Future<bool> deleteUser(String attendeeId) async {
+    try {
+      await attendeeDB.doc(attendeeId).delete();
+      return true;
+    } catch (e) {
+      log('Failed to delete attendee by ID: $e');
+      return false;
+    }
+  }
+
+  /// [DELETE A NONADMIN]
+  Future<bool> deleteNonAdmin(String nonAdminId) async {
+    try {
+      await nonAdminstrativeStaffDB.doc(nonAdminId).delete();
+      return true;
+    } catch (e) {
+      log('Failed to delete nonAdmin by ID: $e');
+      return false;
+    }
+  }
+
   ///[SEND NOTIFICATION]
   Future<void> sendNotificationData(Notifier notification) async {
     try {
@@ -292,6 +314,27 @@ class DB {
     } catch (e) {
       log('error on db:$e');
       return [];
+    }
+  }
+
+  /// [ALTER ADMIN CODE]
+  Future<void> alterAdminCode(AdminCodesModel codes) async {
+    try {
+      adminCodesDB.doc('ADMINCODES').set(codes.toMap());
+    } on FirebaseException catch (e) {
+      log(e.toString());
+    }
+  }
+
+  /// [GET ADMIN CODE]
+  Future<AdminCodesModel?> getAdminCode() async {
+    try {
+      var adminCodes = await adminCodesDB.doc('ADMINCODES').get();
+      var data = AdminCodesModel.fromMap(adminCodes.data()!);
+      return data;
+    } on FirebaseException catch (e) {
+      log(e.toString());
+      return null;
     }
   }
 }
