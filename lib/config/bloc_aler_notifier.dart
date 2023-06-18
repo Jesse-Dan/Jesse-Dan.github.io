@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/index_blocs.dart';
+import 'package:tyldc_finaalisima/logic/bloc/non_admin_management/non_admin_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
-import 'package:tyldc_finaalisima/models/auth_code_model.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/alertify.dart';
 
-import '../../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
-import '../../presentation/screens/auth_views/login.dart';
+import '../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
+import '../presentation/screens/auth_views/login.dart';
 
 /// [DISPLAY ERROR ON SPECIFIC ERROR STATE EMITTED]
 updateFailedBlocState({state, context}) {
@@ -28,14 +28,13 @@ updateFailedBlocState({state, context}) {
       Navigator.of(context).pop();
       Alertify.error(
           title: 'DashBoard Data Error',
-          message:
-              'An error occured Loading the dashboard ERROR:${state.error}');
+          message: 'An error occured loading the users ERROR:${state.error}');
       break;
     case RegistrationFailed:
       Navigator.of(context).pop();
       Alertify.error(
           title: 'Registration  Error',
-          message: 'An error occured while Registering ERROR:${state.error}');
+          message: 'An error occured, Registering ERROR:${state.error}');
       break;
     case AuthentictionFailed:
       Navigator.of(context).pop();
@@ -48,8 +47,13 @@ updateFailedBlocState({state, context}) {
       Navigator.of(context).pop();
       Alertify.error(
           title: 'Group Management Error',
-          message:
-              'An error occured While Authentication ERROR:${state.error}');
+          message: 'Group ERROR:${state.error}');
+      break;
+    case NonAdminManagementFailed:
+      Navigator.of(context).pop();
+      Alertify.error(
+          title: 'Non Admin Management Error',
+          message: 'Non Admin ERROR:${state.error}');
       break;
     default:
   }
@@ -79,8 +83,8 @@ updatetSuccessBlocState({state, context}) {
       Navigator.of(context).pop();
       Alertify.success();
       break;
+
     case AdminManagemetLoaded:
-    
       break;
 
     case UserManagementLoaded:
@@ -95,7 +99,7 @@ updatetSuccessBlocState({state, context}) {
       Navigator.of(context).pop();
       Alertify.success();
       break;
-    case NonAdminRegistrationLoaded:
+    case NonAdminManagementLoaded:
       BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
       Navigator.of(context).pop();
@@ -106,7 +110,7 @@ updatetSuccessBlocState({state, context}) {
   }
 }
 
-/// [DISPLAY ERROR ON SPECIFIC LOADING STATE EMITTED]
+/// [DISPLAY LOADER ON SPECIFIC LOADING STATE EMITTED]
 updateLoadingBlocState({state, context}) {
   log(state.toString());
   switch (state.runtimeType) {
@@ -117,6 +121,13 @@ updateLoadingBlocState({state, context}) {
           builder: (builder) =>
               const Center(child: CircularProgressIndicator()));
       break;
+    case NonAdminManagementLoading:
+      showDialog(
+          context: context,
+          builder: (builder) =>
+              const Center(child: CircularProgressIndicator()));
+      break;
+
     case RegistrationLoading:
       showDialog(
           context: context,

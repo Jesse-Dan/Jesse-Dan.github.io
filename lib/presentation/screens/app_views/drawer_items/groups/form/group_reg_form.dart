@@ -41,9 +41,8 @@ class GroupsRegistrationForms extends FormWidget {
   /// [CREATE NON ADMIN CONTROLLERS]
   final TextEditingController createdBy = TextEditingController();
 
-
   ///[CREATE GROUP FORM]
-  registerGroupForm({required String title}) {
+  registerGroupForm({required String title, groups}) {
     buildCenterFormField(
       title: title,
       context: context,
@@ -76,11 +75,27 @@ class GroupsRegistrationForms extends FormWidget {
             controller: authCodeController),
       ],
       onSubmit: () {
+        String generateUniqueCode(List<String> existingCodes) {
+          int counter = 0;
+          String code;
+
+          do {
+            code = 'CATY-GR-${counter.toString().padLeft(3, '0')}';
+            counter++;
+          } while (existingCodes.contains(code));
+
+          return code;
+        }
+
+        List<String> getItemList(List<GroupModel> modelList) {
+          return modelList.map((model) => model.id).toList();
+        }
+
         BlocProvider.of<RegistrationBloc>(context).add(
           CreateGroupEvent(
             authCodeController.text,
             groupModel: GroupModel(
-              id: '',
+              id: generateUniqueCode(getItemList(groups)),
               createdBy: createdBy.text,
               name: groupNameController.text,
               description: groupDescriptionController.text,

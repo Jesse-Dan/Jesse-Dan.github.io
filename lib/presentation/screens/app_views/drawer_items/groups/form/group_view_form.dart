@@ -12,7 +12,7 @@ import '../../../../../../config/date_time_formats.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../../logic/bloc/group_management_bloc/group_management_bloc.dart';
-import '../../../../../../logic/build/bloc_aler_notifier.dart';
+import '../../../../../../config/bloc_aler_notifier.dart';
 import '../../../../../../models/atendee_model.dart';
 import '../../../../../../models/group_model.dart';
 import '../../../../../widgets/CustomViewTextField.dart';
@@ -58,7 +58,7 @@ class GroupsViewForms extends FormWidget {
             suffix: const Icon(Icons.people_alt_rounded),
           ),
           CustomViewTextField(
-            initialValue: presenttGroupId,
+            initialValue: presentGroupModel?.id,
             fieldsType: TextInputType.text,
             hint: 'Group Id',
             suffix: const Icon(Icons.admin_panel_settings_rounded),

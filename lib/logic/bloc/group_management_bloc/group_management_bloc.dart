@@ -4,8 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tyldc_finaalisima/models/recently_deleted_model.dart';
 import '../../../models/group_model.dart';
 import '../../../models/notifier_model.dart';
+import '../../../models/user_model.dart';
 import '../../db/db.dart';
 
 import '../../../models/atendee_model.dart';
@@ -69,6 +71,12 @@ class GroupManagementBloc
       try {
         emit(GroupManagementLoading());
         await DB(auth: auth).deleteGroup(event.groupId);
+        await DB(auth: auth).addtoRecentDeleted(RecentlyDeletedModel.delete(
+            dataType: 'Group',
+            data:
+                'By Admin ${event.adminModel.firstName} ${event.adminModel.lastName} with auth code ${event.adminModel.authCode}',
+            description:
+                'Group ${event.groupModel.name} with ID : ${event.groupModel.id} was deleted'));
         await DB(auth: auth).sendNotificationData(Notifier.groupActtivity(
             data: 'Group ${event.groupModel.name} was deleted'));
 

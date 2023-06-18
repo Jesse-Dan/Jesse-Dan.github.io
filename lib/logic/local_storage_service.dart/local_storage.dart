@@ -62,8 +62,8 @@ class LocalStorageService {
     await getStorage.write(key, content);
   }
 
-  dynamic getreadFromDisk(String key) async {
-    var value = await getStorage.read(key);
+  dynamic getreadFromDisk(String key) {
+    var value = getStorage.read(key);
 
     debugPrint(
         '(TRACE) LocalStorageService:_getgetFromDisk. key: $key value: $value');

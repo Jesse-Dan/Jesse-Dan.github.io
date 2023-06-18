@@ -141,21 +141,28 @@ class AttendeeRegistrationForms extends FormWidget {
             color: Colors.green,
             btnText: 'Register',
             onTap: () {
-              String generateCode() {
-                String code = 'CATY${(length + 1).toString().padLeft(3, '0')}';
-                bool codeExists = attendees!.any((attendee) => attendee.id == code);
-                if (codeExists) {
-                  return 'CATY${(length + 2).toString().padLeft(3, '0')}';
-                } else {
-                  return code;
-                }
+              
+              String generateUniqueCode(List<String> existingCodes) {
+                int counter = 0;
+                String code;
+
+                do {
+                  code = 'CATY${counter.toString().padLeft(3, '0')}';
+                  counter++;
+                } while (existingCodes.contains(code));
+
+                return code;
+              }
+
+              List<String> getItemList(List<AttendeeModel> modelList) {
+                return modelList.map((model) => model.id).toList();
               }
 
               BlocProvider.of<RegistrationBloc>(context).add(
                 RegisterAttendeeEvent(
                   authCodeController.text,
                   attendeeModel: AttendeeModel(
-                    id: generateCode(),
+                    id: generateUniqueCode(getItemList(attendees!)),
                     createdBy: createdBy.text,
                     firstName: firstName.text,
                     middleName: middleName.text,
@@ -170,7 +177,7 @@ class AttendeeRegistrationForms extends FormWidget {
                     parentConsent: parentConsent.text,
                     passIssued: passIssued.text,
                     wouldCamp: wouldCamp.text,
-                    dob: picked.value, userGroups: [],
+                    dob: picked.value,
                   ),
                 ),
               );

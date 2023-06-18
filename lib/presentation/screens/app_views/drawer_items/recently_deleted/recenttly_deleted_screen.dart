@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/models/recently_deleted_model.dart';
 import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../../models/models.dart';
 
@@ -15,18 +16,18 @@ import '../../components/header.dart';
 import '../../components/prefered_size_widget.dart';
 import '../dashboard/components/side_menu.dart';
 
-class NotificationScreen extends StatefulWidget {
-  static const routeName = '/main.notification';
+class RecentlyDeleted extends StatefulWidget {
+  static const routeName = '/main.recently.deleted';
 
-  const NotificationScreen({
+  const RecentlyDeleted({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<NotificationScreen> createState() => _NotificationScreenState();
+  State<RecentlyDeleted> createState() => _RecentlyDeletedState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class _RecentlyDeletedState extends State<RecentlyDeleted> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
@@ -43,7 +44,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 preferredWidth: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.all(kdefaultPadding),
-                  child: Header(title: 'Notifications', onPressed: () {}),
+                  child: Header(title: 'Recently Deleted', onPressed: () {}),
                 ))
             : null,
         backgroundColor: bgColor,
@@ -68,7 +69,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               DataColumn(
                                 label: FittedBox(
                                   child: Text(
-                                    "Activity",
+                                    "DATE TYPE",
                                     style: GoogleFonts.dmSans(
                                         color: kSecondaryColor, fontSize: 15),
                                   ),
@@ -77,7 +78,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               DataColumn(
                                 label: FittedBox(
                                   child: Text(
-                                    "time",
+                                    "TIME",
                                     style: GoogleFonts.dmSans(
                                         color: kSecondaryColor, fontSize: 15),
                                   ),
@@ -86,7 +87,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               DataColumn(
                                 label: FittedBox(
                                   child: Text(
-                                    "Description",
+                                    "DESCRIPTION",
                                     style: GoogleFonts.dmSans(
                                         color: kSecondaryColor, fontSize: 15),
                                   ),
@@ -96,21 +97,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           : [
                               DataColumn(
                                 label: Text(
-                                  "Activity",
+                                  "DATE TYPE",
                                   style: GoogleFonts.dmSans(
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
-                                  "time",
+                                  "DELETED AT",
                                   style: GoogleFonts.dmSans(
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
-                                  "Description",
+                                  "DESCRIPTION",
                                   style: GoogleFonts.dmSans(
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
@@ -124,12 +125,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               ),
                             ],
                       row: List.generate(
-                        fetched ? state.notifications.length : 0,
+                        fetched ? state.recentlyDeleted.length : 0,
                         (index) => (recentFileDataRow(
-                            fetched ? state.notifications[index] : null,
+                            fetched ? state.recentlyDeleted[index] : null,
                             context)),
                       ),
-                      title: 'Notifications');
+                      title: 'Recently Deleted');
                 },
               ),
             ],
@@ -145,14 +146,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 }
 
-DataRow recentFileDataRow(Notifier? notice, context) {
+DataRow recentFileDataRow(RecentlyDeletedModel? notice, context) {
   return DataRow(
     onLongPress: () {},
     cells: Responsive.isMobile(context)
         ? [
             DataCell(
               Text(
-                notice!.action,
+                notice!.dataType,
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),
@@ -168,7 +169,7 @@ DataRow recentFileDataRow(Notifier? notice, context) {
         : [
             DataCell(
               Text(
-                notice!.action,
+                notice!.dataType,
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),

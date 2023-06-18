@@ -5,21 +5,23 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../../../config/codes.dart';
+import '../../../config/app_autorizations.dart';
 import '../../../models/atendee_model.dart';
 import '../../../models/group_model.dart';
 import '../../../models/non_admin_staff.dart';
 import '../../../models/notifier_model.dart';
 import '../../db/db.dart';
+import '../../local_storage_service.dart/local_storage.dart';
 
 part 'registeration_event.dart';
 part 'registeration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
+    final LocalStorageService localStorageService;
   final FirebaseAuth auth;
   final FirebaseStorage storage;
 
-  RegistrationBloc({required this.auth, required this.storage})
+  RegistrationBloc({required this.localStorageService, required this.auth, required this.storage})
       : super(RegistrationInitial()) {
     registerAttendee();
     registerNonAdmin();
@@ -30,7 +32,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegisterAttendeeEvent>((event, emit) async {
       emit(RegistrationLoading());
       try {
-        if (event.adminCode == ADMIN_AUTH_CODE) {
+        if (await AppAuthorizations(localStorageService: localStorageService)
+            .validateAdminAuthCode(event.adminCode)) {
           emit(RegistrationLoading());
 
           await DB(auth: auth).sendRegisteeData(event.attendeeModel);
@@ -58,7 +61,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       emit(RegistrationLoading());
 
       try {
-        if (event.adminCode == ADMIN_AUTH_CODE) {
+        if (await AppAuthorizations(localStorageService: localStorageService)
+            .validateAdminAuthCode(event.adminCode)) {
           emit(RegistrationLoading());
 
           await DB(auth: auth).sendNoneAdminData(event.nonAdminModel);
@@ -85,7 +89,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<CreateGroupEvent>((event, emit) async {
       emit(RegistrationLoading());
       try {
-        if (event.adminCode == ADMIN_AUTH_CODE) {
+        if (await AppAuthorizations(localStorageService: localStorageService)
+            .validateAdminAuthCode(event.adminCode)) {
           emit(RegistrationLoading());
 
           await DB(auth: auth).createGroup(event.groupModel);

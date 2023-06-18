@@ -28,7 +28,6 @@ class AttendeeModel extends Equatable {
     required this.parentConsent,
     required this.passIssued,
     required this.wouldCamp,
-    required this.userGroups,
   });
 
   final String createdBy;
@@ -47,7 +46,6 @@ class AttendeeModel extends Equatable {
   final String parentConsent;
   final String passIssued;
   final String wouldCamp;
-  final List<UserGroups> userGroups;
 
   @override
   List<Object?> get props => [
@@ -82,11 +80,7 @@ class AttendeeModel extends Equatable {
       disabilityCluster: map['disabilityCluster'] as String,
       commitmentFee: map['commitmentFee'] as String,
       parentConsent: map['parentConsent'] as String,
-      passIssued: map['passIssued'] as String,
-      wouldCamp: map['wouldCamp'] as String,
-      userGroups: (map['userGroups'] as List<dynamic>)
-          .map((group) => UserGroups.fromMap(group as Map<String, dynamic>))
-          .toList(),
+      passIssued: map['passIssued'] as String, wouldCamp: map['wouldCamp'] as String,
     );
   }
 
@@ -110,7 +104,6 @@ class AttendeeModel extends Equatable {
       'parentConsent': parentConsent,
       'passIssued': passIssued,
       'wouldCamp': wouldCamp,
-      'userGroups': userGroups.map((e) => e.toMap()).toList(),
     };
   }
 

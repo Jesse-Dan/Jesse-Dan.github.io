@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../../models/auth_code_model.dart';
-import '../../../models/user_model.dart';
 import '../../db/db.dart';
 import '../../local_storage_service.dart/local_storage.dart';
 
@@ -15,10 +14,14 @@ part 'admin_managemet_state.dart';
 
 class AdminManagemetBloc
     extends Bloc<AdminManagemetEvent, AdminManagemetState> {
+  final LocalStorageService localStorageService;
   final FirebaseAuth auth;
   final FirebaseStorage storage;
 
-  AdminManagemetBloc({required this.auth, required this.storage})
+  AdminManagemetBloc(
+      {required this.localStorageService,
+      required this.auth,
+      required this.storage})
       : super(AdminManagemetInitial()) {
     getAdminCode();
     alterAdminCode();
@@ -43,7 +46,7 @@ class AdminManagemetBloc
       try {
         emit(AdminManagemetLoading());
         var code = await DB(auth: auth).getAdminCode();
-        LocalStorageService().getsaveToDisk('ADMIN_CODES',code!.toJson());
+        localStorageService.getsaveToDisk('ADMIN_CODES', code!.toJson());
         emit(AdminManagemetLoaded(code));
         log('Codes: ${code.adminCode}');
       } on FirebaseAuthException catch (e) {

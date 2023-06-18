@@ -1,23 +1,24 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'prefered_size_widget.dart';
+import 'package:tyldc_finaalisima/config/app_autorizations.dart';
 
 import '../../../../config/constants/responsive.dart';
 import '../../../../config/palette.dart';
 import '../../../../config/theme.dart';
-import '../../../../logic/bloc/cubit/methods_cubit.dart';
 import '../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
+import '../../../../logic/local_storage_service.dart/local_storage.dart';
 
 class Header extends StatefulWidget {
   const Header({
     Key? key,
+    this.title,
     this.onPressed,
   }) : super(key: key);
   final dynamic onPressed;
+  final dynamic title;
+
   @override
   State<Header> createState() => _HeaderState();
 }
@@ -26,20 +27,9 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return Responsive.isDesktop(context)
-        ? Row(children: [
-            if (!Responsive.isMobile(context))
-              Text(
-                "Dashboard",
-                style: GoogleFonts.dmSans(fontSize: 30, color: primaryColor),
-              ),
-            if (!Responsive.isMobile(context))
-              Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
-            const Expanded(child: SearchField()),
-            const ProfileCard()
-          ])
+        ? buildHeaderContent(flex: 2)
         : AppBar(
             iconTheme: const IconThemeData(color: primaryColor),
-
             backgroundColor: Colors.transparent,
             // foregroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
@@ -47,36 +37,50 @@ class _HeaderState extends State<Header> {
             leading: // if (!Responsive.isDesktop(context))
                 SizedBox(
               child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: IconButton(
-                        focusColor: Colors.transparent,
-                        color: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        icon: const Icon(
-                          Icons.menu_open,
-                          size: 30,
-                          color: primaryColor,
-                        ),
-                        onPressed: () => Scaffold.of(context).openDrawer())
-              ),
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: IconButton(
+                      focusColor: Colors.transparent,
+                      color: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      icon: const Icon(
+                        Icons.menu_open,
+                        size: 30,
+                        color: primaryColor,
+                      ),
+                      onPressed: () => Scaffold.of(context).openDrawer())),
             ),
-            title: Row(
-              children: [
-                if (!Responsive.isMobile(context))
-                  Text(
-                    "Dashboard",
-                    style:
-                        GoogleFonts.dmSans(fontSize: 30, color: primaryColor),
-                  ),
-                if (!Responsive.isMobile(context))
-                  Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
-                const Expanded(child: SearchField()),
-                const ProfileCard()
-              ],
-            ),
+            title: buildHeaderContent(flex: 1),
             automaticallyImplyLeading: false,
           );
+  }
+
+  Widget buildHeaderContent({flex}) {
+    return BlocBuilder<DashBoardBloc, DashBoardState>(
+      builder: (context, state) {
+        ///[check state]
+        bool fetched = state is DashBoardFetched;
+        return Row(children: [
+          Text(
+            fetched
+
+                /// [if state is  loaded]
+                ? widget.title == 'Dashboard'
+                    ? 'Dashboard | ${AppAuthorizations(localStorageService: LocalStorageService()).getAuthLevel(adminCode: fetched ? state.user.authCode : '')}'
+                    : '${AppAuthorizations(localStorageService: LocalStorageService()).getAuthLevel(adminCode: fetched ? state.user.authCode : '')} | Auth code : ${state.user.authCode}'
+
+                /// [if state is not loaded]
+                : widget.title == 'Dashboard'
+                    ? '${widget.title} | Loading DashBoard...'
+                    : '${widget.title} | Refresh Table',
+            style: GoogleFonts.dmSans(fontSize: 22, color: primaryColor),
+          ),
+          Spacer(flex: flex),
+          const Expanded(child: SearchField()),
+          const ProfileCard()
+        ]);
+      },
+    );
   }
 }
 

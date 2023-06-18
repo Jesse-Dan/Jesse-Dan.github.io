@@ -40,20 +40,30 @@ class _MyFilesState extends State<MyFiles> {
               "Quick Stats",
               style: GoogleFonts.dmSans(fontSize: 20, color: Palette.white),
             ),
-            ElevatedButton.icon(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                  horizontal: defaultPadding * 1.5,
-                  vertical:
-                      defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
-                ),
-              ),
-              onPressed: () {
-                AttendeeRegistrationForms(context: context)
-                    .registerNewAttandeeForm(title: 'Attendee');
+            BlocBuilder<DashBoardBloc, DashBoardState>(
+              builder: (context, state) {
+                bool fetched = state is DashBoardFetched;
+
+                return ElevatedButton.icon(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: defaultPadding * 1.5,
+                      vertical: defaultPadding /
+                          (Responsive.isMobile(context) ? 2 : 1),
+                    ),
+                  ),
+                  onPressed: () {
+                    AttendeeRegistrationForms(context: context)
+                        .registerNewAttandeeForm(
+                      title: 'Attendee',
+                      attendees: fetched ? state.attendeeModel : null,
+                      length: fetched ? state.attendeeModel.length : 0,
+                    );
+                  },
+                  icon: const Icon(Icons.person_add_rounded),
+                  label: const Text("Register New"),
+                );
               },
-              icon: const Icon(Icons.person_add_rounded),
-              label: const Text("Register New"),
             ),
           ],
         ),
@@ -95,6 +105,7 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
       if (state is DashBoardLoading) {
         return loadingState();
       }
+      bool fetched = state is DashBoardFetched;
       return GridView(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -117,7 +128,11 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                           state.attendeeModel.length.toDouble()),
                       onTap: () {
                         AttendeeRegistrationForms(context: context)
-                            .registerNewAttandeeForm(title: 'Attendee');
+                            .registerNewAttandeeForm(
+                          title: 'Attendee',
+                          attendees: fetched ? state.attendeeModel : null,
+                          length: fetched ? state.attendeeModel.length : 0,
+                        );
                       }))
               : emptyState(
                   title: 'Attendee',

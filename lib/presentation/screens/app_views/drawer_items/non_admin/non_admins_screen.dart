@@ -3,8 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/logic/bloc/non_admin_management/non_admin_management_bloc.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/non_admin/forms/view_forms.dart';
-import '../../../../../logic/build/bloc_aler_notifier.dart';
+import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
 
@@ -16,6 +17,7 @@ import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../../models/non_admin_staff.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
+import '../../../../widgets/verify_action_dialogue.dart';
 import '../dashboard/components/side_menu.dart';
 import 'forms/reg_forms.dart';
 
@@ -33,13 +35,26 @@ class NonAdminScreen extends StatefulWidget {
 class _NonAdminScreenState extends State<NonAdminScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegistrationBloc, RegistrationState>(
-        listener: (context, state) {
-          updateSessionState(state: state, context: context);
-          updateLoadingBlocState(state: state, context: context);
-          updatetSuccessBlocState(state: state, context: context);
-          updateFailedBlocState(state: state, context: context);
-        },
+    return MultiBlocListener(
+        listeners: [
+          BlocListener<RegistrationBloc, RegistrationState>(
+            listener: (context, state) {
+              updateSessionState(state: state, context: context);
+              updateLoadingBlocState(state: state, context: context);
+              updatetSuccessBlocState(state: state, context: context);
+              updateFailedBlocState(state: state, context: context);
+            },
+          ),
+          BlocListener<NonAdminManagementBloc, NonAdminManagementState>(
+            listener: (context, state) {
+              updateSessionState(state: state, context: context);
+              updateLoadingBlocState(state: state, context: context);
+              updatetSuccessBlocState(state: state, context: context);
+              updateFailedBlocState(state: state, context: context);
+            },
+          ),
+         
+        ],
         child: Scaffold(
           backgroundColor: bgColor,
           body: SafeArea(
@@ -138,10 +153,19 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                                     color: kSecondaryColor, fontSize: 15),
                               ),
                             ),
+                            DataColumn(
+                              label: Text(
+                                "Action",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
+                              ),
+                            ),
                           ],
                     row: List.generate(
                       fetched ? state.nonAdminModel.length : 0,
                       (index) => (recentFileDataRow(
+                          nonAdminId: fetched ? state.nonadminId[index] : null,
+                          adminModel: fetched ? state.user : null,
                           fetched ? state.nonAdminModel[index] : null,
                           context)),
                     ),
@@ -152,7 +176,7 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                         text: 'Add Non admin',
                         onTap: () {
                           NonAdminsRegistrationForms(context: context)
-                              .registerNonAdminForm(title: 'Non Admin');
+                              .registerNonAdminForm(title: 'Non Admin',nonAdmin:fetched ? state.nonAdminModel : null );
                         },
                       ),
                       const TextBtn(
@@ -174,7 +198,8 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
   }
 }
 
-DataRow recentFileDataRow(NonAdminModel? registerdNonAdmin, context) {
+DataRow recentFileDataRow(NonAdminModel? registerdNonAdmin, context,
+    {nonAdminId, adminModel}) {
   return DataRow(
     onLongPress: () {
       NonAdminViewForms(context: context).viewSelectedNonAdminStaffData(
@@ -228,6 +253,28 @@ DataRow recentFileDataRow(NonAdminModel? registerdNonAdmin, context) {
             DataCell(Text(
               registerdNonAdmin.createdBy!.toLowerCase(),
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+            )),
+            DataCell(IconButton(
+              splashRadius: 5,
+              icon: Icon(
+                Icons.delete,
+                color: kSecondaryColor,
+                size: 20,
+              ),
+              onPressed: () {
+                verifyAction(
+                  context: context,
+                  text: 'Do you wish to proceed to delete this Non Admin?',
+                  title: 'Non Admin ${registerdNonAdmin.firstName} ',
+                  action: () {
+                    BlocProvider.of<NonAdminManagementBloc>(context).add(
+                        DeleteNonAdminEvent(
+                            nonAdminId: nonAdminId,
+                            nonAdminModel: registerdNonAdmin,
+                            adminModel: adminModel));
+                  },
+                );
+              },
             )),
           ],
   );

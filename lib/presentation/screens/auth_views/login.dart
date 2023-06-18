@@ -123,16 +123,14 @@ class _SignInScreenState extends State<SignInScreen> {
                             LoginEvent(context,
                                 email: emailCtl.text.trim(),
                                 password: passwordCtl.text.trim()));
-
-                        // Perform login logic here
                       },
-                      child: const Text('Login'),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
+                      child: const Text('Login'),
                     ),
                     const SizedBox(height: 16),
                     toggleCreateAccount()

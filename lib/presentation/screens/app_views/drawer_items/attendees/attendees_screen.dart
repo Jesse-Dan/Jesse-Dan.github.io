@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/attendees/forms/view_form.dart';
-import '../../../../../logic/build/bloc_aler_notifier.dart';
+import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
 
@@ -159,6 +159,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                         (index) => (recentFileDataRow(
                             fetched ? state.attendeeModel[index] : null,
                             context,
+                            admin: fetched ? state.user : null,
                             id: fetched ? state.userIds[index] : '')),
                       ),
                       title: 'Registered Attendees',
@@ -196,7 +197,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
   }
 }
 
-DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {id}) {
+DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {admin, id}) {
   return DataRow(
     onLongPress: () {
       AttendeeViewForms(context: context).viewSelectedAttendeeData(
@@ -263,7 +264,9 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {id}) {
                   action: () {
                     BlocProvider.of<UserManagementBloc>(context).add(
                         DeleteUserEvent(
-                            attendeeID: id, attendeeModel: registerdUser));
+                            attendeeID: id,
+                            attendeeModel: registerdUser,
+                            adminModel: admin));
                   },
                 );
               },

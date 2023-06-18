@@ -10,7 +10,7 @@ import 'package:tyldc_finaalisima/logic/bloc/group_management_bloc/group_managem
 import 'package:tyldc_finaalisima/logic/bloc/non_admin_management/non_admin_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/local_storage_service.dart/local_storage.dart';
-import 'package:tyldc_finaalisima/models/auth_code_model.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/recently_deleted/recenttly_deleted_screen.dart';
 import '../config/constants/enums.dart';
 import '../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../logic/bloc/connectivity_cubit/connectivity_cubit.dart';
@@ -57,18 +57,24 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              RegistrationBloc(auth: widget.auth, storage: widget.storage),
+          create: (context) => RegistrationBloc(
+              auth: widget.auth,
+              storage: widget.storage,
+              localStorageService: widget.localStorageService),
         ),
         BlocProvider(
-          create: (context) => AuthenticationBloc(auth: widget.auth,localStorageService: widget.localStorageService),
+          create: (context) => AuthenticationBloc(
+              auth: widget.auth,
+              localStorageService: widget.localStorageService),
         ),
         BlocProvider(
           create: (context) => MethodsCubit(),
         ),
         BlocProvider(
-          create: (context) =>
-              RegistrationBloc(auth: widget.auth, storage: widget.storage),
+          create: (context) => RegistrationBloc(
+              auth: widget.auth,
+              storage: widget.storage,
+              localStorageService: widget.localStorageService),
         ),
         BlocProvider(
           create: (context) =>
@@ -91,8 +97,10 @@ class _MyAppState extends State<MyApp> {
               auth: widget.auth, storage: widget.storage),
         ),
         BlocProvider(
-            create: (context) =>
-                AdminManagemetBloc(auth: widget.auth, storage: widget.storage)),
+            create: (context) => AdminManagemetBloc(
+                auth: widget.auth,
+                storage: widget.storage,
+                localStorageService: widget.localStorageService)),
       ],
       child: BlocBuilder<ConnectivityCubit, ConnectivityState>(
         builder: ((context, state) {
@@ -137,6 +145,8 @@ class _MyAppState extends State<MyApp> {
                       return const AdminScreen();
                     case SignInScreen.routeName:
                       return SignInScreen();
+                    case RecentlyDeleted.routeName:
+                      return const RecentlyDeleted();
                     default:
                       return SignInScreen();
                   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../../../logic/build/bloc_aler_notifier.dart';
+import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../../models/user_model.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 
@@ -11,6 +11,7 @@ import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
+import '../../../../widgets/data_table.dart';
 import '../dashboard/components/side_menu.dart';
 import 'forms/reg_form.dart';
 
@@ -87,10 +88,12 @@ class _AdminScreenState extends State<AdminScreen> {
                       icon: Icons.person_add,
                       text: 'Set Admin auth Code',
                       onTap: () {
-                        AdminsRegistrationForms(context: context).viewAuthCodeData(
-                            title: 'EDIT ADMIN AUTH CODE',
-                            admin:
-                                state is DashBoardFetched ? state.user : null);
+                        AdminsRegistrationForms(context: context)
+                            .viewAuthCodeData(
+                                title: 'EDIT ADMIN AUTH CODE',
+                                admin: state is DashBoardFetched
+                                    ? state.user
+                                    : null);
                       },
                     );
                   },
@@ -113,93 +116,87 @@ class _AdminScreenState extends State<AdminScreen> {
             },
             child: BlocBuilder<DashBoardBloc, DashBoardState>(
               builder: (context, state) {
-                if (state is DashBoardFetched) {
-                  return SizedBox(
-                    width: double.infinity,
-                    child: DataTable(
-                      showCheckboxColumn: true,
-                      columnSpacing: defaultPadding,
-                      // minWidth: 600,
-                      columns: Responsive.isMobile(context)
-                          ? [
-                              DataColumn(
-                                label: Text(
-                                  "Fullname",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                bool fetched = state is DashBoardFetched;
+
+                return SizedBox(
+                  width: double.infinity,
+                  child: DataTableWidget(
+                    columns: Responsive.isMobile(context)
+                        ? [
+                            DataColumn(
+                              label: Text(
+                                "Fullname",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
-                              DataColumn(
-                                label: Text(
-                                  "Department",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Department",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
-                              DataColumn(
-                                label: Text(
-                                  "Role",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              )
-                            ]
-                          : [
-                              DataColumn(
-                                label: Text(
-                                  "Profile Picture",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Role",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
-                              DataColumn(
-                                label: Text(
-                                  "Fullname",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                            )
+                          ]
+                        : [
+                            DataColumn(
+                              label: Text(
+                                "Profile Picture",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
-                              DataColumn(
-                                label: Text(
-                                  "Department",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Fullname",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
-                              DataColumn(
-                                label: Text(
-                                  "Role",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Department",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
-                              DataColumn(
-                                label: Text(
-                                  "Phone",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Role",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
-                              DataColumn(
-                                label: Text(
-                                  "Gender",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Phone",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
                               ),
-                            ],
-                      rows: List.generate(
-                        state.admins.length,
-                        (index) =>
-                            (recentFileDataRow(state.admins[index], context)),
-                      ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                "Gender",
+                                style: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
+                              ),
+                            ),
+                          ],
+                    row: List.generate(
+                      fetched ? state.admins.length : 0,
+                      (index) => (recentFileDataRow(
+                          fetched ? state.admins[index] : null, context)),
                     ),
-                  );
-                } else {
-                  return const Align(
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator());
-                }
+                    title: 'Administrators',
+                  ),
+                );
               },
             ),
           ),
@@ -209,17 +206,17 @@ class _AdminScreenState extends State<AdminScreen> {
   }
 }
 
-DataRow recentFileDataRow(AdminModel registerdAdmin, context) {
+DataRow recentFileDataRow(AdminModel? registerdAdmin, context) {
   return DataRow(
     onLongPress: () {
       AdminsRegistrationForms(context: context).viewSelectedAdminStaffData(
-          title: registerdAdmin.firstName, admin: registerdAdmin);
+          title: registerdAdmin!.firstName, admin: registerdAdmin);
     },
     cells: Responsive.isMobile(context)
         ? [
             DataCell(
               Text(
-                '${registerdAdmin.firstName.toLowerCase()} ${registerdAdmin.lastName.toLowerCase()}',
+                '${registerdAdmin!.firstName.toLowerCase()} ${registerdAdmin.lastName.toLowerCase()}',
                 style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
               ),
             ),
@@ -233,7 +230,7 @@ DataRow recentFileDataRow(AdminModel registerdAdmin, context) {
             )),
           ]
         : [
-            DataCell(registerdAdmin.imageUrl == ''
+            DataCell(registerdAdmin!.imageUrl == ''
                 ? const Icon(
                     Icons.person,
                     color: primaryColor,

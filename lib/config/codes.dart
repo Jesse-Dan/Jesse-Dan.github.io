@@ -10,7 +10,4 @@ const WEAK_PASSWORD =
     'this password does not meat the minimum requirements (A-Z,a-z,0-9,!@#/\$%^&*().,;)';
 const CONTACT_ADMIN = 'AN UNKNOWN ERROR OCCURED PLEASE CONTACT YOUR ADMIN';
 
-var ADMIN_AUTH_CODE =' toModel().adminCode';
-// var SUPER_ADMIN_AUTH_CODE =  TokenService().getSuperAdminCode();
-// var VIEWER_ADMIN_AUTH_CODE = TokenService().getViewerCode();
 

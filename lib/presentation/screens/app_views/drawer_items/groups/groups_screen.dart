@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../logic/bloc/group_management_bloc/group_management_bloc.dart';
-import '../../../../../logic/build/bloc_aler_notifier.dart';
+import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../../models/group_model.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
@@ -148,6 +148,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
                           context: context,
                           groupsId: fetched ? state.groupIds[index] : null,
                           atttendees: fetched ? state.attendeeModel : null,
+                          admin: fetched ? state.user : null,
                           specificGroupId:
                               fetched ? state.groupIds[index] : null)),
                     ),
@@ -158,7 +159,9 @@ class _GroupsScreenState extends State<GroupsScreen> {
                         text: 'Create Group',
                         onTap: () {
                           GroupsRegistrationForms(context: context)
-                              .registerGroupForm(title: 'Group');
+                              .registerGroupForm(
+                                  title: 'Group',
+                                  groups: fetched ? state.groups : null);
                         },
                       ),
                       const TextBtn(
@@ -182,6 +185,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
 
 DataRow recentFileDataRow(
     {required GroupModel? registerdGroup,
+    admin,
     context,
     groupsId,
     atttendees,
@@ -229,7 +233,7 @@ DataRow recentFileDataRow(
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
-              groupsId,
+              registerdGroup.id,
               style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
@@ -248,8 +252,11 @@ DataRow recentFileDataRow(
                   text: 'Do you wish to proceed to delete this group?',
                   title: '${registerdGroup.name} Group',
                   action: () {
-                    BlocProvider.of<GroupManagementBloc>(context)
-                        .add(DeleteGroupEvent(groupId: specificGroupId, groupModel:registerdGroup));
+                    BlocProvider.of<GroupManagementBloc>(context).add(
+                        DeleteGroupEvent(
+                            groupId: specificGroupId,
+                            groupModel: registerdGroup,
+                            adminModel: admin));
                   },
                 );
               },

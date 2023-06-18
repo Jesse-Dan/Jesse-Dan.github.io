@@ -4,7 +4,8 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tyldc_finaalisima/config/validators.dart';
+import 'package:tyldc_finaalisima/models/recently_deleted_model.dart';
+import '../../../config/app_autorizations.dart';
 import '../../../config/codes.dart';
 import '../../../models/auth_code_model.dart';
 import '../../../models/models.dart';
@@ -48,9 +49,9 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
         var actor = await DB(auth: auth).fetchAdminData();
         await DB(auth: auth).sendNotificationData(
             Notifier.login(data: '${actor.firstName} ${actor.lastName}'));
+
         Navigator.pushNamedAndRemoveUntil(
             event.context, MainScreen.routeName, (_) => false);
-
         emit(AuthentictionSuccesful());
       } on FirebaseAuthException catch (e) {
         if (e.code == 'invalid-email') {
@@ -90,7 +91,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
       var data = event.adminModel;
       try {
         log(data.authCode);
-        if (await Validators(localStorageService: localStorageService)
+        if (await AppAuthorizations(localStorageService: localStorageService)
             .validateAdminAuthCode(data.authCode)) {
           emit(AuthentictionLoading());
           await auth.createUserWithEmailAndPassword(

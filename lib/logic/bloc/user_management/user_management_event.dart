@@ -9,8 +9,9 @@ abstract class UserManagementEvent extends Equatable {
 
 class DeleteUserEvent extends UserManagementEvent {
   final String attendeeID;
-  final AttendeeModel attendeeModel;
+  final AttendeeModel attendeeModel;  final AdminModel adminModel;
+
 
   const DeleteUserEvent(
-      {required this.attendeeModel, required this.attendeeID});
+      {required this.attendeeModel, required this.attendeeID,required this.adminModel});
 }

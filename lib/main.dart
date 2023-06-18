@@ -21,13 +21,12 @@ void main() async {
     setOrientation();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
-    ]).then((_) {
-      runApp(MyApp(
-        localStorageService: LocalStorageService(),
-        storage: FirebaseStorage.instance,
-        connectivity: Connectivity(),
-        auth: FirebaseAuth.instance,
-      ));
-    });
-  }, blocObserver: MyBlocObserver());
+    ]);
+  }, blocObserver: MyBlocObserver())
+      .then((value) => runApp(MyApp(
+            localStorageService: LocalStorageService(),
+            storage: FirebaseStorage.instance,
+            connectivity: Connectivity(),
+            auth: FirebaseAuth.instance,
+          )));
 }

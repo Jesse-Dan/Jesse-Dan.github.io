@@ -9,6 +9,7 @@ import '../../../models/atendee_model.dart';
 import '../../../models/group_model.dart';
 import '../../../models/non_admin_staff.dart';
 import '../../../models/notifier_model.dart';
+import '../../../models/recently_deleted_model.dart';
 import '../../../models/user_model.dart';
 import '../../db/db.dart';
 
@@ -27,7 +28,7 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
     return on<DashBoardDataEvent>((event, emit) async {
       try {
         emit(DashBoardLoading());
-        
+
         var response = DB(auth: auth).fetchAdminData();
         var response_2 = DB(auth: auth).getAttendeeIDs();
         var response_3 = DB(auth: auth).getNonAdminIDs();
@@ -37,6 +38,8 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
         var response_7 = DB(auth: auth).getGroupsIDsOnly();
         var response_8 = DB(auth: auth).getAttendeesIdsOnly();
         var response_9 = DB(auth: auth).fetchNotifications();
+        var response_10 = DB(auth: auth).fetchRecentlyDeleted();
+        var response_11 = DB(auth: auth).getNonAdminIdsOnly();
 
         List<dynamic> results = await Future.wait([
           response,
@@ -47,7 +50,9 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
           response_6,
           response_7,
           response_8,
-          response_9
+          response_9,
+          response_10,
+          response_11
         ]);
 
         emit(DashBoardFetched(
@@ -59,7 +64,9 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
             groups: results[4],
             groupIds: results[6],
             userIds: results[7],
-            notifications: results[8]));
+            notifications: results[8],
+            recentlyDeleted: results[9],
+            nonadminId: results[10]));
       } catch (e) {
         log(e.toString());
         emit(DashBoardFailed('on bloc $e'));

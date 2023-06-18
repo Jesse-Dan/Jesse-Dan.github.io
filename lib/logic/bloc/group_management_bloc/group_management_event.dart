@@ -31,6 +31,7 @@ class RemoveFromGroupEvent extends GroupManagementEvent {
 class DeleteGroupEvent extends GroupManagementEvent {
   final String groupId;
   final GroupModel groupModel;
+  final AdminModel adminModel;
 
-  const DeleteGroupEvent({required this.groupModel, required this.groupId});
+  const DeleteGroupEvent({required this.groupModel, required this.groupId, required this.adminModel});
 }

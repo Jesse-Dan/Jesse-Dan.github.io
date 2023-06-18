@@ -10,7 +10,8 @@ abstract class NonAdminManagementEvent extends Equatable {
 class DeleteNonAdminEvent extends NonAdminManagementEvent {
   final String nonAdminId;
   final NonAdminModel nonAdminModel;
+  final AdminModel adminModel;
 
-  const DeleteNonAdminEvent(
-      {required this.nonAdminModel, required this.nonAdminId});
+  const DeleteNonAdminEvent( 
+      {required this.nonAdminModel, required this.nonAdminId,required this.adminModel,});
 }

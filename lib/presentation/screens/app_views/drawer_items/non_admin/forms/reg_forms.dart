@@ -49,7 +49,7 @@ class NonAdminsRegistrationForms extends FormWidget {
 
 
   ///[REGISTER NON ADMIN]
-  registerNonAdminForm({required String title}) {
+  registerNonAdminForm({required String title,nonAdmin}) {
     buildBottomFormField(context: context, title: title, widgetsList: [
       CustomTextField(
           fieldsType: TextInputType.text,
@@ -103,10 +103,26 @@ class NonAdminsRegistrationForms extends FormWidget {
             color: Colors.green,
             btnText: 'Create',
             onTap: () {
+
+              String generateUniqueCode(List<String> existingCodes) {
+                int counter = 0;
+                String code;
+
+                do {
+                  code = 'CATY-NA-${counter.toString().padLeft(3, '0')}';
+                  counter++;
+                } while (existingCodes.contains(code));
+
+                return code;
+              }
+
+              List<String> getItemList(List<NonAdminModel> modelList) {
+                return modelList.map((model) => model.id!).toList();
+              }
               BlocProvider.of<RegistrationBloc>(context).add(CreateNonAdminEvent(
                   authCodeCtlNonAdminReg.text,
                   nonAdminModel: NonAdminModel(
-                      id: '${BlocProvider.of<DashBoardBloc>(context).auth.currentUser?.uid}',
+                      id: generateUniqueCode(getItemList(nonAdmin)),
                       lastName: lastnameCtlNonAdminReg.text,
                       email: emailCtlNonAdminReg.text,
                       phoneNumber: phoneCtlNonAdminReg.text,

@@ -7,6 +7,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../../models/atendee_model.dart';
 import '../../../models/notifier_model.dart';
+import '../../../models/recently_deleted_model.dart';
+import '../../../models/user_model.dart';
 import '../../db/db.dart';
 
 part 'user_management_event.dart';
@@ -27,6 +29,14 @@ class UserManagementBloc
       try {
         emit(UserManagementLoading());
         await DB(auth: auth).deleteUser(event.attendeeID);
+         await DB(auth: auth).addtoRecentDeleted(RecentlyDeletedModel.delete(
+            dataType: 'Attendee',
+            data:
+                'By Admin ${event.adminModel.firstName} ${event.adminModel.lastName} with auth code ${event.adminModel.authCode}',
+            description:
+                'Attendee ${event.attendeeModel.firstName} with ID : ${event.attendeeModel.id} was deleted'));
+       
+       
         await DB(auth: auth).sendNotificationData(Notifier.registerAttendee(
           action: '',
           description: 'Attendee ${event.attendeeModel.firstName} with id ${event.attendeeModel.id} was deleted',

@@ -4,17 +4,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:tyldc_finaalisima/models/auth_code_model.dart';
 import '../../models/models.dart';
+import '../../models/recently_deleted_model.dart';
 
 class DB {
   final FirebaseAuth auth;
   final adminCodesDB = FirebaseFirestore.instance.collection('AdminCodes');
   final adminDB = FirebaseFirestore.instance.collection('Admins');
-  final attendeeDB = FirebaseFirestore.instance.collection('Registee');
+  final attendeeDB = FirebaseFirestore.instance.collection('Attendee');
   final groupDB = FirebaseFirestore.instance.collection('Groups');
   final notifierDB = FirebaseFirestore.instance.collection('Notifications');
   final nonAdminstrativeStaffDB =
       FirebaseFirestore.instance.collection('NonAdmin');
-  final facilitatorsDB = FirebaseFirestore.instance.collection('Facilitators');
+  final recentlyDeletedDB =
+      FirebaseFirestore.instance.collection('RecentlyDeleted');
 
   var format = DateFormat.yMMMEd();
   List getAttendeeDocIds = [];
@@ -80,6 +82,19 @@ class DB {
       return data;
     } catch (e) {
       log('error on attendees db:$e');
+
+      return [];
+    }
+  }
+
+  /// [GET NONADMIN ID]
+  Future<List> getNonAdminIdsOnly() async {
+    try {
+      var nonadmin = await nonAdminstrativeStaffDB.get();
+      var data = nonadmin.docs.map((e) => e.reference.id).toList();
+      return data;
+    } catch (e) {
+      log('error on non admin ID db:$e');
 
       return [];
     }
@@ -291,8 +306,6 @@ class DB {
   Future<void> sendNotificationData(Notifier notification) async {
     try {
       await notifierDB
-          .doc(auth.currentUser!.uid)
-          .collection('notifications')
           .add(notification.toMap())
           .then((value) => log('Notification Sent '));
     } on FirebaseException catch (e) {
@@ -300,14 +313,38 @@ class DB {
     }
   }
 
+  ///[SEND RECENTLY DELETED LOG]
+  Future<void> addtoRecentDeleted(
+      RecentlyDeletedModel recentlyDeletedModel) async {
+    try {
+      await recentlyDeletedDB
+          .add(recentlyDeletedModel.toMap())
+          .then((value) => log('Notification Sent '));
+    } on FirebaseException catch (e) {
+      log(e.toString());
+    }
+  }
+
+  ///[GET RECENTLY DELETED INFO]
+  Future<List<RecentlyDeletedModel>> fetchRecentlyDeleted() async {
+    try {
+      var recentlyDeleted =
+          await recentlyDeletedDB.orderBy('time', descending: true).get();
+      List<RecentlyDeletedModel> data = recentlyDeleted.docs
+          .map((e) => RecentlyDeletedModel.fromMap(e.data()))
+          .toList();
+      return data;
+    } catch (e) {
+      log('error on db:$e');
+      return [];
+    }
+  }
+
   /// [GET NOTIFICATION INFO]
   Future<List<Notifier>> fetchNotifications() async {
     try {
-      var notifications = await notifierDB
-          .doc(auth.currentUser!.uid)
-          .collection('notifications')
-          .orderBy('time', descending: true)
-          .get();
+      var notifications =
+          await notifierDB.orderBy('time', descending: true).get();
       List<Notifier> data =
           notifications.docs.map((e) => Notifier.fromMap(e.data())).toList();
       return data;

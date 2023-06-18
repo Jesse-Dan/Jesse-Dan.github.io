@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../config/constants/responsive.dart';
 import '../../config/theme.dart';
+import '../screens/app_views/components/header.dart';
 
 class DataTableWidget extends StatefulWidget {
   final List<DataColumn> columns;
+
   final List<DataRow> row;
   final String title;
   final List<Widget>? actions;
@@ -38,6 +41,15 @@ class _DataTableWidgetState extends State<DataTableWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                if (Responsive.isDesktop(context))
+                  Header(title: widget.title, onPressed: () {}),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: defaultPadding, bottom: defaultPadding),
+                  child: Divider(
+                    color: primaryColor.withOpacity(0.7),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -54,7 +66,6 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                   ],
                 ),
                 DataTable(
-                  
                   showCheckboxColumn: true,
                   columnSpacing: defaultPadding,
                   // minWidth: 600,

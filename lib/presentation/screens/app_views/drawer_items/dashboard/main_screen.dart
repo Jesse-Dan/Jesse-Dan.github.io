@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/auth_bloc/authentiction_bloc.dart';
 
@@ -8,8 +7,7 @@ import '../../../../../config/theme.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
-import '../../../../../logic/build/bloc_aler_notifier.dart';
-import '../../../../widgets/alertify.dart';
+import '../../../../../config/bloc_aler_notifier.dart';
 import '../../components/header.dart';
 import '../../components/prefered_size_widget.dart';
 import 'components/side_menu.dart';
