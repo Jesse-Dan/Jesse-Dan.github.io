@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tyldc_finaalisima/logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import 'package:tyldc_finaalisima/logic/local_storage_service.dart/local_storage.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/recently_deleted/recenttly_deleted_screen.dart';
+import 'package:tyldc_finaalisima/presentation/widgets/verify_action_dialogue.dart';
 
 import '../../../../../../config/app_autorizations.dart';
 import '../../../../../../config/constants/responsive.dart';
@@ -203,41 +204,14 @@ class _SideMenuState extends State<SideMenu> {
                   title: "End Session",
                   svgSrc: "assets/icons/menu_profile.svg",
                   press: () {
-                    showDialog(
-                        context: context,
-                        builder: (builder) => AlertDialog(
-                              backgroundColor: bgColor,
-                              title: Text(
-                                'End Session',
-                                style: TextStyle(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                              content: Text(
-                                'Are you sure you want to End this Session?',
-                                style: TextStyle(
-                                    color: kSecondaryColor, fontSize: 25),
-                              ),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      'Cancel',
-                                      style: TextStyle(color: kSecondaryColor),
-                                    )),
-                                TextButton(
-                                    onPressed: () {
-                                      BlocProvider.of<AuthenticationBloc>(
-                                              context)
-                                          .add(LogoutEvent());
-                                    },
-                                    child: const Text(
-                                      'Proceed',
-                                      style: TextStyle(color: Colors.red),
-                                    ))
-                              ],
-                            ));
+                    verifyAction(
+                        title: 'End Session',
+                        text: 'Are you sure you want to End this Session?',
+                        action: () {
+                          BlocProvider.of<AuthenticationBloc>(context)
+                              .add(LogoutEvent());
+                        },
+                        context: context);
                   },
                 ),
               ),

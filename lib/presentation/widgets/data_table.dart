@@ -74,6 +74,8 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                   scrollDirection: Axis.horizontal,
                   dragStartBehavior: DragStartBehavior.down,
                   child: DataTable(
+                    onSelectAll: (all) {},
+                    showBottomBorder: true,
                     dataTextStyle: GoogleFonts.dmSans(
                         color: kSecondaryColor, fontSize: 15),
                     sortColumnIndex: widget.searchIndex,
