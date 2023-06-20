@@ -85,6 +85,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
                 }, builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
                   return DataTableWidget(
+                    searchIndex: 2,
                     columns: Responsive.isMobile(context)
                         ? [
                             DataColumn(
@@ -102,12 +103,12 @@ class _GroupsScreenState extends State<GroupsScreen> {
                               ),
                             ),
                             DataColumn(
-                              label: Text(
-                                "Members count",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            )
+                                label: Text(
+                                  "Members count",
+                                  style: GoogleFonts.dmSans(
+                                      color: kSecondaryColor, fontSize: 15),
+                                ),
+                                numeric: true)
                           ]
                         : [
                             DataColumn(

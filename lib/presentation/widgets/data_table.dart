@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,8 +12,12 @@ class DataTableWidget extends StatefulWidget {
   final List<DataRow> row;
   final String title;
   final List<Widget>? actions;
+  final int? searchIndex;
+  final bool? searchAccending;
   const DataTableWidget(
       {super.key,
+      this.searchIndex = 0,
+      this.searchAccending = true,
       required this.columns,
       required this.row,
       required this.title,
@@ -65,11 +70,19 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                     ),
                   ],
                 ),
-                DataTable(
-                  showCheckboxColumn: true,
-                  columnSpacing: defaultPadding,
-                  // minWidth: 600,
-                  columns: widget.columns, rows: widget.row,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  dragStartBehavior: DragStartBehavior.down,
+                  child: DataTable(
+                    dataTextStyle: GoogleFonts.dmSans(
+                        color: kSecondaryColor, fontSize: 15),
+                    sortColumnIndex: widget.searchIndex,
+                    sortAscending: widget.searchAccending!,
+                    showCheckboxColumn: true,
+                    columnSpacing: defaultPadding,
+                    // minWidth: 600,
+                    columns: widget.columns, rows: widget.row,
+                  ),
                 )
               ],
             ),

@@ -55,8 +55,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
         ),
       ],
       child: Scaffold(
-                drawer: SideMenu(),
-
+        drawer: SideMenu(),
         appBar: (Responsive.isMobile(context))
             ? CustomPreferredSizeWidget(
                 preferredHeight: 100,
@@ -131,12 +130,12 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                                 ),
                               ),
                               DataColumn(
-                                label: Text(
-                                  "Code",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
+                                  label: Text(
+                                    "Code",
+                                    style: GoogleFonts.dmSans(
+                                        color: kSecondaryColor, fontSize: 15),
+                                  ),
+                                  numeric: true),
                               DataColumn(
                                 label: Text(
                                   "Phone",
