@@ -59,6 +59,7 @@ dependencies:
   date_time_format: ^2.0.1
   get_storage: ^2.1.1
   shared_preferences: ^2.1.2
+  fluttertoast: ^8.2.2
 
 
 dev_dependencies:

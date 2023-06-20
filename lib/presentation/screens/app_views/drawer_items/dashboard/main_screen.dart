@@ -40,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
       listener: (context, state) {
         if (state is DashBoardFetched) Navigator.of(context).pop();
         updateSessionState(state: state, context: context);
-        updateLoadingBlocState(state: state, context: context);
+        // updateLoadingBlocState(state: state, context: context);
         updatetSuccessBlocState(state: state, context: context);
         updateFailedBlocState(state: state, context: context);
       },

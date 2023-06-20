@@ -30,10 +30,20 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
 
   checkAuthenticationStatus() async {
     on<CheckStatusEvent>((event, emit) async {
-      if (auth.currentUser == null) {
-        emit(AuthentictionLostSession());
-      } else {
-        emit(AuthentictionFoundSession());
+      try {
+        if (auth.currentUser == null) {
+          emit(AuthentictionLostSession());
+        } else {
+          emit(AuthentictionFoundSession());
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.message == 'user-disabled') {
+          emit(AuthentictionFailed(e.message.toString()));
+          log('Account Dissabled');
+        }
+      } catch (e) {
+        emit(AuthentictionFailed(e.toString()));
+        log('Incorrect password.');
       }
     });
   }
@@ -77,7 +87,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
           log('Email address is already in use.');
         } else {
           emit(AuthentictionFailed(e.message.toString()));
-          log('Error occurred while signing in: ${e.message}');
+          log('Login Error${e.message}');
         }
       } catch (e) {
         emit(AuthentictionFailed('type error $e'));

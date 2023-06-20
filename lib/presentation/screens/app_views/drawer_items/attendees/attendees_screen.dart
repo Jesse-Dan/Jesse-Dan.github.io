@@ -14,7 +14,6 @@ import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../../models/atendee_model.dart';
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
-import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../../../../widgets/verify_action_dialogue.dart';
 import '../dashboard/components/side_menu.dart';
