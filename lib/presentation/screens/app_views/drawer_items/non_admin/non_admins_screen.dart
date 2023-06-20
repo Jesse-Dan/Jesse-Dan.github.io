@@ -18,6 +18,8 @@ import '../../../../../models/non_admin_staff.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../../../../widgets/verify_action_dialogue.dart';
+import '../../components/header.dart';
+import '../../components/prefered_size_widget.dart';
 import '../dashboard/components/side_menu.dart';
 import 'forms/reg_forms.dart';
 
@@ -56,6 +58,16 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
          
         ],
         child: Scaffold(
+          drawer: SideMenu(),
+           appBar: (Responsive.isMobile(context))
+            ? CustomPreferredSizeWidget(
+                preferredHeight: 100,
+                preferredWidth: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(kdefaultPadding),
+                  child: Header(title: 'Attendees', onPressed: () {}),
+                ))
+            : null,
           backgroundColor: bgColor,
           body: SafeArea(
             child: Row(

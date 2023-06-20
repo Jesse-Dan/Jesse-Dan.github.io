@@ -16,6 +16,8 @@ import '../../../../../../models/atendee_model.dart';
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../../../../widgets/verify_action_dialogue.dart';
+import '../../components/header.dart';
+import '../../components/prefered_size_widget.dart';
 import '../dashboard/components/side_menu.dart';
 import 'forms/reg_form.dart';
 
@@ -53,6 +55,17 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
         ),
       ],
       child: Scaffold(
+                drawer: SideMenu(),
+
+        appBar: (Responsive.isMobile(context))
+            ? CustomPreferredSizeWidget(
+                preferredHeight: 100,
+                preferredWidth: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(kdefaultPadding),
+                  child: Header(title: 'Attendees', onPressed: () {}),
+                ))
+            : null,
         backgroundColor: bgColor,
         body: SafeArea(
           child: Row(

@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+
 class Alertify {
   final String title;
   final String message;
@@ -10,7 +11,7 @@ class Alertify {
     this.title = "Successful",
     this.message = "Completed successfully",
     this.icon = Icons.check,
-    this.alignment = const Alignment(0, -0.99),
+    this.alignment = const Alignment(1, -1),
   }) {
     botToast(Colors.green);
   }
@@ -19,7 +20,7 @@ class Alertify {
     this.title = "Warning",
     this.message = "Please check well",
     this.icon = Icons.info,
-    this.alignment = const Alignment(0, -0.99),
+    this.alignment = const Alignment(1, -1),
   }) {
     botToast(Colors.orangeAccent);
   }
@@ -28,7 +29,7 @@ class Alertify {
     this.title = "Network Error",
     this.message = "Could not connect to the internet",
     this.icon = Icons.error_outline,
-    this.alignment = const Alignment(0, -0.99),
+    this.alignment = const Alignment(1, -1),
   }) {
     botToast(Colors.red);
   }
@@ -37,7 +38,7 @@ class Alertify {
     return BotToast.showNotification(
       backgroundColor: bgColor,
       leading: (cancel) => SizedBox.fromSize(
-        size: const Size(40, 40),
+        size: const Size(20, 20),
         child: IconButton(
           icon: Icon(icon, color: Colors.white),
           onPressed: cancel,
@@ -62,8 +63,8 @@ class Alertify {
       onLongPress: () {},
       enableSlideOff: true,
       align: alignment,
-      backButtonBehavior: BackButtonBehavior.none,
-      crossPage: true,
+      backButtonBehavior: BackButtonBehavior.close,
+      crossPage: false,
       contentPadding: const EdgeInsets.symmetric(
         horizontal: 10,
         vertical: 7,

@@ -29,7 +29,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             children: [
               if (Responsive.isDesktop(context))
-                Header(title: 'Dashboard', onPressed: () {}, ),
+                Header(
+                  title: 'Dashboard',
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
               const SizedBox(height: defaultPadding),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

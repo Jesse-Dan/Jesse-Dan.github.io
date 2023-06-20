@@ -37,7 +37,7 @@ class _HeaderState extends State<Header> {
             leading: // if (!Responsive.isDesktop(context))
                 SizedBox(
               child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 6.0),
                   child: IconButton(
                       focusColor: Colors.transparent,
                       color: Colors.transparent,
@@ -64,19 +64,27 @@ class _HeaderState extends State<Header> {
           Text(
             fetched
 
-                /// [if state is  loaded]
-                ? widget.title == 'Dashboard'
-                    ? 'Dashboard | ${AppAuthorizations(localStorageService: LocalStorageService()).getAuthLevel(adminCode: fetched ? state.user.authCode : '')}'
+                /// [if state is  loaded && is mobile]
+                ? Responsive.isMobile(context)
+                    ? AppAuthorizations(
+                            localStorageService: LocalStorageService())
+                        .getAuthLevel(
+                            adminCode: fetched ? state.user.authCode : '')
                     : '${AppAuthorizations(localStorageService: LocalStorageService()).getAuthLevel(adminCode: fetched ? state.user.authCode : '')} | Auth code : ${state.user.authCode}'
 
                 /// [if state is not loaded]
-                : widget.title == 'Dashboard'
-                    ? '${widget.title} | Loading DashBoard...'
-                    : '${widget.title} | Refresh Table',
-            style: GoogleFonts.dmSans(fontSize: 22, color: primaryColor),
+                : 'Loading...| Refresh Page',
+            style: GoogleFonts.dmSans(
+                fontSize: Responsive.isMobile(context) ? 18 : 22,
+                color: primaryColor),
           ),
           Spacer(flex: flex),
-          const Expanded(child: SearchField()),
+          Responsive.isTablet(context)
+              ? const Expanded(child: SearchField())
+              : const SizedBox.shrink(),
+          Responsive.isMobile(context)
+              ? const SizedBox.shrink()
+              : const Expanded(child: SearchField()),
           const ProfileCard()
         ]);
       },
@@ -121,7 +129,7 @@ class _ProfileCardState extends State<ProfileCard> {
                 if (!Responsive.isMobile(context))
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPadding / 2),
+                        horizontal: defaultPadding / 3),
                     child: Text(
                       state is DashBoardFetched
                           ? '${state.user.firstName} ${state.user.lastName}'

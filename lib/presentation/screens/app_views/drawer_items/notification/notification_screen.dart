@@ -37,13 +37,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
         updateFailedBlocState(state: state, context: context);
       },
       child: Scaffold(
+        drawer: SideMenu(),
         appBar: (Responsive.isMobile(context))
             ? CustomPreferredSizeWidget(
                 preferredHeight: 100,
                 preferredWidth: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.all(kdefaultPadding),
-                  child: Header(title: 'Notifications', onPressed: () {}),
+                  child: Header(title: 'Notification',onPressed: () {}),
                 ))
             : null,
         backgroundColor: bgColor,
@@ -51,6 +52,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+             
               // We want this side menu only for large screen
               if (Responsive.isDesktop(context))
                 const Expanded(

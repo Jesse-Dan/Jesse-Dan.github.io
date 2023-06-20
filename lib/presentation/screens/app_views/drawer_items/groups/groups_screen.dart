@@ -14,6 +14,8 @@ import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../widgets/customm_text_btn.dart';
+import '../../components/header.dart';
+import '../../components/prefered_size_widget.dart';
 import '../dashboard/components/side_menu.dart';
 import 'form/group_reg_form.dart';
 import 'form/group_view_form.dart';
@@ -52,6 +54,16 @@ class _GroupsScreenState extends State<GroupsScreen> {
         ],
         child: Scaffold(
           backgroundColor: bgColor,
+          drawer: SideMenu(),
+          appBar: (Responsive.isMobile(context))
+              ? CustomPreferredSizeWidget(
+                  preferredHeight: 100,
+                  preferredWidth: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.all(kdefaultPadding),
+                    child: Header(title: 'Groups', onPressed: () {}),
+                  ))
+              : null,
           body: SafeArea(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

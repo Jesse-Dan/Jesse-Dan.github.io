@@ -11,10 +11,10 @@ import '../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_state.dart';
 import '../../../models/user_model.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tyldc_finaalisima/config/constants/responsive.dart';
 import 'package:tyldc_finaalisima/presentation/screens/auth_views/components/components.dart';
 
+import '../../widgets/alertify.dart';
 import 'login.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -109,11 +109,11 @@ class _SignUpScreenState extends State<SignUpScreen>
                   const Center(child: CircularProgressIndicator())));
         }
         if (state is AuthentictionSuccesful) {
-          Fluttertoast.showToast(msg: 'User Created in sussecfully');
+          Alertify.success(message: 'User Logged in sussecfullyd');
         }
         if (state is AuthentictionFailed) {
           Navigator.pop(context);
-          Fluttertoast.showToast(msg: state.error);
+          Alertify.error(message: state.error);
         }
       },
       builder: (context, state) {
@@ -259,13 +259,13 @@ class _SignUpScreenState extends State<SignUpScreen>
                                             passwordCtl.text,
                                             confirmPasswordCtl.text);
                                     if (!isPasswordMatch) {
-                                      Fluttertoast.showToast(
-                                          msg: 'Password don\'t match');
+                                      Alertify.error(
+                                          message: 'Password dosen\'t match');
                                     } else if (!isStrongPassword) {
-                                      Fluttertoast.showToast(
-                                          msg:
+                                      Alertify.error(
+                                          message:
                                               'Password doesn\'t meet requirements');
-                                    } else {
+
                                       BlocProvider.of<AuthenticationBloc>(
                                               context)
                                           .add(SignUpEvent(context,

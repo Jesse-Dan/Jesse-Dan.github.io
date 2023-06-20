@@ -38,6 +38,7 @@ class _RecentlyDeletedState extends State<RecentlyDeleted> {
         updateFailedBlocState(state: state, context: context);
       },
       child: Scaffold(
+        drawer: SideMenu(),
         appBar: (Responsive.isMobile(context))
             ? CustomPreferredSizeWidget(
                 preferredHeight: 100,

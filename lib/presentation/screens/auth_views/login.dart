@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/config/constants/responsive.dart';
 import 'package:tyldc_finaalisima/config/theme.dart';
 import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
 import 'package:tyldc_finaalisima/presentation/screens/auth_views/components/components.dart';
 import 'package:tyldc_finaalisima/presentation/screens/auth_views/reg.dart';
+import 'package:tyldc_finaalisima/presentation/widgets/alertify.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_state.dart';
@@ -62,9 +62,7 @@ class _SignInScreenState extends State<SignInScreen>
         text: TextSpan(children: [
           TextSpan(
               style: GoogleFonts.dmSans(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                  color: cardColors),
+                  fontWeight: FontWeight.w400, fontSize: 12, color: cardColors),
               text: 'Don\'t have an account? '),
           TextSpan(
               style: GoogleFonts.dmSans(
@@ -97,12 +95,12 @@ class _SignInScreenState extends State<SignInScreen>
                   const Center(child: CircularProgressIndicator())));
         }
         if (state is AuthentictionSuccesful) {
-          Fluttertoast.showToast(msg: 'User Logged in sussecfullyd');
+          Alertify.success(message: 'User Logged in sussecfullyd');
         }
         if (state is AuthentictionFailed) {
           Navigator.pop(context);
 
-          Fluttertoast.showToast(msg: state.error);
+          Alertify.error(message: state.error);
         }
       },
       builder: (context, state) {
@@ -209,10 +207,9 @@ class _SignInScreenState extends State<SignInScreen>
                                             color: Colors.blueAccent),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Fluttertoast.showToast(
-                                              msg:
-                                                  'Forgotten password! button pressed',
-                                            );
+                                            Alertify.warning(
+                                                message:
+                                                    'Forgot password clicked');
                                           },
                                       ),
                                     ),
