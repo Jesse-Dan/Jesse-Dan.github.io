@@ -29,4 +29,6 @@ class AuthentictionLostSession extends AuthentictionState {}
 
 class AuthentictionFoundSession extends AuthentictionState {}
 
-class ForgottenPasswordEmailSentSession extends AuthentictionState {}
+class ForgottenPasswordEmailSent extends AuthentictionState {}
+
+class MobileNumberUpdateSuccessfully extends AuthentictionState {}

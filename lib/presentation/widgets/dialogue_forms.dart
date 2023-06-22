@@ -6,13 +6,12 @@ import 'custom_submit_btn.dart';
 ///[DETERMINE THE DESIGN FORMAT BY THE AMOUNT OF BUTTON YOU ALLOW]
 enum AlertType { oneBtn, twoBtns }
 
-
 class FormWidget {
-  Future<dynamic> buildBottomFormField(
-      {required BuildContext context,
-      required List<Widget> widgetsList,
-      required String title,}) {
-        
+  Future<dynamic> buildBottomFormField({
+    required BuildContext context,
+    required List<Widget> widgetsList,
+    required String title,
+  }) {
     List<Widget> columnChilren = [];
     columnChilren.add(Padding(
       padding: const EdgeInsets.only(top: 15.0),
@@ -65,11 +64,12 @@ class FormWidget {
                 ));
           });
         });
-        
   }
 
   Future<dynamic> buildCenterFormField({
+    Color? mainBgColor,
     required String title,
+    Color? titleColor,
     required BuildContext context,
     required List<Widget> widgetsList,
     String onSubmitText = 'Done',
@@ -116,36 +116,36 @@ class FormWidget {
       barrierDismissible: true,
       barrierColor: Colors.black12,
       context: context,
-      builder: (builder) => StatefulBuilder(
-        builder: (context,putState) {
-          return AlertDialog(
-            actionsAlignment: MainAxisAlignment.center,
-            insetPadding:
-                const EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30.0))),
-            titlePadding: const EdgeInsets.only(top: 20),
-            contentPadding: const EdgeInsets.all(0),
-            scrollable: true,
-            titleTextStyle: GoogleFonts.gochiHand(
-                color: kSecondaryColor, fontSize: 43, fontWeight: FontWeight.w600),
-            title: Text(
-              title,
-              textAlign: TextAlign.center,
+      builder: (builder) => StatefulBuilder(builder: (context, putState) {
+        return AlertDialog(
+          actionsAlignment: MainAxisAlignment.center,
+          insetPadding:
+              const EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0))),
+          titlePadding: const EdgeInsets.only(top: 20),
+          contentPadding: const EdgeInsets.all(0),
+          scrollable: true,
+          titleTextStyle: GoogleFonts.gochiHand(
+              color:titleColor?? kSecondaryColor,
+              fontSize: 43,
+              fontWeight: FontWeight.w600),
+          title: Text(
+            title,
+            textAlign: TextAlign.center,
+          ),
+          clipBehavior: Clip.antiAlias,
+          backgroundColor: mainBgColor ?? bgColor,
+          actions: getbtn(alertType),
+          content: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: (columnChilren),
             ),
-            clipBehavior: Clip.antiAlias,
-            backgroundColor: bgColor,
-            actions: getbtn(alertType),
-            content: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: (columnChilren),
-              ),
-            ),
-          );
-        }
-      ),
+          ),
+        );
+      }),
     );
   }
 }

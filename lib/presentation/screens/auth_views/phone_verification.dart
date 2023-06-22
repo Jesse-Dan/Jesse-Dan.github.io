@@ -66,14 +66,17 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
           TextSpan(
               style: GoogleFonts.dmSans(
                   fontWeight: FontWeight.w400, fontSize: 12, color: cardColors),
-              text: 'Didn\'t revieve the OTP? '),
+              text: 'wrong input | consider an update '),
           TextSpan(
               style: GoogleFonts.dmSans(
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                   color: primaryColor),
-              text: 'Resend OTP',
-              recognizer: TapGestureRecognizer()..onTap = () {})
+              text: 'Update mobile number',
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  AuthViewComponents(context: context).updatePhoneNumber();
+                })
         ]));
   }
 
@@ -118,7 +121,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
         showCursor: true,
         onCompleted: (pin) => BlocProvider.of<AuthenticationBloc>(context).add(
-          VerifyOtpAndLoginInEvent(int.parse(otpCtl.text), context: context),
+          VerifyOtpAndLoginInEvent(int.parse(pin), context: context),
         ),
       );
     }
@@ -138,6 +141,11 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         if (state is PhoneAuthentictionSuccesful) {
           Navigator.pushNamedAndRemoveUntil(
               context, SignInScreen.routeName, (_) => false);
+        }
+
+        if (state is MobileNumberUpdateSuccessfully) {
+          Navigator.pop(context);
+          Alertify.success(message: 'Phone Number Updated successfully');
         }
         if (state is AuthentictionFailed) {
           Navigator.pop(context);

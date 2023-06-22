@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tyldc_finaalisima/config/constants/responsive.dart';
+import 'package:tyldc_finaalisima/logic/bloc/auth_bloc/authentiction_bloc.dart';
+import 'package:tyldc_finaalisima/logic/bloc/auth_bloc/authentiction_event.dart';
+import 'package:tyldc_finaalisima/presentation/widgets/index.dart';
 
 import '../../../../config/theme.dart';
+import '../../../widgets/dialogue_forms.dart';
 
-class AuthViewComponents {
-  const AuthViewComponents({required this.context});
+class AuthViewComponents extends FormWidget {
+  AuthViewComponents({required this.context});
   final BuildContext context;
-
+  final mobileNumberCtl = TextEditingController();
   Widget component1(
       IconData icon, String hintText, bool isPassword, bool isEmail, Size size,
-      {required TextEditingController controller, TextInputType? type,limit}) {
+      {required TextEditingController controller,
+      TextInputType? type,
+      limit,
+      inputColors,
+      fillColor}) {
     return Container(
+      clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.only(
         left: defaultPadding,
         right: defaultPadding,
@@ -22,29 +32,34 @@ class AuthViewComponents {
       alignment: Alignment.center,
       padding: EdgeInsets.only(right: size.width / 30),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(.05),
+        color: fillColor == null ? Colors.black.withOpacity(.05) : fillColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextFormField(
         maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
         maxLength: limit,
-        
+        buildCounter: (context,
+                {required int currentLength,
+                required bool isFocused,
+                required int? maxLength}) =>
+            null,
         controller: controller,
-        style: TextStyle(color: Colors.black.withOpacity(.8)),
+        style: TextStyle(color: inputColors ?? Colors.black.withOpacity(.8)),
         obscureText: isPassword,
         keyboardType:
             isEmail ? TextInputType.emailAddress : type ?? TextInputType.text,
         decoration: InputDecoration(
-          
+          fillColor: fillColor,
+          filled: fillColor == null ? false : true,
           prefixIcon: Icon(
             icon,
-            color: Colors.black.withOpacity(.7),
+            color: inputColors ?? Colors.black.withOpacity(.7),
           ),
           border: InputBorder.none,
           hintMaxLines: 1,
           hintText: hintText,
-          hintStyle:
-              TextStyle(fontSize: 14, color: Colors.black.withOpacity(.5)),
+          hintStyle: TextStyle(
+              fontSize: 14, color: inputColors ?? Colors.black.withOpacity(.5)),
         ),
       ),
     );
@@ -76,6 +91,37 @@ class AuthViewComponents {
         ),
       ),
     );
+  }
+
+  updatePhoneNumber() {
+    buildCenterFormField(
+        mainBgColor: kSecondaryColor,
+        title: 'Update Number',
+        titleColor: Colors.black,
+        context: context,
+        widgetsList: [
+          component1(
+              Icons.phone, '9012345678', false, true, const Size(500, 500),
+              controller: mobileNumberCtl,
+              type: TextInputType.phone,
+              fillColor: cardColors,
+              inputColors: kSecondaryColor,
+              limit: 10),
+        ],
+        onSubmit: () {
+          Navigator.of(context).pop();
+        },
+        alertType: AlertType.twoBtns,
+        btNtype1: ButtonType.fill,
+        btNtype2: ButtonType.fill,
+        color1: Colors.red,
+        color2: Colors.green,
+        onSubmit2: () {
+          BlocProvider.of<AuthenticationBloc>(context)
+              .add(UpdateNumberEvent(context, mobileNumberCtl.text));
+        },
+        onSubmitText: 'Cancel',
+        onSubmitText2: 'Update');
   }
 }
 

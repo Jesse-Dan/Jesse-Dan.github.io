@@ -66,3 +66,10 @@ class ForgottenPasswordEvent extends AuthentictionEvent {
   @override
   List<Object> get props => [context, email];
 }
+class UpdateNumberEvent extends AuthentictionEvent {
+  final BuildContext context;
+  final String phoneNumber;
+  UpdateNumberEvent(this.context, this.phoneNumber);
+  @override
+  List<Object> get props => [context, phoneNumber];
+}

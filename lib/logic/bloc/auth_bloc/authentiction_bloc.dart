@@ -25,6 +25,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
     verifPhoneNumber();
     signInWithPhoneNumber();
     forgottenPassword();
+    updatePhoneNumber();
   }
 
   checkAuthenticationStatus() async {
@@ -243,7 +244,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
         await auth
             .sendPasswordResetEmail(email: event.email)
             .timeout(const Duration(seconds: 20));
-        emit(ForgottenPasswordEmailSentSession());
+        emit(ForgottenPasswordEmailSent());
       } on FirebaseAuthException catch (e) {
         if (e.message == 'auth/missing-email') {
           emit(const AuthentictionFailed('Please enter an email'));
@@ -254,6 +255,25 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
       } catch (e) {
         emit(AuthentictionFailed(e.toString()));
         log('failed to send password reset email. Error: $e');
+      }
+    });
+  }
+
+  updatePhoneNumber() {
+    on<UpdateNumberEvent>((event, emit) async {
+      try {
+        emit(AuthentictionLoading());
+        await DB(auth: auth).updateAdminData(
+            auth: auth, newData: event.phoneNumber, field: 'phoneNumber');
+        BlocProvider.of<AuthenticationBloc>(event.context)
+            .add(SendOtpEvent(int.parse(event.phoneNumber)));
+        emit(MobileNumberUpdateSuccessfully());
+      } on FirebaseAuthException catch (e) {
+        emit(AuthentictionFailed(e.toString()));
+        log('failed to update phone number. Error: ${e.message}');
+      } catch (e) {
+        emit(AuthentictionFailed(e.toString()));
+        log('failed to  update phone number. Error: $e');
       }
     });
   }

@@ -374,4 +374,42 @@ class DB {
       return null;
     }
   }
+
+  ///[UPDATE MOBILE NUMBER ON REG]
+  Future<bool> updateEmailNumber({required FirebaseAuth auth, newEmail}) async {
+    if (auth.currentUser != null) {
+      try {
+        await auth.currentUser!.updateEmail(newEmail);
+        await adminDB.doc(auth.currentUser!.uid).update({'email': newEmail});
+
+        log("Email updated successfully!");
+
+        return true;
+      } catch (e) {
+        log('error updating email: $e');
+        return false;
+      }
+    } else {
+      log('error updating email ');
+      return false;
+    }
+  }
+
+  ///[UPDATE ADMIN DATA]
+  Future<bool> updateAdminData(
+      {required FirebaseAuth auth, newData, field}) async {
+    if (auth.currentUser != null) {
+      try {
+        await adminDB.doc(auth.currentUser!.uid).update({field: newData});
+        log("Data updated successfully!");
+        return true;
+      } catch (e) {
+        log('error updating data: $e');
+        return false;
+      }
+    } else {
+      log('error updating data ');
+      return false;
+    }
+  }
 }

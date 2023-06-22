@@ -97,11 +97,11 @@ class _ForgottenPasswordScreenState extends State<ForgottenPasswordScreen>
               builder: ((context) =>
                   const Center(child: CircularProgressIndicator())));
         }
-        if (state is ForgottenPasswordEmailSentSession) {
-          Alertify.success(message: 'Email Sent Successfully');
+        if (state is ForgottenPasswordEmailSent) {
           Navigator.pop(context);
           Navigator.pushNamedAndRemoveUntil(
               context, SignInScreen.routeName, (_) => false);
+          Alertify.success(message: 'Password reset Email Sent Successfully');
         }
         if (state is AuthentictionFailed) {
           Navigator.pop(context);
