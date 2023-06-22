@@ -11,6 +11,7 @@ import 'package:tyldc_finaalisima/logic/bloc/non_admin_management/non_admin_mana
 import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/local_storage_service.dart/local_storage.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/recently_deleted/recenttly_deleted_screen.dart';
+import 'package:tyldc_finaalisima/presentation/screens/auth_views/forgotten_password.dart';
 import '../config/constants/enums.dart';
 import '../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../logic/bloc/connectivity_cubit/connectivity_cubit.dart';
@@ -23,6 +24,7 @@ import '../presentation/screens/app_views/drawer_items/dashboard/main_screen.dar
 import '../presentation/screens/app_views/drawer_items/groups/groups_screen.dart';
 import '../presentation/screens/app_views/drawer_items/notification/notification_screen.dart';
 import '../presentation/screens/auth_views/login.dart';
+import '../presentation/screens/auth_views/phone_verification.dart';
 import '../presentation/screens/auth_views/reg.dart';
 import '../presentation/screens/app_views/drawer_items/admin/admin_screen.dart';
 import '../presentation/screens/app_views/drawer_items/non_admin/non_admins_screen.dart';
@@ -144,11 +146,15 @@ class _MyAppState extends State<MyApp> {
                     case AdminScreen.routeName:
                       return const AdminScreen();
                     case SignInScreen.routeName:
-                      return SignInScreen();
+                      return const SignInScreen();
                     case RecentlyDeleted.routeName:
                       return const RecentlyDeleted();
+                    case PhoneVerificationScreen.routeName:
+                      return const PhoneVerificationScreen();
+                    case ForgottenPasswordScreen.routeName:
+                      return const ForgottenPasswordScreen();
                     default:
-                      return SignInScreen();
+                      return const SignInScreen();
                   }
                 },
               );

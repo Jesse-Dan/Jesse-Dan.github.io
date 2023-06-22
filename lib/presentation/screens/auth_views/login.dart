@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,7 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/config/constants/responsive.dart';
 import 'package:tyldc_finaalisima/config/theme.dart';
 import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
 import 'package:tyldc_finaalisima/presentation/screens/auth_views/components/components.dart';
+import 'package:tyldc_finaalisima/presentation/screens/auth_views/forgotten_password.dart';
 import 'package:tyldc_finaalisima/presentation/screens/auth_views/reg.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/alertify.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
@@ -88,6 +92,7 @@ class _SignInScreenState extends State<SignInScreen>
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<AuthenticationBloc, AuthentictionState>(
       listener: (context, state) {
+        log(state.toString());
         if (state is AuthentictionLoading) {
           showDialog(
               context: context,
@@ -95,8 +100,13 @@ class _SignInScreenState extends State<SignInScreen>
                   const Center(child: CircularProgressIndicator())));
         }
         if (state is AuthentictionSuccesful) {
-          Alertify.success(message: 'User Logged in sussecfullyd');
+          Navigator.pushNamedAndRemoveUntil(
+              context, MainScreen.routeName, (_) => false);
+
+          Alertify.success(message: 'User Logged in sussecfully');
         }
+       
+
         if (state is AuthentictionFailed) {
           Navigator.pop(context);
 
@@ -207,9 +217,9 @@ class _SignInScreenState extends State<SignInScreen>
                                             color: Colors.blueAccent),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Alertify.warning(
-                                                message:
-                                                    'Forgot password clicked');
+                                            Navigator.of(context).pushNamed(
+                                                ForgottenPasswordScreen
+                                                    .routeName);
                                           },
                                       ),
                                     ),

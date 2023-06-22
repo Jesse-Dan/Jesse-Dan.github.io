@@ -13,6 +13,12 @@ class AuthentictionLoading extends AuthentictionState {}
 
 class AuthentictionSuccesful extends AuthentictionState {}
 
+class PhoneAuthentictionSuccesful extends AuthentictionState {}
+
+class PhoneAuthentictionUnsucessful extends AuthentictionState {}
+
+class OTPSentSuccesful extends AuthentictionState {}
+
 class AuthentictionFailed extends AuthentictionState {
   final String error;
 
@@ -22,3 +28,5 @@ class AuthentictionFailed extends AuthentictionState {
 class AuthentictionLostSession extends AuthentictionState {}
 
 class AuthentictionFoundSession extends AuthentictionState {}
+
+class ForgottenPasswordEmailSentSession extends AuthentictionState {}

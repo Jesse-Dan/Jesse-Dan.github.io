@@ -2,15 +2,9 @@
 
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tyldc_finaalisima/models/recently_deleted_model.dart';
 import '../../../config/app_autorizations.dart';
-import '../../../config/codes.dart';
-import '../../../models/auth_code_model.dart';
 import '../../../models/models.dart';
-import '../../../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
-import '../../../presentation/screens/auth_views/login.dart';
 import '../../db/db.dart';
 import '../../local_storage_service.dart/local_storage.dart';
 import 'authentiction_event.dart';
@@ -19,6 +13,8 @@ import 'authentiction_state.dart';
 class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
   final FirebaseAuth auth;
   final LocalStorageService localStorageService;
+  String verificationIdValue = '';
+  String smsCodeValue = '';
 
   AuthenticationBloc({required this.auth, required this.localStorageService})
       : super(AuthentictionInitial()) {
@@ -26,6 +22,9 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
     login();
     logout();
     signup();
+    verifPhoneNumber();
+    signInWithPhoneNumber();
+    forgottenPassword();
   }
 
   checkAuthenticationStatus() async {
@@ -60,11 +59,9 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
         await DB(auth: auth).sendNotificationData(
             Notifier.login(data: '${actor.firstName} ${actor.lastName}'));
 
-        Navigator.pushNamedAndRemoveUntil(
-            event.context, MainScreen.routeName, (_) => false);
         emit(AuthentictionSuccesful());
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'invalid-email') {
+        if (e.code == 'invalid-email' || e.code == 'permission-denied') {
           emit(AuthentictionFailed(e.message.toString()));
           log('Invalid email address.');
         } else if (e.code == 'wrong-password') {
@@ -122,15 +119,13 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
               imageUrl: ''));
           await DB(auth: auth).sendNotificationData(
               Notifier.signUp(data: '${data.firstName} ${data.lastName}'));
-          Navigator.pushNamedAndRemoveUntil(
-              event.context, SignInScreen.routeName, (_) => false);
           emit(AuthentictionSuccesful());
         } else {
           emit(const AuthentictionFailed(
               'Admin Auth Code is  incorrect Contact Admin for support'));
         }
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'invalid-email') {
+        if (e.code == 'invalid-email' || e.code == 'permission-denied') {
           emit(AuthentictionFailed(e.message.toString()));
           log('Invalid email address.');
         } else if (e.code == 'email-already-in-use') {
@@ -166,6 +161,99 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
       } catch (e) {
         emit(AuthentictionFailed(e.toString()));
         log(e.toString());
+      }
+    });
+  }
+
+  verifPhoneNumber() {
+    on<SendOtpEvent>((event, emit) async {
+      try {
+        emit(AuthentictionLoading());
+        await auth.verifyPhoneNumber(
+          phoneNumber:
+              '+234${event.phoneNumber}', // Replace with your phone number
+          verificationCompleted: verificationCompleted,
+          verificationFailed: verificationFailed,
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+        );
+        emit(OTPSentSuccesful());
+      } on FirebaseAuthException catch (error) {
+        if (error.message == 'invalid-phone-number' ||
+            error.message == 'permission-denied') {
+          emit(PhoneAuthentictionUnsucessful());
+        } else if (error.message == 'invalid-verification-cod') {
+          emit(AuthentictionFailed(error.toString()));
+        } else if (error.message == 'code-expired') {
+          emit(AuthentictionFailed(error.toString()));
+        } else {
+          emit(AuthentictionFailed(error.toString()));
+        }
+        log(error.toString());
+      } catch (e) {
+        emit(AuthentictionFailed(e.toString()));
+        log(e.toString());
+      }
+    });
+  }
+
+  void verificationCompleted(PhoneAuthCredential credential) async {
+    log('Phone number automatically verified and user signed in.');
+  }
+
+  void verificationFailed(FirebaseAuthException exception) {
+    log('Phone number verification failed. Error: ${exception.message}');
+  }
+
+  void codeSent(String verificationId, int? resendToken) {
+    verificationIdValue = verificationId;
+  }
+
+  void codeAutoRetrievalTimeout(String verificationId) {
+    verificationIdValue = verificationId;
+  }
+
+  void signInWithPhoneNumber() async {
+    on<VerifyOtpAndLoginInEvent>((event, emit) async {
+      emit(AuthentictionLoading());
+
+      try {
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationIdValue,
+          smsCode: (event.otp).toString(),
+        );
+        await auth.signInWithCredential(credential);
+        emit(PhoneAuthentictionSuccesful());
+        log('User signed in with phone number successfully.');
+      } on FirebaseAuthException catch (e) {
+        emit(AuthentictionFailed(e.toString()));
+
+        log('Failed to sign in with phone number. Error: $e');
+      } catch (e) {
+        emit(AuthentictionFailed(e.toString()));
+        log('Failed to sign in with phone number. Error: $e');
+      }
+    });
+  }
+
+  forgottenPassword() {
+    on<ForgottenPasswordEvent>((event, emit) async {
+      try {
+        emit(AuthentictionLoading());
+        await auth
+            .sendPasswordResetEmail(email: event.email)
+            .timeout(const Duration(seconds: 20));
+        emit(ForgottenPasswordEmailSentSession());
+      } on FirebaseAuthException catch (e) {
+        if (e.message == 'auth/missing-email') {
+          emit(const AuthentictionFailed('Please enter an email'));
+        } else {
+          emit(AuthentictionFailed(e.toString()));
+          log('failed to send password reset email. Error: ${e.message}');
+        }
+      } catch (e) {
+        emit(AuthentictionFailed(e.toString()));
+        log('failed to send password reset email. Error: $e');
       }
     });
   }

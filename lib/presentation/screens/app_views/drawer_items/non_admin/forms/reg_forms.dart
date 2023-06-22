@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../../config/theme.dart';
-import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../../../models/models.dart';
 import '../../../../../widgets/costum_text_field.dart';
@@ -47,9 +46,8 @@ class NonAdminsRegistrationForms extends FormWidget {
   final TextEditingController firstNameCtlNonAdminReg = TextEditingController();
   final TextEditingController createdBy = TextEditingController();
 
-
   ///[REGISTER NON ADMIN]
-  registerNonAdminForm({required String title,nonAdmin}) {
+  registerNonAdminForm({required String title, nonAdmin, AdminModel? admin}) {
     buildBottomFormField(context: context, title: title, widgetsList: [
       CustomTextField(
           fieldsType: TextInputType.text,
@@ -88,11 +86,6 @@ class NonAdminsRegistrationForms extends FormWidget {
           controller: roleCtlNonAdminReg),
       CustomTextField(
           fieldsType: TextInputType.text,
-          hint: 'Created by?',
-          suffix: const Icon(Icons.payment_rounded),
-          controller: createdBy),
-      CustomTextField(
-          fieldsType: TextInputType.text,
           obscureText: true,
           hint: 'Auth Code',
           suffix: const Icon(Icons.admin_panel_settings_rounded),
@@ -103,7 +96,6 @@ class NonAdminsRegistrationForms extends FormWidget {
             color: Colors.green,
             btnText: 'Create',
             onTap: () {
-
               String generateUniqueCode(List<String> existingCodes) {
                 int counter = 0;
                 String code;
@@ -119,20 +111,21 @@ class NonAdminsRegistrationForms extends FormWidget {
               List<String> getItemList(List<NonAdminModel> modelList) {
                 return modelList.map((model) => model.id!).toList();
               }
-              BlocProvider.of<RegistrationBloc>(context).add(CreateNonAdminEvent(
-                  authCodeCtlNonAdminReg.text,
-                  nonAdminModel: NonAdminModel(
-                      id: generateUniqueCode(getItemList(nonAdmin)),
-                      lastName: lastnameCtlNonAdminReg.text,
-                      email: emailCtlNonAdminReg.text,
-                      phoneNumber: phoneCtlNonAdminReg.text,
-                      gender: genderCtlNonAdminReg.text,
-                      dept: deptCtlNonAdminReg.text,
-                      role: roleCtlNonAdminReg.text,
-                      authCode: authCodeCtlNonAdminReg.text,
-                      createdBy: createdBy.text,
-                      firstName: firstNameCtlNonAdminReg.text,
-                      imageUrl: '')));
+
+              BlocProvider.of<RegistrationBloc>(context).add(
+                  CreateNonAdminEvent(authCodeCtlNonAdminReg.text,
+                      nonAdminModel: NonAdminModel(
+                          id: generateUniqueCode(getItemList(nonAdmin)),
+                          lastName: lastnameCtlNonAdminReg.text,
+                          email: emailCtlNonAdminReg.text,
+                          phoneNumber: phoneCtlNonAdminReg.text,
+                          gender: genderCtlNonAdminReg.text,
+                          dept: deptCtlNonAdminReg.text,
+                          role: roleCtlNonAdminReg.text,
+                          authCode: authCodeCtlNonAdminReg.text,
+                          createdBy: '${admin!.firstName}_${admin.lastName}',
+                          firstName: firstNameCtlNonAdminReg.text,
+                          imageUrl: '')));
               log('message');
             }),
       )

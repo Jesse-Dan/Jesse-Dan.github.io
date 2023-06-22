@@ -1,17 +1,12 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:get/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/index_blocs.dart';
 import '../../../../../../models/group_model.dart';
-import '../../../../../widgets/costum_text_field.dart';
-import '../../../../../widgets/dialogue_forms.dart';
+import '../../../../../../models/user_model.dart';
 import '../../../../../widgets/index.dart';
 
 class GroupsRegistrationForms extends FormWidget {
@@ -42,7 +37,7 @@ class GroupsRegistrationForms extends FormWidget {
   final TextEditingController createdBy = TextEditingController();
 
   ///[CREATE GROUP FORM]
-  registerGroupForm({required String title, groups}) {
+  registerGroupForm({required String title, groups, AdminModel? admin}) {
     buildCenterFormField(
       title: title,
       context: context,
@@ -62,11 +57,7 @@ class GroupsRegistrationForms extends FormWidget {
             hint: 'Facilitator',
             suffix: const Icon(Icons.leak_add_rounded),
             controller: groupfacilitatorController),
-        CustomTextField(
-            fieldsType: TextInputType.text,
-            hint: 'Created by?',
-            suffix: const Icon(Icons.admin_panel_settings_rounded),
-            controller: createdBy),
+       
         CustomTextField(
             fieldsType: TextInputType.text,
             obscureText: true,
@@ -96,7 +87,7 @@ class GroupsRegistrationForms extends FormWidget {
             authCodeController.text,
             groupModel: GroupModel(
               id: generateUniqueCode(getItemList(groups)),
-              createdBy: createdBy.text,
+              createdBy: '${admin!.firstName}_${admin.lastName}',
               name: groupNameController.text,
               description: groupDescriptionController.text,
               groupMembers: [],

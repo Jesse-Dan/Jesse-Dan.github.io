@@ -141,10 +141,10 @@ updateLoadingBlocState({state, context}) {
               const Center(child: CircularProgressIndicator()));
       break;
     case AuthentictionLoading:
-      showDialog(
-          context: context,
-          builder: (builder) =>
-              const Center(child: CircularProgressIndicator()));
+      // showDialog(
+      //     context: context,
+      //     builder: (builder) =>
+      //         const Center(child: CircularProgressIndicator()));
       break;
     case GroupManagementLoading:
       Navigator.of(context).pop();

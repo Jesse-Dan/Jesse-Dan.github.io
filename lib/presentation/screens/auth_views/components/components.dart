@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tyldc_finaalisima/config/constants/responsive.dart';
 
 import '../../../../config/theme.dart';
@@ -9,7 +10,7 @@ class AuthViewComponents {
 
   Widget component1(
       IconData icon, String hintText, bool isPassword, bool isEmail, Size size,
-      {required TextEditingController controller, TextInputType? type}) {
+      {required TextEditingController controller, TextInputType? type,limit}) {
     return Container(
       margin: const EdgeInsets.only(
         left: defaultPadding,
@@ -24,13 +25,17 @@ class AuthViewComponents {
         color: Colors.black.withOpacity(.05),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: TextField(
+      child: TextFormField(
+        maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
+        maxLength: limit,
+        
         controller: controller,
         style: TextStyle(color: Colors.black.withOpacity(.8)),
         obscureText: isPassword,
         keyboardType:
             isEmail ? TextInputType.emailAddress : type ?? TextInputType.text,
         decoration: InputDecoration(
+          
           prefixIcon: Icon(
             icon,
             color: Colors.black.withOpacity(.7),

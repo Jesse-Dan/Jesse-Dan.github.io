@@ -37,9 +37,32 @@ class LogoutEvent extends AuthentictionEvent {
   List<Object> get props => [];
 }
 
-class CheckStatusEvent extends AuthentictionEvent {
-  final BuildContext context;
-  CheckStatusEvent( this.context);
+class SendOtpEvent extends AuthentictionEvent {
+  final int phoneNumber;
+  SendOtpEvent(this.phoneNumber);
   @override
   List<Object> get props => [];
+}
+
+class VerifyOtpAndLoginInEvent extends AuthentictionEvent {
+  final BuildContext context;
+  final int otp;
+  VerifyOtpAndLoginInEvent(this.otp, {required this.context});
+  @override
+  List<Object> get props => [];
+}
+
+class CheckStatusEvent extends AuthentictionEvent {
+  final BuildContext context;
+  CheckStatusEvent(this.context);
+  @override
+  List<Object> get props => [];
+}
+
+class ForgottenPasswordEvent extends AuthentictionEvent {
+  final BuildContext context;
+  final String email;
+  ForgottenPasswordEvent(this.context, this.email);
+  @override
+  List<Object> get props => [context, email];
 }

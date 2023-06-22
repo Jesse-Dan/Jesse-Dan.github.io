@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/logic/bloc/registeration_bloc/registeration_bloc.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/groups/form/group_reg_form.dart';
 import '../../../../config/constants/responsive.dart';
 import '../../../../config/palette.dart';
 import '../../../../config/theme.dart';
 import '../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../models/stats_card.dart';
-import '../../../widgets/costum_text_field.dart';
-import '../../../widgets/dialogue_forms.dart';
 import '../drawer_items/attendees/forms/reg_form.dart';
 import '../drawer_items/non_admin/forms/reg_forms.dart';
 import 'dashboard_info_card.dart';
@@ -57,6 +54,7 @@ class _MyFilesState extends State<MyFiles> {
                         .registerNewAttandeeForm(
                       title: 'Attendee',
                       attendees: fetched ? state.attendeeModel : null,
+                      admin: fetched ? state.user: null,
                       length: fetched ? state.attendeeModel.length : 0,
                     );
                   },
@@ -102,9 +100,6 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
   Widget build(BuildContext context) {
     return BlocBuilder<DashBoardBloc, DashBoardState>(
         builder: (context, state) {
-      if (state is DashBoardLoading) {
-        return loadingState();
-      }
       bool fetched = state is DashBoardFetched;
       return GridView(
         physics: const NeverScrollableScrollPhysics(),
@@ -131,13 +126,11 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                             .registerNewAttandeeForm(
                           title: 'Attendee',
                           attendees: fetched ? state.attendeeModel : null,
+                          admin: fetched ? state.user : null,
                           length: fetched ? state.attendeeModel.length : 0,
                         );
                       }))
-              : emptyState(
-                  title: 'Attendee',
-                  img: 'assets/icons/Documents.svg',
-                  method: () {}),
+              : emptyState(),
           state is DashBoardFetched && state.nonAdminModel.isNotEmpty
               ? FileInfoCard(
                   info: StatisticsCard(
@@ -150,16 +143,13 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                           state.nonAdminModel.length.toDouble()),
                       onTap: () {
                         NonAdminsRegistrationForms(context: context)
-                            .registerNonAdminForm(title: 'Non-Admin Staff');
+                            .registerNonAdminForm(
+                                title: 'Non Admin Staff',
+                                nonAdmin: fetched ? state.nonAdminModel : null,
+                                admin: fetched ? state.user : null);
                       }),
                 )
-              : emptyState(
-                  title: 'Non-Admin Staffs',
-                  img: 'assets/icons/google_drive.svg',
-                  method: () {
-                    NonAdminsRegistrationForms(context: context)
-                        .registerNonAdminForm(title: 'Non-Admin Staff');
-                  }),
+              : emptyState(),
           state is DashBoardFetched && state.admins.isNotEmpty
               ? FileInfoCard(
                   info: StatisticsCard(
@@ -172,8 +162,7 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                         calculatePercentage(state.admins.length.toDouble()),
                   ),
                 )
-              : emptyState(
-                  title: 'Admins Staffs', img: 'assets/icons/one_drive.svg'),
+              : emptyState(),
           state is DashBoardFetched && state.campers.isNotEmpty
               ? FileInfoCard(
                   info: StatisticsCard(
@@ -185,10 +174,7 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                   percentage:
                       calculatePercentage(state.campers.length.toDouble()),
                 ))
-              : emptyState(
-                  title: 'Campers',
-                  img: 'assets/icons/drop_box.svg',
-                  method: () {}),
+              : emptyState(),
           state is DashBoardFetched && state.groups.isNotEmpty
               ? FileInfoCard(
                   info: StatisticsCard(
@@ -201,16 +187,13 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                           calculatePercentage(state.groups.length.toDouble()),
                       onTap: () {
                         GroupsRegistrationForms(context: context)
-                            .registerGroupForm(title: 'Groups');
+                            .registerGroupForm(
+                                title: 'Groups',
+                                admin: fetched ? state.user : null,
+                                groups: fetched ? state.groups : null);
                       }),
                 )
-              : emptyState(
-                  method: () {
-                    GroupsRegistrationForms(context: context)
-                        .registerGroupForm(title: 'Groups');
-                  },
-                  title: 'Groups',
-                  img: 'assets/icons/google_drive.svg'),
+              : emptyState(),
         ],
       );
     });
@@ -229,18 +212,15 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
     );
   }
 
-  FileInfoCard emptyState({title, img, method}) {
+  FileInfoCard emptyState() {
     return FileInfoCard(
-      info: StatisticsCard(
-          title: title,
-          amount: 00,
-          img: img,
-          capacity: "",
-          color: primaryColor,
-          percentage: 00,
-          onTap: () {
-            method();
-          }),
-    );
+        info: StatisticsCard(
+            title: 'loading',
+            amount: 00,
+            img: '',
+            capacity: "00",
+            color: primaryColor,
+            percentage: 00,
+            onTap: null));
   }
 }

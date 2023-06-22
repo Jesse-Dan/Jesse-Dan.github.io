@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../../config/date_time_formats.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../../../models/atendee_model.dart';
+import '../../../../../../models/user_model.dart';
 import '../../../../../widgets/index.dart';
 
 class AttendeeRegistrationForms extends FormWidget {
@@ -39,7 +41,10 @@ class AttendeeRegistrationForms extends FormWidget {
   final Rx<DateTime> viewPicked = DateTime.now().obs;
 
   registerNewAttandeeForm(
-      {required String title, length, List<AttendeeModel>? attendees}) {
+      {required String title,
+      length,
+      List<AttendeeModel>? attendees,
+      AdminModel? admin}) {
     buildBottomFormField(
       context: context,
       title: title,
@@ -121,27 +126,21 @@ class AttendeeRegistrationForms extends FormWidget {
             controller: disabilityCluster),
         CustomTextField(
             fieldsType: TextInputType.text,
-            obscureText: true,
-            hint: 'Auth Code',
-            suffix: const Icon(Icons.admin_panel_settings_rounded),
-            controller: authCodeController),
-        CustomTextField(
-            fieldsType: TextInputType.text,
             hint: 'Payment Status (Please take in full / record in full)',
             suffix: const Icon(Icons.payment_rounded),
             controller: commitmentFee),
         CustomTextField(
             fieldsType: TextInputType.text,
-            hint: 'Created by?',
-            suffix: const Icon(Icons.payment_rounded),
-            controller: createdBy),
+            obscureText: true,
+            hint: 'Auth Code',
+            suffix: const Icon(Icons.admin_panel_settings_rounded),
+            controller: authCodeController),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: CustomButton(
             color: Colors.green,
             btnText: 'Register',
             onTap: () {
-              
               String generateUniqueCode(List<String> existingCodes) {
                 int counter = 0;
                 String code;
@@ -163,7 +162,7 @@ class AttendeeRegistrationForms extends FormWidget {
                   authCodeController.text,
                   attendeeModel: AttendeeModel(
                     id: generateUniqueCode(getItemList(attendees!)),
-                    createdBy: createdBy.text,
+                    createdBy: '${admin!.firstName}_${admin.lastName}',
                     firstName: firstName.text,
                     middleName: middleName.text,
                     lastName: lastName.text,

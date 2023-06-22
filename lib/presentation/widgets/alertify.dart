@@ -50,6 +50,7 @@ class Alertify {
       ),
       subtitle: (_) => Text(
         message,
+        textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white),
       ),
       trailing: (cancel) => IconButton(

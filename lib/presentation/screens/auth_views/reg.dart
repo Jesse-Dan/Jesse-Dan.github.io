@@ -1,11 +1,15 @@
-// ignore_for_file: unnecessary_statements, non_constant_identifier_names
+// ignore_for_file: unnecessary_statements, non_constant_identifier_names, avoid_single_cascade_in_expression_statements
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/config/validators.dart';
 import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
+import 'package:tyldc_finaalisima/presentation/screens/auth_views/phone_verification.dart';
+import 'package:tyldc_finaalisima/presentation/widgets/verify_action_dialogue.dart';
 import '../../../config/theme.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_event.dart';
@@ -102,14 +106,24 @@ class _SignUpScreenState extends State<SignUpScreen>
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<AuthenticationBloc, AuthentictionState>(
       listener: (context, state) {
-        if (state is AuthentictionLoading) {
-          showDialog(
-              context: context,
-              builder: ((context) =>
-                  const Center(child: CircularProgressIndicator())));
-        }
-        if (state is AuthentictionSuccesful) {
-          Alertify.success(message: 'User Logged in sussecfullyd');
+        if (state is OTPSentSuccesful) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, PhoneVerificationScreen.routeName, (_) => false);
+          BlocProvider.of<AuthenticationBloc>(context).add(SignUpEvent(context,
+              adminModel: AdminModel(
+                firstName: firstNameCtl.text,
+                lastName: LastnameCtl.text,
+                email: emailCtl.text,
+                phoneNumber: PhoneCtl.text,
+                gender: GenderCtl.text,
+                dept: DeptCtl.text,
+                role: RoleCtl.text,
+                authCode: AuthCodeCtl.text,
+                password: confirmPasswordCtl.text,
+                imageUrl: '',
+                id: '',
+              )));
+          Alertify.success(message: 'An otp has been sent to ${PhoneCtl.text}');
         }
         if (state is AuthentictionFailed) {
           Navigator.pop(context);
@@ -203,7 +217,9 @@ class _SignUpScreenState extends State<SignUpScreen>
                                     false,
                                     true,
                                     size,
-                                    controller: PhoneCtl),
+                                    controller: PhoneCtl,
+                                    limit: 10,
+                                    type: TextInputType.phone),
                                 AuthViewComponents(context: context).component1(
                                     Icons.male_outlined,
                                     'Gender...',
@@ -260,29 +276,32 @@ class _SignUpScreenState extends State<SignUpScreen>
                                             confirmPasswordCtl.text);
                                     if (!isPasswordMatch) {
                                       Alertify.error(
+                                          title: 'Registration Error',
                                           message: 'Password dosen\'t match');
                                     } else if (!isStrongPassword) {
                                       Alertify.error(
+                                          title: 'Registration Error',
                                           message:
                                               'Password doesn\'t meet requirements');
-
-                                      BlocProvider.of<AuthenticationBloc>(
-                                              context)
-                                          .add(SignUpEvent(context,
-                                              adminModel: AdminModel(
-                                                firstName: firstNameCtl.text,
-                                                lastName: LastnameCtl.text,
-                                                email: emailCtl.text,
-                                                phoneNumber: PhoneCtl.text,
-                                                gender: GenderCtl.text,
-                                                dept: DeptCtl.text,
-                                                role: RoleCtl.text,
-                                                authCode: AuthCodeCtl.text,
-                                                password:
-                                                    confirmPasswordCtl.text,
-                                                imageUrl: '',
-                                                id: '',
-                                              )));
+                                    } else if (PhoneCtl.text.length
+                                            .isLowerThan(10) ||
+                                        PhoneCtl.text[0] == '0') {
+                                      Alertify.error(
+                                          title: 'Registration Error',
+                                          message:
+                                              'Phone Number entered appears invalid');
+                                    } else {
+                                      verifyAction(
+                                          title: 'SignUp Process',
+                                          text:
+                                              'Are you certain of the details you\'ve entered ? any issue encountered here can only be resolved by your Admin!! ',
+                                          action: () {
+                                            BlocProvider.of<AuthenticationBloc>(
+                                                    context)
+                                                .add(SendOtpEvent(
+                                                    int.parse(PhoneCtl.text)));
+                                          },
+                                          context: context);
                                     }
                                   },
                                   size,

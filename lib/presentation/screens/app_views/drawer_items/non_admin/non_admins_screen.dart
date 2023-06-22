@@ -188,7 +188,7 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                         text: 'Add Non admin',
                         onTap: () {
                           NonAdminsRegistrationForms(context: context)
-                              .registerNonAdminForm(title: 'Non Admin',nonAdmin:fetched ? state.nonAdminModel : null );
+                              .registerNonAdminForm(title: 'Non Admin',nonAdmin:fetched ? state.nonAdminModel : null ,admin:fetched?state.user:null );
                         },
                       ),
                       const TextBtn(

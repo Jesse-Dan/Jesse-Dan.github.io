@@ -31,9 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               if (Responsive.isDesktop(context))
                 Header(
                   title: 'Dashboard',
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
+                 
                 ),
               const SizedBox(height: defaultPadding),
               Row(
