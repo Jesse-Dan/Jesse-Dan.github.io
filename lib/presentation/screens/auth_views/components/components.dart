@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tyldc_finaalisima/config/constants/responsive.dart';
-import 'package:tyldc_finaalisima/logic/bloc/auth_bloc/authentiction_bloc.dart';
-import 'package:tyldc_finaalisima/logic/bloc/auth_bloc/authentiction_event.dart';
-import 'package:tyldc_finaalisima/presentation/widgets/index.dart';
+import '../../../../config/constants/responsive.dart';
+import '../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
+import '../../../../logic/bloc/auth_bloc/authentiction_event.dart';
+import '../../../widgets/index.dart';
 
 import '../../../../config/theme.dart';
 import '../../../widgets/dialogue_forms.dart';

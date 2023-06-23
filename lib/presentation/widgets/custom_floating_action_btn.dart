@@ -18,12 +18,13 @@ class CustomFloatingActionBtn extends StatelessWidget {
         backgroundColor: cardColors,
         onPressed: onPressed,
         label: Text(
-          "Refresh Table",
-          style: GoogleFonts.dmSans(color: primaryColor, fontSize: 18),
+          "Refresh",
+          style: GoogleFonts.dmSans(color: primaryColor, fontSize: 15),
         ),
         icon: const Icon(
           Icons.refresh,
           color: primaryColor,
+          size: 20,
         ),
       ),
     );
