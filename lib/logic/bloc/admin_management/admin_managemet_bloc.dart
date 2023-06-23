@@ -30,7 +30,12 @@ class AdminManagemetBloc
     on<AlterCodeEvent>((event, emit) async {
       try {
         emit(AdminManagemetLoading());
-        await DB(auth: auth).alterAdminCode(event.adminCodes);
+        await DB(auth: auth).alterAdminCode(
+            field: event.adminCodeField, newValue: event.newCode);
+        await DB(auth: auth).updateAdminCodes(
+            oldValue: event.oldCode,
+            newValue: event.newCode,
+            field: event.field);
         emit(AdminManagemetAltered());
       } on FirebaseAuthException catch (e) {
         emit(AdminManagemetFailed(error: e.toString()));

@@ -1,10 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
+import 'package:tyldc_finaalisima/models/auth_code_model.dart';
+import 'package:tyldc_finaalisima/presentation/widgets/dropdown_widget.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../models/user_model.dart';
 import '../../../../../widgets/CustomViewTextField.dart';
+import '../../../../../widgets/costum_text_field.dart';
 import '../../../../../widgets/custom_submit_btn.dart';
 import '../../../../../widgets/dialogue_forms.dart';
+import '../../../../../widgets/popupmenu_widget.dart';
 import '../../../../../widgets/verify_action_dialogue.dart';
 
 class AdminsRegistrationForms extends FormWidget {
@@ -24,6 +32,7 @@ class AdminsRegistrationForms extends FormWidget {
   final BuildContext context;
 
   ///[ADMIN AUTH CODE CONTROLLERS]
+  final oldauthCodeController = TextEditingController();
   final authCodeController = TextEditingController();
 
   /// [GROUP CREATION CONTROLLERS]
@@ -125,23 +134,88 @@ class AdminsRegistrationForms extends FormWidget {
         });
   }
 
+  showOptions({icon, AdminModel? admin, AdminCodesModel? codes}) {
+    return PopupMenu(
+      items: [
+        PopupMenuItemModel(
+            title: 'Change Viewer Code',
+            onTap: () {
+              viewAuthCodeData(
+                  admin: admin,
+                  title: 'Change Viewer Code',
+                  action: () {
+                    viewAuthCodeData(
+                        admin: admin,
+                        title: 'Change Viewer Code',
+                        action: () {
+                          BlocProvider.of<AdminManagemetBloc>(context).add(
+                              AlterCodeEvent(
+                                  oldCode: oldauthCodeController.text,
+                                  newCode: authCodeController.text,
+                                  field: 'authCode',
+                                  adminCodeField: 'viewerCode'));
+                          BlocProvider.of<AdminManagemetBloc>(context)
+                              .add(const GetCodeEvent());
+                        });
+                  });
+            }),
+        PopupMenuItemModel(
+            title: 'Change Admin Code',
+            onTap: () {
+              viewAuthCodeData(
+                  admin: admin,
+                  title: 'Change Admin Code',
+                  action: () {
+                    viewAuthCodeData(
+                        admin: admin,
+                        title: 'Change Admin Code',
+                        action: () {
+                          BlocProvider.of<AdminManagemetBloc>(context).add(
+                              AlterCodeEvent(
+                                  oldCode: oldauthCodeController.text,
+                                  newCode: authCodeController.text,
+                                  field: 'authCode',
+                                  adminCodeField: 'adminCode'));
+                        });
+                  });
+            }),
+        PopupMenuItemModel(
+            title: 'Change Super Admin Code',
+            onTap: () {
+              viewAuthCodeData(
+                  admin: admin,
+                  title: 'Change Super Admin Code',
+                  action: () {
+                    BlocProvider.of<AdminManagemetBloc>(context).add(
+                        AlterCodeEvent(
+                            oldCode: oldauthCodeController.text,
+                            newCode: authCodeController.text,
+                            field: 'authCode',
+                            adminCodeField: 'superAdminCode'));
+                  });
+            })
+      ],
+      icon: icon,
+    );
+  }
+
   ///[IF ADMIN CODE IS CHANGED TO A HIGHER ACCESS CODE USER ACTIONS  ARE UOPDATED]
-  viewAuthCodeData({title, AdminModel? admin}) {
+  viewAuthCodeData({title, AdminModel? admin, action}) {
     buildCenterFormField(
         title: title,
         context: context,
         widgetsList: [
-          CustomViewTextField(
-            initialValue: admin?.authCode,
+          CustomTextField(
             fieldsType: TextInputType.text,
             hint: 'Old AuthCode',
             suffix: const Icon(Icons.admin_panel_settings_rounded),
+            controller: oldauthCodeController,
           ),
-          const CustomViewTextField(
-            initialValue: '',
+          CustomTextField(
             fieldsType: TextInputType.text,
             hint: 'New Auth Code',
-            suffix: Icon(Icons.admin_panel_settings_rounded),
+            suffix: const Icon(Icons.admin_panel_settings_rounded),
+            controller: authCodeController,
           ),
         ],
         onSubmit: () {
@@ -155,12 +229,9 @@ class AdminsRegistrationForms extends FormWidget {
         btNtype2: ButtonType.fill,
         alertType: AlertType.twoBtns,
         onSubmit2: () {
-          verifyAction(
-              title: title,
-              text: 'Do you want to proceed to edit the ADMIN AUTH CODE?',
-              action: () {
-                
-              });
+          action;
+          BlocProvider.of<AdminManagemetBloc>(context)
+              .add(const GetCodeEvent());
         });
   }
 }

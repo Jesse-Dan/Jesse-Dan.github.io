@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../../models/user_model.dart';
+import '../../../../widgets/align_text_with_icon_widget.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 
 import '../../../../../../config/constants/responsive.dart';
@@ -43,7 +44,7 @@ class _AdminScreenState extends State<AdminScreen> {
                 child: Header(title: 'Administrative Staffs', onPressed: () {}),
               ))
           : null,
-      drawer: SideMenu(),
+      drawer: const SideMenu(),
       backgroundColor: bgColor,
       body: SafeArea(
           child: Row(
@@ -69,23 +70,17 @@ class _AdminScreenState extends State<AdminScreen> {
               builder: (context, state) {
                 bool fetched = state is DashBoardFetched;
                 return PageContentWidget(
-                  actions: [
-                    BlocBuilder<DashBoardBloc, DashBoardState>(
-                      builder: (context, state) {
-                        return TextBtn(
-                          icon: Icons.person_add,
-                          text: 'Set Admin auth Code',
-                          onTap: () {
-                            AdminsRegistrationForms(context: context)
-                                .viewAuthCodeData(
-                                    title: 'EDIT ADMIN AUTH CODE',
-                                    admin: state is DashBoardFetched
-                                        ? state.user
-                                        : null);
-                          },
-                        );
-                      },
-                    ),
+                  actions: [AdminsRegistrationForms(context: context)
+                            .showOptions(
+                                admin: fetched
+                                    ? state.user
+                                    : null,
+                                icon: const AlignIconWithTextWidget(
+                                  icon: Icons.admin_panel_settings_rounded,
+                                  text: 'Set Auth Codes',
+                                
+                      
+                    )),
                     const TextBtn(
                       icon: Icons.filter_list,
                       text: 'Filter',
@@ -178,67 +173,69 @@ class _AdminScreenState extends State<AdminScreen> {
       ),
     );
   }
-}
 
-DataRow recentFileDataRow(AdminModel? registerdAdmin, context) {
-  return DataRow(
-    onLongPress: () {
-      AdminsRegistrationForms(context: context).viewSelectedAdminStaffData(
-          title: registerdAdmin.firstName, admin: registerdAdmin);
-    },
-    cells: Responsive.isMobile(context)
-        ? [
-            DataCell(
-              Text(
-                '${registerdAdmin!.firstName.toLowerCase()} ${registerdAdmin.lastName.toLowerCase()}',
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+  DataRow recentFileDataRow(AdminModel? registerdAdmin, context) {
+    return DataRow(
+      onLongPress: () {
+        AdminsRegistrationForms(context: context).viewSelectedAdminStaffData(
+            title: registerdAdmin.firstName, admin: registerdAdmin);
+      },
+      cells: Responsive.isMobile(context)
+          ? [
+              DataCell(
+                Text(
+                  '${registerdAdmin!.firstName.toLowerCase()} ${registerdAdmin.lastName.toLowerCase()}',
+                  style:
+                      GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+                ),
               ),
-            ),
-            DataCell(Text(
-              registerdAdmin.dept.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdAdmin.role.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-          ]
-        : [
-            DataCell(registerdAdmin!.imageUrl == ''
-                ? const Icon(
-                    Icons.person,
-                    color: primaryColor,
-                  )
-                : CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(registerdAdmin.imageUrl, scale: 10))),
+              DataCell(Text(
+                registerdAdmin.dept.toLowerCase(),
+                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              )),
+              DataCell(Text(
+                registerdAdmin.role.toLowerCase(),
+                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              )),
+            ]
+          : [
+              DataCell(registerdAdmin!.imageUrl == ''
+                  ? const Icon(
+                      Icons.person,
+                      color: primaryColor,
+                    )
+                  : CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(registerdAdmin.imageUrl, scale: 10))),
 
-            DataCell(
-              Text(
-                registerdAdmin.firstName.toLowerCase(),
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              DataCell(
+                Text(
+                  registerdAdmin.firstName.toLowerCase(),
+                  style:
+                      GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+                ),
               ),
-            ),
-            DataCell(Text(
-              registerdAdmin.dept.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdAdmin.role,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdAdmin.phoneNumber,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdAdmin.gender,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            // DataCell(Text(
-            //   registerdAdmin.gender.toLowerCase(),
-            //   style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            // )),
-          ],
-  );
+              DataCell(Text(
+                registerdAdmin.dept.toLowerCase(),
+                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              )),
+              DataCell(Text(
+                registerdAdmin.role,
+                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              )),
+              DataCell(Text(
+                registerdAdmin.phoneNumber,
+                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              )),
+              DataCell(Text(
+                registerdAdmin.gender,
+                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              )),
+              // DataCell(Text(
+              //   registerdAdmin.gender.toLowerCase(),
+              //   style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              // )),
+            ],
+    );
+  }
 }

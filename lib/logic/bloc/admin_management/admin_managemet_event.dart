@@ -8,13 +8,16 @@ abstract class AdminManagemetEvent extends Equatable {
 }
 
 class AlterCodeEvent extends AdminManagemetEvent {
-  final AdminCodesModel adminCodes;
+  final String oldCode;
+  final String newCode;
+    final String field;
+    final String adminCodeField;
 
-  const AlterCodeEvent({
-    required this.adminCodes,
+
+  const AlterCodeEvent({required this.oldCode, required this.newCode, required this.field,required this.adminCodeField
   });
   @override
-  List<Object> get props => [adminCodes];
+  List<Object> get props => [oldCode,newCode,field,adminCodeField];
 }
 
 class GetCodeEvent extends AdminManagemetEvent {

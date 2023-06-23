@@ -53,15 +53,6 @@ class DB {
     }
   }
 
-  /// [ALTER ADMIN CODE]
-  Future<void> alterAdminCode(AdminCodesModel codes) async {
-    try {
-      adminCodesDB.doc('ADMINCODES').set(codes.toMap());
-    } on FirebaseException catch (e) {
-      log(e.toString());
-    }
-  }
-
   /// [GET ADMIN CODE]
   Future<AdminCodesModel?> getAdminCode() async {
     try {
@@ -112,23 +103,35 @@ class DB {
     }
   }
 
-  Future<void> updateDataInCollection(
-      String collectionName, String dataName, dynamic newValue) async {
+  /// [ALTER ADMIN CODE]
+  Future<void> alterAdminCode({dynamic newValue, required String field}) async {
     try {
-      final collectionRef =
-          FirebaseFirestore.instance.collection(collectionName);
-      final snapshot = await collectionRef.get();
+      adminCodesDB.doc('ADMINCODES').update({field: newValue});
+    } on FirebaseException catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<bool> updateAdminCodes(
+      {dynamic oldValue, dynamic newValue, required String field}) async {
+    try {
+      final snapshot = await adminDB.get();
 
       final batchUpdate = FirebaseFirestore.instance.batch();
 
       for (final doc in snapshot.docs) {
-        batchUpdate.update(doc.reference, {dataName: newValue});
+        final data = doc.data();
+        if (data.containsKey(field) && data[field] == oldValue) {
+          batchUpdate.update(doc.reference, {field: newValue});
+        }
       }
 
       await batchUpdate.commit();
       log('Data updated successfully.');
+      return true;
     } catch (error) {
       log('Error updating data: $error');
+      return false;
     }
   }
 }
