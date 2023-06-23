@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/logic/bloc/non_admin_management/non_admin_management_bloc.dart';
-import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/non_admin/forms/view_forms.dart';
+import '../../../../../logic/bloc/non_admin_management/non_admin_management_bloc.dart';
+import 'forms/view_forms.dart';
 import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
@@ -15,7 +15,6 @@ import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../../models/non_admin_staff.dart';
-import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../../../../widgets/verify_action_dialogue.dart';
 import '../../components/header.dart';
@@ -48,6 +47,14 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
             },
           ),
           BlocListener<NonAdminManagementBloc, NonAdminManagementState>(
+            listener: (context, state) {
+              updateSessionState(state: state, context: context);
+              updateLoadingBlocState(state: state, context: context);
+              updatetSuccessBlocState(state: state, context: context);
+              updateFailedBlocState(state: state, context: context);
+            },
+          ),
+          BlocListener<DashBoardBloc, DashBoardState>(
             listener: (context, state) {
               updateSessionState(state: state, context: context);
               updateLoadingBlocState(state: state, context: context);
@@ -180,7 +187,7 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                           fetched ? state.nonAdminModel[index] : null,
                           context)),
                     ),
-                    title: 'Non Administrative Staffs ',
+                    title: 'Non Admins ',
                     actions: [
                       TextBtn(
                         icon: Icons.person_add,

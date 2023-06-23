@@ -5,8 +5,6 @@
 
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
-
 import 'atendee_model.dart';
 
 class GroupModel {

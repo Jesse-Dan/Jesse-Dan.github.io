@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../config/theme.dart';
 
 class StatisticsCard {
   final String? img, title, capacity;

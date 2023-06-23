@@ -1,9 +1,4 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
-
-import 'package:tyldc_finaalisima/models/auth_code_model.dart';
-
-import '../logic/local_storage_service.dart/local_storage.dart';
-
 const EMAIL_ALREADY_IN_USE =
     'A user with this email already exist, contact your admin for clarity';
 const WEAK_PASSWORD =

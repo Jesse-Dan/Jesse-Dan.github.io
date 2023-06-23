@@ -30,6 +30,7 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
 
   Future<void> dashboardEmiter() async {
     return on<DashBoardDataEvent>((event, emit) async {
+      emit(DashBoardLoading());
       try {
         emit(DashBoardLoading());
 

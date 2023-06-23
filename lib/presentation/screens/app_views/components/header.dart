@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/config/app_autorizations.dart';
+import '../../../../config/app_autorizations.dart';
 
 import '../../../../config/constants/responsive.dart';
 import '../../../../config/palette.dart';

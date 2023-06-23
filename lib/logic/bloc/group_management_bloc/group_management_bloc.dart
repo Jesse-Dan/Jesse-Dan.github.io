@@ -4,12 +4,11 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:tyldc_finaalisima/logic/db/groupdb.dart';
-import 'package:tyldc_finaalisima/models/recently_deleted_model.dart';
+import '../../db/groupdb.dart';
+import '../../../models/recently_deleted_model.dart';
 import '../../../models/group_model.dart';
 import '../../../models/notifier_model.dart';
 import '../../../models/user_model.dart';
-import '../../db/admindb.dart';
 
 import '../../../models/atendee_model.dart';
 import '../../db/utilsdb.dart';

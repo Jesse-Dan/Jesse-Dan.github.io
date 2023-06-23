@@ -106,7 +106,15 @@ class _SignUpScreenState extends State<SignUpScreen>
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<AuthenticationBloc, AuthentictionState>(
       listener: (context, state) {
+        if (state is AuthentictionLoading) {
+          showDialog(
+              context: context,
+              builder: ((context) =>
+                  const Center(child: CircularProgressIndicator())));
+        }
+
         if (state is OTPSentSuccesful) {
+          Navigator.pop(context);
           Navigator.pushNamedAndRemoveUntil(
               context, PhoneVerificationScreen.routeName, (_) => false);
           BlocProvider.of<AuthenticationBloc>(context).add(SignUpEvent(context,

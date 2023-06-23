@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
-import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/attendees/forms/view_form.dart';
+import '../../../../../logic/bloc/user_management/user_management_bloc.dart';
+import 'forms/view_form.dart';
 import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
@@ -46,6 +46,14 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
           },
         ),
         BlocListener<UserManagementBloc, UserManagementState>(
+          listener: (context, state) {
+            updateSessionState(state: state, context: context);
+            updateLoadingBlocState(state: state, context: context);
+            updatetSuccessBlocState(state: state, context: context);
+            updateFailedBlocState(state: state, context: context);
+          },
+        ),
+          BlocListener<DashBoardBloc, DashBoardState>(
           listener: (context, state) {
             updateSessionState(state: state, context: context);
             updateLoadingBlocState(state: state, context: context);
@@ -173,7 +181,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                             admin: fetched ? state.user : null,
                             id: fetched ? state.userIds[index] : '')),
                       ),
-                      title: 'Registered Attendees',
+                      title: 'Attendees',
                       actions: [
                         TextBtn(
                           icon: Icons.person_add,

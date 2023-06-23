@@ -129,9 +129,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<AuthenticationBloc, AuthentictionState>(
       listener: (context, state) {
-        if (state is OTPSentSuccesful) {
-          Navigator.pop(context);
-        }
         if (state is AuthentictionLoading) {
           showDialog(
               context: context,
@@ -139,6 +136,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
                   const Center(child: CircularProgressIndicator())));
         }
         if (state is PhoneAuthentictionSuccesful) {
+          Alertify.success(message: 'Phone Number Verified successfully');
+          Navigator.pop(context);
           Navigator.pushNamedAndRemoveUntil(
               context, SignInScreen.routeName, (_) => false);
         }

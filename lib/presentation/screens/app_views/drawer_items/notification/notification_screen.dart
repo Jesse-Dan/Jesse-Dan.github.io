@@ -29,13 +29,25 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
-        updateSessionState(state: state, context: context);
-        updateLoadingBlocState(state: state, context: context);
-        updatetSuccessBlocState(state: state, context: context);
-        updateFailedBlocState(state: state, context: context);
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RegistrationBloc, RegistrationState>(
+          listener: (context, state) {
+            updateSessionState(state: state, context: context);
+            updateLoadingBlocState(state: state, context: context);
+            updatetSuccessBlocState(state: state, context: context);
+            updateFailedBlocState(state: state, context: context);
+          },
+        ),
+        BlocListener<DashBoardBloc, DashBoardState>(
+          listener: (context, state) {
+            updateSessionState(state: state, context: context);
+            updateLoadingBlocState(state: state, context: context);
+            updatetSuccessBlocState(state: state, context: context);
+            updateFailedBlocState(state: state, context: context);
+          },
+        ),
+      ],
       child: Scaffold(
         drawer: SideMenu(),
         appBar: (Responsive.isMobile(context))

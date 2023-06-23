@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:tyldc_finaalisima/logic/db/groupdb.dart';
-import 'package:tyldc_finaalisima/logic/db/non_admindb.dart';
+import '../../db/groupdb.dart';
+import '../../db/non_admindb.dart';
 
 import '../../../config/app_autorizations.dart';
 import '../../../models/atendee_model.dart';
@@ -13,7 +13,6 @@ import '../../../models/group_model.dart';
 import '../../../models/non_admin_staff.dart';
 import '../../../models/notifier_model.dart';
 import '../../db/attendeedb.dart';
-import '../../db/admindb.dart';
 import '../../db/utilsdb.dart';
 import '../../local_storage_service.dart/local_storage.dart';
 

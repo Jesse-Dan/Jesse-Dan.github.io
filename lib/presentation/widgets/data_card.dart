@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../config/hex_method.dart';
 import '../../config/theme.dart';
+import '../../logic/bloc/group_management_bloc/group_management_bloc.dart';
 import '../../models/atendee_model.dart';
 import '../../models/group_model.dart';
 import '../screens/app_views/drawer_items/attendees/forms/view_form.dart';
-import '../../config/hex_method.dart';
-import '../../logic/bloc/group_management_bloc/group_management_bloc.dart';
 
 class TransactionCard extends StatefulWidget {
   TransactionCard({

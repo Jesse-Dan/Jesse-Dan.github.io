@@ -2,10 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../../config/date_time_formats.dart';
-import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../../../models/atendee_model.dart';
 import '../../../../../../models/user_model.dart';

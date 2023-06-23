@@ -50,6 +50,14 @@ class _GroupsScreenState extends State<GroupsScreen> {
               updateFailedBlocState(state: state, context: context);
             },
           ),
+          BlocListener<DashBoardBloc, DashBoardState>(
+            listener: (context, state) {
+              updateSessionState(state: state, context: context);
+              updateLoadingBlocState(state: state, context: context);
+              updatetSuccessBlocState(state: state, context: context);
+              updateFailedBlocState(state: state, context: context);
+            },
+          ),
         ],
         child: Scaffold(
           backgroundColor: bgColor,

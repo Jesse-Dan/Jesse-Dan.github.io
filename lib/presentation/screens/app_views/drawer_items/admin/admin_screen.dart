@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +10,6 @@ import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
-import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
-import '../../../../widgets/alertify.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../../../../widgets/data_table.dart';
 import '../../components/header.dart';
@@ -159,7 +156,7 @@ class _AdminScreenState extends State<AdminScreen> {
                     (index) => (recentFileDataRow(
                         fetched ? state.admins[index] : null, context)),
                   ),
-                  title: 'Administrators',
+                  title: 'Admins',
                 );
               },
             ),

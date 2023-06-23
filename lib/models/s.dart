@@ -2,8 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 class TemplateParams {
   final String? fromName;
   final String? fromEmail;
