@@ -6,28 +6,30 @@ import '../../config/constants/responsive.dart';
 import '../../config/theme.dart';
 import '../screens/app_views/components/header.dart';
 
-class DataTableWidget extends StatefulWidget {
-  final List<DataColumn> columns;
+class PageContentWidget extends StatefulWidget {
+  final List<DataColumn>? columns;
 
-  final List<DataRow> row;
+  final List<DataRow>? row;
   final String title;
   final List<Widget>? actions;
   final int? searchIndex;
   final bool? searchAccending;
-  const DataTableWidget(
+  final Widget? child;
+  const PageContentWidget(
       {super.key,
       this.searchIndex = 0,
       this.searchAccending = true,
-      required this.columns,
-      required this.row,
+      this.columns,
+      this.row,
       required this.title,
+      this.child,
       this.actions});
 
   @override
-  State<DataTableWidget> createState() => _DataTableWidgetState();
+  State<PageContentWidget> createState() => _PageContentWidgetState();
 }
 
-class _DataTableWidgetState extends State<DataTableWidget> {
+class _PageContentWidgetState extends State<PageContentWidget> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -70,22 +72,23 @@ class _DataTableWidgetState extends State<DataTableWidget> {
                     ),
                   ],
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  dragStartBehavior: DragStartBehavior.down,
-                  child: DataTable(
-                    onSelectAll: (all) {},
-                    showBottomBorder: true,
-                    dataTextStyle: GoogleFonts.dmSans(
-                        color: kSecondaryColor, fontSize: 15),
-                    sortColumnIndex: widget.searchIndex,
-                    sortAscending: widget.searchAccending!,
-                    showCheckboxColumn: true,
-                    columnSpacing: defaultPadding,
-                    // minWidth: 600,
-                    columns: widget.columns, rows: widget.row,
-                  ),
-                )
+               ( widget.child) ??
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      dragStartBehavior: DragStartBehavior.down,
+                      child: DataTable(
+                        onSelectAll: (all) {},
+                        showBottomBorder: true,
+                        dataTextStyle: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                        sortColumnIndex: widget.searchIndex,
+                        sortAscending: widget.searchAccending!,
+                        showCheckboxColumn: true,
+                        columnSpacing: defaultPadding,
+                        // minWidth: 600,
+                        columns: widget.columns!, rows: widget.row!,
+                      ),
+                    )
               ],
             ),
           ),

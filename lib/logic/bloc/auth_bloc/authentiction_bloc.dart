@@ -5,7 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../config/app_autorizations.dart';
 import '../../../models/models.dart';
-import '../../db/db.dart';
+import '../../db/admindb.dart';
+import '../../db/utilsdb.dart';
 import '../../local_storage_service.dart/local_storage.dart';
 import 'authentiction_event.dart';
 import 'authentiction_state.dart';
@@ -57,7 +58,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
           password: event.password,
         );
         var actor = await DB(auth: auth).fetchAdminData();
-        await DB(auth: auth).sendNotificationData(
+        await UtilsDB(auth: auth).sendNotificationData(
             Notifier.login(data: '${actor.firstName} ${actor.lastName}'));
 
         emit(AuthentictionSuccesful());
@@ -118,7 +119,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
               password: data.password,
               firstName: data.firstName,
               imageUrl: ''));
-          await DB(auth: auth).sendNotificationData(
+          await UtilsDB(auth: auth).sendNotificationData(
               Notifier.signUp(data: '${data.firstName} ${data.lastName}'));
           emit(AuthentictionSuccesful());
         } else {
@@ -153,7 +154,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
     on<LogoutEvent>((event, emit) async {
       try {
         emit(AuthentictionLoading());
-        await DB(auth: auth).sendNotificationData(
+        await UtilsDB(auth: auth).sendNotificationData(
             Notifier.logout(data: 'You ended your session'));
         await auth.signOut().then((value) => log('User Logged Out'));
         emit(AuthentictionSuccesful());

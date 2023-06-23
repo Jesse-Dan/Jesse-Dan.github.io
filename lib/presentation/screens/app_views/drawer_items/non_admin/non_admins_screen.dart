@@ -55,19 +55,18 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
               updateFailedBlocState(state: state, context: context);
             },
           ),
-         
         ],
         child: Scaffold(
           drawer: SideMenu(),
-           appBar: (Responsive.isMobile(context))
-            ? CustomPreferredSizeWidget(
-                preferredHeight: 100,
-                preferredWidth: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.all(kdefaultPadding),
-                  child: Header(title: 'Attendees', onPressed: () {}),
-                ))
-            : null,
+          appBar: (Responsive.isMobile(context))
+              ? CustomPreferredSizeWidget(
+                  preferredHeight: 100,
+                  preferredWidth: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.all(kdefaultPadding),
+                    child: Header(title: 'Attendees', onPressed: () {}),
+                  ))
+              : null,
           backgroundColor: bgColor,
           body: SafeArea(
             child: Row(
@@ -90,7 +89,7 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                   }
                 }, builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
-                  return DataTableWidget(
+                  return PageContentWidget(
                     columns: Responsive.isMobile(context)
                         ? [
                             DataColumn(
@@ -188,7 +187,11 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                         text: 'Add Non admin',
                         onTap: () {
                           NonAdminsRegistrationForms(context: context)
-                              .registerNonAdminForm(title: 'Non Admin',nonAdmin:fetched ? state.nonAdminModel : null ,admin:fetched?state.user:null );
+                              .registerNonAdminForm(
+                                  title: 'Non Admin',
+                                  nonAdmin:
+                                      fetched ? state.nonAdminModel : null,
+                                  admin: fetched ? state.user : null);
                         },
                       ),
                       const TextBtn(

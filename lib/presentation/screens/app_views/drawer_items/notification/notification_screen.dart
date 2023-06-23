@@ -44,7 +44,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 preferredWidth: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.all(kdefaultPadding),
-                  child: Header(title: 'Notification',onPressed: () {}),
+                  child: Header(title: 'Notification', onPressed: () {}),
                 ))
             : null,
         backgroundColor: bgColor,
@@ -52,7 +52,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             
               // We want this side menu only for large screen
               if (Responsive.isDesktop(context))
                 const Expanded(
@@ -64,7 +63,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 listener: (context, state) {},
                 builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
-                  return DataTableWidget(
+                  return PageContentWidget(
                       columns: Responsive.isMobile(context)
                           ? [
                               DataColumn(

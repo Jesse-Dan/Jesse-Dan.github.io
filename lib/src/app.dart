@@ -10,6 +10,7 @@ import 'package:tyldc_finaalisima/logic/bloc/group_management_bloc/group_managem
 import 'package:tyldc_finaalisima/logic/bloc/non_admin_management/non_admin_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/local_storage_service.dart/local_storage.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/profile/profile_screen.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/recently_deleted/recenttly_deleted_screen.dart';
 import 'package:tyldc_finaalisima/presentation/screens/auth_views/forgotten_password.dart';
 import '../config/constants/enums.dart';
@@ -153,6 +154,9 @@ class _MyAppState extends State<MyApp> {
                       return const PhoneVerificationScreen();
                     case ForgottenPasswordScreen.routeName:
                       return const ForgottenPasswordScreen();
+                    case ProfileScreen.routeName:
+                      return const ProfileScreen();
+
                     default:
                       return const SignInScreen();
                   }

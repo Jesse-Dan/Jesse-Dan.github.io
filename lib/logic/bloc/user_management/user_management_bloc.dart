@@ -4,12 +4,14 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tyldc_finaalisima/logic/db/attendeedb.dart';
 
 import '../../../models/atendee_model.dart';
 import '../../../models/notifier_model.dart';
 import '../../../models/recently_deleted_model.dart';
 import '../../../models/user_model.dart';
-import '../../db/db.dart';
+import '../../db/admindb.dart';
+import '../../db/utilsdb.dart';
 
 part 'user_management_event.dart';
 part 'user_management_state.dart';
@@ -28,8 +30,8 @@ class UserManagementBloc
     on<DeleteUserEvent>((event, emit) async {
       try {
         emit(UserManagementLoading());
-        await DB(auth: auth).deleteUser(event.attendeeID);
-         await DB(auth: auth).addtoRecentDeleted(RecentlyDeletedModel.delete(
+        await AttendeeDB(auth: auth).deleteUser(event.attendeeID);
+         await UtilsDB(auth: auth).addtoRecentDeleted(RecentlyDeletedModel.delete(
             dataType: 'Attendee',
             data:
                 'By Admin ${event.adminModel.firstName} ${event.adminModel.lastName} with auth code ${event.adminModel.authCode}',
@@ -37,7 +39,7 @@ class UserManagementBloc
                 'Attendee ${event.attendeeModel.firstName} with ID : ${event.attendeeModel.id} was deleted'));
        
        
-        await DB(auth: auth).sendNotificationData(Notifier.registerAttendee(
+        await UtilsDB(auth: auth).sendNotificationData(Notifier.registerAttendee(
           action: '',
           description: 'Attendee ${event.attendeeModel.firstName} with id ${event.attendeeModel.id} was deleted',
             data: 'Attendee ${event.attendeeModel.firstName} was deleted'));

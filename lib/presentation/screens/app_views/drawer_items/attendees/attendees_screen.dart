@@ -89,7 +89,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                     }
                   }, builder: (context, state) {
                     bool fetched = state is DashBoardFetched;
-                    return DataTableWidget(
+                    return PageContentWidget(
                       columns: Responsive.isMobile(context)
                           ? [
                               DataColumn(
@@ -183,7 +183,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                                 .registerNewAttandeeForm(
                               attendees: fetched ? state.attendeeModel : null,
                               title: 'Attendee',
-                              admin:fetched ? state.user : null ,
+                              admin: fetched ? state.user : null,
                               length: fetched ? state.attendeeModel.length : 0,
                             );
                           },

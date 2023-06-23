@@ -34,15 +34,15 @@ class _AdminScreenState extends State<AdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: (Responsive.isMobile(context))
-            ? CustomPreferredSizeWidget(
-                preferredHeight: 100,
-                preferredWidth: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.all(kdefaultPadding),
-                  child: Header(title: 'Administrative Staffs', onPressed: () {}),
-                ))
-            : null,
+      appBar: (Responsive.isMobile(context))
+          ? CustomPreferredSizeWidget(
+              preferredHeight: 100,
+              preferredWidth: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(kdefaultPadding),
+                child: Header(title: 'Administrative Staffs', onPressed: () {}),
+              ))
+          : null,
       drawer: SideMenu(),
       backgroundColor: bgColor,
       body: SafeArea(
@@ -68,7 +68,7 @@ class _AdminScreenState extends State<AdminScreen> {
               },
               builder: (context, state) {
                 bool fetched = state is DashBoardFetched;
-                return DataTableWidget(
+                return PageContentWidget(
                   actions: [
                     BlocBuilder<DashBoardBloc, DashBoardState>(
                       builder: (context, state) {

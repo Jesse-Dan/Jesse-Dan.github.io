@@ -64,7 +64,7 @@ class _RecentlyDeletedState extends State<RecentlyDeleted> {
                 listener: (context, state) {},
                 builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
-                  return DataTableWidget(
+                  return PageContentWidget(
                       columns: Responsive.isMobile(context)
                           ? [
                               DataColumn(

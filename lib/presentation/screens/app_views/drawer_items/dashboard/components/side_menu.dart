@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tyldc_finaalisima/logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import 'package:tyldc_finaalisima/logic/local_storage_service.dart/local_storage.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/profile/profile_screen.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/recently_deleted/recenttly_deleted_screen.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/verify_action_dialogue.dart';
 
@@ -175,7 +176,9 @@ class _SideMenuState extends State<SideMenu> {
               DrawerListTile(
                 title: "Profile",
                 svgSrc: "assets/icons/menu_profile.svg",
-                press: () {},
+                press: () {                              Navigator.pushNamedAndRemoveUntil(context,
+                                  ProfileScreen.routeName, (_) => false);
+},
               ),
               DrawerListTile(
                 title: "Settings",

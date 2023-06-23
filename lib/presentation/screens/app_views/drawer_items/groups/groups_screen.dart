@@ -83,7 +83,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
                   updateFailedBlocState(state: state, context: context);
                 }, builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
-                  return DataTableWidget(
+                  return PageContentWidget(
                     searchIndex: 2,
                     columns: Responsive.isMobile(context)
                         ? [

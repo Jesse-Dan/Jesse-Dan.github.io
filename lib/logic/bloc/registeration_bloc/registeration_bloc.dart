@@ -4,13 +4,17 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tyldc_finaalisima/logic/db/groupdb.dart';
+import 'package:tyldc_finaalisima/logic/db/non_admindb.dart';
 
 import '../../../config/app_autorizations.dart';
 import '../../../models/atendee_model.dart';
 import '../../../models/group_model.dart';
 import '../../../models/non_admin_staff.dart';
 import '../../../models/notifier_model.dart';
-import '../../db/db.dart';
+import '../../db/attendeedb.dart';
+import '../../db/admindb.dart';
+import '../../db/utilsdb.dart';
 import '../../local_storage_service.dart/local_storage.dart';
 
 part 'registeration_event.dart';
@@ -36,9 +40,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
             .validateAdminAuthCode(event.adminCode)) {
           emit(RegistrationLoading());
 
-          await DB(auth: auth).sendRegisteeData(event.attendeeModel);
+          await AttendeeDB(auth: auth).sendRegisteeData(event.attendeeModel);
           emit(const AttendeeRegistrationLoaded());
-          await DB(auth: auth).sendNotificationData(Notifier.registerAttendee(
+          await UtilsDB(auth: auth).sendNotificationData(Notifier.registerAttendee(
               data:
                   'New attendee ${event.attendeeModel.firstName} ${event.attendeeModel.lastName} was created'));
         } else {
@@ -65,9 +69,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
             .validateAdminAuthCode(event.adminCode)) {
           emit(RegistrationLoading());
 
-          await DB(auth: auth).sendNoneAdminData(event.nonAdminModel);
+          await NonAdminDB(auth: auth).sendNoneAdminData(event.nonAdminModel);
           emit(const NonAdminRegistrationLoaded());
-          await DB(auth: auth).sendNotificationData(Notifier.addNonAdmin(
+          await UtilsDB(auth: auth).sendNotificationData(Notifier.addNonAdmin(
               data:
                   'Non Admin ${event.nonAdminModel.firstName} ${event.nonAdminModel.lastName} was Created'));
         } else {
@@ -93,8 +97,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
             .validateAdminAuthCode(event.adminCode)) {
           emit(RegistrationLoading());
 
-          await DB(auth: auth).createGroup(event.groupModel);
-          await DB(auth: auth).sendNotificationData(Notifier.createGroup(
+          await GroupDB(auth: auth).createGroup(event.groupModel);
+          await UtilsDB(auth: auth).sendNotificationData(Notifier.createGroup(
               data:
                   'Group ${event.groupModel.name} with description: ${event.groupModel.description} was created'));
           emit(const GroupRegistrationLoaded());

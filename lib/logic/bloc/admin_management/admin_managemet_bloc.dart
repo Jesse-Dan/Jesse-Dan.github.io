@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../../models/auth_code_model.dart';
-import '../../db/db.dart';
+import '../../db/admindb.dart';
 import '../../local_storage_service.dart/local_storage.dart';
 
 part 'admin_managemet_event.dart';
