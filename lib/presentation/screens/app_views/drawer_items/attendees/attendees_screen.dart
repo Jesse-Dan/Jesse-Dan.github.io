@@ -98,31 +98,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                   }, builder: (context, state) {
                     bool fetched = state is DashBoardFetched;
                     return PageContentWidget(
-                      columns: Responsive.isMobile(context)
-                          ? [
-                              DataColumn(
-                                label: Text(
-                                  "Fullname",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "CamperStatus",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Sex",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              )
-                            ]
-                          : [
+                      columns:[
                               DataColumn(
                                 label: Text(
                                   "Fullname",
@@ -224,24 +200,7 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {admin, id}) {
           title: '${registerdUser.firstName} ${registerdUser.lastName}',
           attendee: registerdUser);
     },
-    cells: Responsive.isMobile(context)
-        ? [
-            DataCell(
-              Text(
-                '${registerdUser!.firstName.toLowerCase()} ${registerdUser.lastName.toLowerCase()}',
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-              ),
-            ),
-            DataCell(Text(
-              registerdUser.wouldCamp.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdUser.gender.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-          ]
-        : [
+    cells: [
             DataCell(
               Text(
                 registerdUser!.firstName.toLowerCase(),

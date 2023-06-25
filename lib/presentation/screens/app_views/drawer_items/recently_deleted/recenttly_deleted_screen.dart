@@ -64,66 +64,36 @@ class _RecentlyDeletedState extends State<RecentlyDeleted> {
                 builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
                   return PageContentWidget(
-                      columns: Responsive.isMobile(context)
-                          ? [
-                              DataColumn(
-                                label: FittedBox(
-                                  child: Text(
-                                    "DATE TYPE",
-                                    style: GoogleFonts.dmSans(
-                                        color: kSecondaryColor, fontSize: 15),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: FittedBox(
-                                  child: Text(
-                                    "TIME",
-                                    style: GoogleFonts.dmSans(
-                                        color: kSecondaryColor, fontSize: 15),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: FittedBox(
-                                  child: Text(
-                                    "DESCRIPTION",
-                                    style: GoogleFonts.dmSans(
-                                        color: kSecondaryColor, fontSize: 15),
-                                  ),
-                                ),
-                              )
-                            ]
-                          : [
-                              DataColumn(
-                                label: Text(
-                                  "DATE TYPE",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "DELETED AT",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "DESCRIPTION",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Performed by | Action",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                            ],
+                      columns: [
+                        DataColumn(
+                          label: Text(
+                            "DATE TYPE",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "DELETED AT",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "DESCRIPTION",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "Performed by | Action",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15),
+                          ),
+                        ),
+                      ],
                       row: List.generate(
                         fetched ? state.recentlyDeleted.length : 0,
                         (index) => (recentFileDataRow(
@@ -149,42 +119,25 @@ class _RecentlyDeletedState extends State<RecentlyDeleted> {
 DataRow recentFileDataRow(RecentlyDeletedModel? notice, context) {
   return DataRow(
     onLongPress: () {},
-    cells: Responsive.isMobile(context)
-        ? [
-            DataCell(
-              Text(
-                notice!.dataType,
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-              ),
-            ),
-            DataCell(Text(
-              dateWithoutTimeButPosition(date: notice.time!).toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              notice.description..toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-          ]
-        : [
-            DataCell(
-              Text(
-                notice!.dataType,
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-              ),
-            ),
-            DataCell(Text(
-              dateWithTime.format(notice.time!).toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              notice.description..toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              notice.data,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-          ],
+    cells: [
+      DataCell(
+        Text(
+          notice!.dataType,
+          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        ),
+      ),
+      DataCell(Text(
+        dateWithTime.format(notice.time!).toLowerCase(),
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        notice.description..toLowerCase(),
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        notice.data,
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+    ],
   );
 }

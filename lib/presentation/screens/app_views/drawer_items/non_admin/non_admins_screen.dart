@@ -97,31 +97,7 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                 }, builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
                   return PageContentWidget(
-                    columns: Responsive.isMobile(context)
-                        ? [
-                            DataColumn(
-                              label: Text(
-                                "Fullname",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Department",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Role",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            )
-                          ]
-                        : [
+                    columns:  [
                             DataColumn(
                               label: Text(
                                 "Fullname",
@@ -228,24 +204,7 @@ DataRow recentFileDataRow(NonAdminModel? registerdNonAdmin, context,
           title: '${registerdNonAdmin.firstName} ${registerdNonAdmin.lastName}',
           nonAdmin: registerdNonAdmin);
     },
-    cells: Responsive.isMobile(context)
-        ? [
-            DataCell(
-              Text(
-                '${registerdNonAdmin!.firstName!.toLowerCase()} ${registerdNonAdmin.lastName!.toLowerCase()}',
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-              ),
-            ),
-            DataCell(Text(
-              registerdNonAdmin.dept!.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdNonAdmin.role!.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-          ]
-        : [
+    cells:[
             DataCell(
               Text(
                 registerdNonAdmin!.firstName!.toLowerCase(),

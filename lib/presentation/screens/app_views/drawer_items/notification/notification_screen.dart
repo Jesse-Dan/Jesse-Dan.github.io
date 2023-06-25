@@ -76,37 +76,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
                   return PageContentWidget(
-                      columns: Responsive.isMobile(context)
-                          ? [
-                              DataColumn(
-                                label: FittedBox(
-                                  child: Text(
-                                    "Activity",
-                                    style: GoogleFonts.dmSans(
-                                        color: kSecondaryColor, fontSize: 15),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: FittedBox(
-                                  child: Text(
-                                    "time",
-                                    style: GoogleFonts.dmSans(
-                                        color: kSecondaryColor, fontSize: 15),
-                                  ),
-                                ),
-                              ),
-                              DataColumn(
-                                label: FittedBox(
-                                  child: Text(
-                                    "Description",
-                                    style: GoogleFonts.dmSans(
-                                        color: kSecondaryColor, fontSize: 15),
-                                  ),
-                                ),
-                              )
-                            ]
-                          : [
+                      columns: [
                               DataColumn(
                                 label: Text(
                                   "Activity",
@@ -161,24 +131,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 DataRow recentFileDataRow(Notifier? notice, context) {
   return DataRow(
     onLongPress: () {},
-    cells: Responsive.isMobile(context)
-        ? [
-            DataCell(
-              Text(
-                notice!.action,
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-              ),
-            ),
-            DataCell(Text(
-              dateWithoutTimeButPosition(date: notice.time!).toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              notice.description..toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-          ]
-        : [
+    cells: [
             DataCell(
               Text(
                 notice!.action,

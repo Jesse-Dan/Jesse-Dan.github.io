@@ -6,6 +6,7 @@ import '../logic/local_storage_service.dart/local_storage.dart';
 import '../models/auth_code_model.dart';
 
 enum AdminAuthLevel { superAdmin, admin, viewer }
+
 // TODO: [VIEWER SHOULD SEE THIS TABS : DASHBOARD, SEASONS, PROFILE, SETTINGS, END SESSION (AS PER AUTHORIZATION LEVEL)]
 class AppAuthorizations {
   final LocalStorageService localStorageService;
@@ -13,7 +14,7 @@ class AppAuthorizations {
   const AppAuthorizations({required this.localStorageService, this.context});
 
   /// [GET ADMIN AUTH CODES]
-  AdminCodesModel  getAdminCodesFromLocalStorage (){
+  AdminCodesModel getAdminCodesFromLocalStorage() {
     return AdminCodesModel.fromJson(
         localStorageService.getreadFromDisk('ADMIN_CODES'));
   }

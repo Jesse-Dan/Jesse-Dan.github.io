@@ -6,7 +6,9 @@ import 'package:tyldc_finaalisima/logic/bloc/dash_board_bloc/dash_board_bloc.dar
 
 import '../../config/constants/responsive.dart';
 import '../../config/theme.dart';
+import '../../logic/bloc/admin_management/admin_managemet_bloc.dart';
 import '../screens/app_views/components/header.dart';
+import '../screens/auth_views/components/components.dart';
 
 class PageContentWidget extends StatefulWidget {
   final List<DataColumn>? columns;
@@ -31,7 +33,44 @@ class PageContentWidget extends StatefulWidget {
   State<PageContentWidget> createState() => _PageContentWidgetState();
 }
 
-class _PageContentWidgetState extends State<PageContentWidget> {
+class _PageContentWidgetState extends State<PageContentWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacity;
+  late Animation<double> _transform;
+  final TextEditingController emailCtl = TextEditingController();
+  final TextEditingController passwordCtl = TextEditingController();
+
+  @override
+  void initState() {
+    // BlocProvider.of<AdminManagemetBloc>(context).add(const GetCodeEvent());
+    // BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    _opacity = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.ease,
+      ),
+    )..addListener(() {
+        setState(() {});
+      });
+
+    _transform = Tween<double>(begin: 2, end: 1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.fastLinearToSlowEaseIn,
+      ),
+    );
+
+    _controller.forward();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -49,55 +88,65 @@ class _PageContentWidgetState extends State<PageContentWidget> {
               color: cardColors,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (Responsive.isDesktop(context))
-                    Header(title: widget.title, onPressed: () {}),
-                  if (Responsive.isDesktop(context))
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: defaultPadding, bottom: defaultPadding),
-                      child: Divider(
-                        color: primaryColor.withOpacity(0.7),
-                      ),
-                    ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        widget.title,
-                        style: GoogleFonts.dmSans(
-                            color: kSecondaryColor, fontSize: 20),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: widget.actions ?? [],
-                      ),
-                    ],
-                  ),
-                  (widget.child) ??
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        dragStartBehavior: DragStartBehavior.down,
-                        child: DataTable(
-                          onSelectAll: (all) {},
-                          showBottomBorder: true,
-                          dataTextStyle: GoogleFonts.dmSans(
-                              color: kSecondaryColor, fontSize: 15),
-                          sortColumnIndex: widget.searchIndex,
-                          sortAscending: widget.searchAccending!,
-                          showCheckboxColumn: true,
-                          columnSpacing: defaultPadding,
-                          // minWidth: 600,
-                          columns: widget.columns!, rows: widget.row!,
+            child: ScrollConfiguration(
+              behavior: MyBehavior(),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Opacity(
+                  opacity: _opacity.value,
+                  child: Transform.scale(
+                    scale: _transform.value,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (Responsive.isDesktop(context))
+                          Header(title: widget.title, onPressed: () {}),
+                        if (Responsive.isDesktop(context))
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: defaultPadding, bottom: defaultPadding),
+                            child: Divider(
+                              color: primaryColor.withOpacity(0.7),
+                            ),
+                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.title,
+                              style: GoogleFonts.dmSans(
+                                  color: kSecondaryColor, fontSize: 20),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: widget.actions ?? [],
+                            ),
+                          ],
                         ),
-                      )
-                ],
+                        (widget.child) ??
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              dragStartBehavior: DragStartBehavior.down,
+                              child: DataTable(
+                                onSelectAll: (all) {},
+                                showBottomBorder: true,
+                                dataTextStyle: GoogleFonts.dmSans(
+                                    color: kSecondaryColor, fontSize: 15),
+                                sortColumnIndex: widget.searchIndex,
+                                sortAscending: widget.searchAccending!,
+                                showCheckboxColumn: true,
+                                columnSpacing: defaultPadding,
+                                // minWidth: 600,
+                                columns: widget.columns!,
+                                rows: widget.row!,
+                              ),
+                            )
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

@@ -93,31 +93,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
                   bool fetched = state is DashBoardFetched;
                   return PageContentWidget(
                     searchIndex: 2,
-                    columns: Responsive.isMobile(context)
-                        ? [
-                            DataColumn(
-                              label: Text(
-                                "Group Name",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Group description",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                                label: Text(
-                                  "Members count",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                                numeric: true)
-                          ]
-                        : [
+                    columns:[
                             DataColumn(
                               label: Text(
                                 "Group Name",
@@ -219,24 +195,7 @@ DataRow recentFileDataRow(
           presentGroupModel: registerdGroup,
           attendees: atttendees);
     },
-    cells: Responsive.isMobile(context)
-        ? [
-            DataCell(
-              Text(
-                '${registerdGroup!.name.toLowerCase()} Group',
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-              ),
-            ),
-            DataCell(Text(
-              registerdGroup.description.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdGroup.groupMembers.length.toString().toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-          ]
-        : [
+    cells: [
             DataCell(
               Text(
                 registerdGroup!.name.toLowerCase(),

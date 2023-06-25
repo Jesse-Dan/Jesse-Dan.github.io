@@ -69,7 +69,13 @@ class _SideMenuState extends State<SideMenu> {
                   ),
                 ),
               DrawerHeader(
-                child: Image.asset("assets/images/logo.png"),
+                decoration: BoxDecoration(
+                    color: primaryColor.withOpacity(0.9),
+                    image: DecorationImage(
+                        fit: BoxFit.contain,
+                        colorFilter: ColorFilter.srgbToLinearGamma(),
+                        image: AssetImage('assets/images/app_logo.png'))),
+                child: SizedBox.shrink(),
               ),
               DrawerListTile(
                 title: "Dashboard",
@@ -176,9 +182,10 @@ class _SideMenuState extends State<SideMenu> {
               DrawerListTile(
                 title: "Profile",
                 svgSrc: "assets/icons/menu_profile.svg",
-                press: () {                              Navigator.pushNamedAndRemoveUntil(context,
-                                  ProfileScreen.routeName, (_) => false);
-},
+                press: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, ProfileScreen.routeName, (_) => false);
+                },
               ),
               DrawerListTile(
                 title: "Settings",
