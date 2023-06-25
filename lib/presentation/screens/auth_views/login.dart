@@ -29,6 +29,7 @@ class _SignInScreenState extends State<SignInScreen>
   late AnimationController _controller;
   late Animation<double> _opacity;
   late Animation<double> _transform;
+  bool obs_1 = true;
   final TextEditingController emailCtl = TextEditingController();
   final TextEditingController passwordCtl = TextEditingController();
 
@@ -177,10 +178,16 @@ class _SignInScreenState extends State<SignInScreen>
                               AuthViewComponents(context: context).component1(
                                   Icons.lock_outline,
                                   'Password...',
-                                  true,
+                                  obs_1,
                                   false,
                                   size,
-                                  controller: passwordCtl),
+                                  controller: passwordCtl,
+                                  suffixIcon: Icons.remove_red_eye_sharp,
+                                  onTapSuffixIcon: () {
+                                setState(() {
+                                  obs_1 = !obs_1;
+                                });
+                              }),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

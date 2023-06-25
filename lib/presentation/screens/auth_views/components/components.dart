@@ -19,15 +19,17 @@ class AuthViewComponents extends FormWidget {
       IconData icon, String hintText, bool isPassword, bool isEmail, Size size,
       {required TextEditingController controller,
       TextInputType? type,
-      limit,
-      inputColors,
-      inputType,
-      fillColor}) {
+      int? limit,
+      Color? inputColors,
+      void Function()? onTapSuffixIcon,
+      IconData? suffixIcon,
+      InputType? inputType,
+      Color? fillColor}) {
     if (inputType == InputType.dropDown) {
-      return const DropdownWidget(options: ['Male','Female']);
+      return const DropdownWidget(options: ['Male', 'Female']);
     }
-     if (inputType == InputType.radioInput) {
-      return const DropdownWidget(options: ['Male','Female']);
+    if (inputType == InputType.radioInput) {
+      return const DropdownWidget(options: ['Male', 'Female']);
     }
     return Container(
       clipBehavior: Clip.hardEdge,
@@ -37,11 +39,11 @@ class AuthViewComponents extends FormWidget {
         top: 10,
       ),
       height: Responsive.isDesktop(context) ? size.height / 10 : size.width / 8,
-      width: size.width / 1.22,
+      width: size.width / 2,
       alignment: Alignment.center,
       padding: EdgeInsets.only(right: size.width / 30),
       decoration: BoxDecoration(
-        color: fillColor ?? Colors.black.withOpacity(.05) ,
+        color: fillColor ?? Colors.black.withOpacity(.05),
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextFormField(
@@ -63,6 +65,14 @@ class AuthViewComponents extends FormWidget {
           prefixIcon: Icon(
             icon,
             color: inputColors ?? Colors.black.withOpacity(.7),
+          ),
+          suffixIconConstraints: BoxConstraints.loose(size),
+          suffixIcon: InkWell(
+            onTap: onTapSuffixIcon,
+            child: Icon(
+              suffixIcon,
+              color: isPassword ? kgreyColor : Colors.black,
+            ),
           ),
           border: InputBorder.none,
           hintMaxLines: 1,

@@ -34,6 +34,9 @@ class _SignUpScreenState extends State<SignUpScreen>
   late AnimationController _controller;
   late Animation<double> _opacity;
   late Animation<double> _transform;
+  bool obs_1 = true;
+  bool obs_2 = true;
+  bool a_d_obs_1 = true;
 
   final TextEditingController LastnameCtl = TextEditingController();
   final TextEditingController emailCtl = TextEditingController();
@@ -238,24 +241,42 @@ class _SignUpScreenState extends State<SignUpScreen>
                                 AuthViewComponents(context: context).component1(
                                     Icons.admin_panel_settings_outlined,
                                     'AuthCode...',
-                                    true,
+                                    a_d_obs_1,
                                     false,
                                     size,
-                                    controller: AuthCodeCtl),
+                                    controller: AuthCodeCtl,
+                                    suffixIcon: Icons.remove_red_eye,
+                                    onTapSuffixIcon: () {
+                                  setState(() {
+                                    a_d_obs_1 = !a_d_obs_1;
+                                  });
+                                }),
                                 AuthViewComponents(context: context).component1(
                                     Icons.password_outlined,
                                     'Password...',
-                                    true,
+                                    obs_1,
                                     false,
                                     size,
-                                    controller: passwordCtl),
+                                    controller: passwordCtl,
+                                    suffixIcon: Icons.remove_red_eye,
+                                    onTapSuffixIcon: () {
+                                  setState(() {
+                                    obs_1 = !obs_1;
+                                  });
+                                }),
                                 AuthViewComponents(context: context).component1(
                                     Icons.password_outlined,
                                     'Confirm Password...',
-                                    true,
+                                    obs_2,
                                     false,
                                     size,
-                                    controller: confirmPasswordCtl),
+                                    controller: confirmPasswordCtl,
+                                    suffixIcon: Icons.remove_red_eye,
+                                    onTapSuffixIcon: () {
+                                  setState(() {
+                                    obs_1 = !obs_1;
+                                  });
+                                }),
                                 const SizedBox(height: 25),
                                 AuthViewComponents(context: context).component2(
                                   'Create Account',
