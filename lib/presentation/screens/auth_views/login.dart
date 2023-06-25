@@ -102,14 +102,11 @@ class _SignInScreenState extends State<SignInScreen>
         if (state is AuthentictionSuccesful) {
           Navigator.pushNamedAndRemoveUntil(
               context, MainScreen.routeName, (_) => false);
-
           Alertify.success(message: 'User Logged in sussecfully');
         }
-       
 
         if (state is AuthentictionFailed) {
           Navigator.pop(context);
-
           Alertify.error(message: state.error);
         }
       },

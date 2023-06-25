@@ -33,15 +33,23 @@ updateFailedBlocState({state, context}) {
     case RegistrationFailed:
       Navigator.of(context).pop();
       Alertify.error(
-          title: 'Registration  Error',
+          title: 'Registration Error',
           message: 'An error occured, Registering ERROR:${state.error}');
       break;
     case AuthentictionFailed:
       Navigator.of(context).pop();
       Alertify.error(
-          title: 'Authentiction  Error',
+          title: 'Authentiction Error',
           message:
               'An error occured While Authentication ERROR:${state.error}');
+      break;
+    case AdminManagemetFailed:
+      Alertify.error(
+          title: 'Admin Management Error',
+          message:
+              'An error occured While Managing Admins ERROR:${state.error}');
+      Navigator.of(context).pop();
+
       break;
     case GroupManagementFailed:
       Navigator.of(context).pop();
@@ -68,43 +76,42 @@ updatetSuccessBlocState({state, context}) {
       Navigator.of(context).pop();
       break;
     case GroupRegistrationLoaded:
+      Alertify.success();
       BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-
-      Alertify.success();
       break;
     case AuthentictionSuccesful:
       Alertify.success();
       break;
     case AttendeeRegistrationLoaded:
+      Alertify.success();
       BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-      Alertify.success();
       break;
-
-    case AdminManagemetLoaded:
-      break;
-
     case UserManagementLoaded:
+      Alertify.success();
       BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-      Alertify.success();
       break;
-
     case GroupManagementLoaded:
+      Alertify.success();
       BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
+      break;
+    case AdminManagemetAltered:
       Alertify.success();
+      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
       break;
     case NonAdminManagementLoaded:
+      Alertify.success();
       BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-
-      Alertify.success();
       break;
     default:
   }
@@ -127,7 +134,6 @@ updateLoadingBlocState({state, context}) {
           builder: (builder) =>
               const Center(child: CircularProgressIndicator()));
       break;
-
     case RegistrationLoading:
       showDialog(
           context: context,
@@ -142,12 +148,17 @@ updateLoadingBlocState({state, context}) {
       break;
     case AuthentictionLoading:
       // showDialog(
-      //     context: context,
-      //     builder: (builder) =>
-      //         const Center(child: CircularProgressIndicator()));
+      //   context: context,
+      //   builder: (builder) =>
+      //     const Center(child: CircularProgressIndicator()));
       break;
     case GroupManagementLoading:
-      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (builder) =>
+              const Center(child: CircularProgressIndicator()));
+      break;
+    case AdminManagementLoading:
       showDialog(
           context: context,
           builder: (builder) =>

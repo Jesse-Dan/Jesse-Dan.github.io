@@ -55,6 +55,11 @@ Stack ProfileTop() {
                     height: 10,
                     width: 10,
                     decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(
+                            fetched ? state.user.imageUrl : '',
+                          ),
+                          fit: BoxFit.fill),
                       color: bgColor,
                       borderRadius: BorderRadius.circular(100),
                     ),
@@ -62,7 +67,7 @@ Stack ProfileTop() {
                         ? state.user.imageUrl == ''
                             ? const Icon(Icons.person_rounded,
                                 size: 120, color: cardColors)
-                            : Image.network(state.user.imageUrl)
+                            : null
                         : loading
                             ? const Icon(Icons.person_rounded,
                                 size: 120, color: cardColors)

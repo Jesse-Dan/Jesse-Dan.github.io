@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tyldc_finaalisima/presentation/widgets/dropdown_widget.dart';
 import '../../../../config/constants/responsive.dart';
 import '../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../widgets/index.dart';
 
 import '../../../../config/theme.dart';
-import '../../../widgets/dialogue_forms.dart';
+
+enum InputType { dropDown, text, radioInput }
 
 class AuthViewComponents extends FormWidget {
   AuthViewComponents({required this.context});
@@ -19,7 +21,14 @@ class AuthViewComponents extends FormWidget {
       TextInputType? type,
       limit,
       inputColors,
+      inputType,
       fillColor}) {
+    if (inputType == InputType.dropDown) {
+      return const DropdownWidget(options: ['Male','Female']);
+    }
+     if (inputType == InputType.radioInput) {
+      return const DropdownWidget(options: ['Male','Female']);
+    }
     return Container(
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.only(
@@ -32,7 +41,7 @@ class AuthViewComponents extends FormWidget {
       alignment: Alignment.center,
       padding: EdgeInsets.only(right: size.width / 30),
       decoration: BoxDecoration(
-        color: fillColor == null ? Colors.black.withOpacity(.05) : fillColor,
+        color: fillColor ?? Colors.black.withOpacity(.05) ,
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextFormField(

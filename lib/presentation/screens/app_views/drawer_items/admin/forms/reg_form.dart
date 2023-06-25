@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -142,19 +141,15 @@ class AdminsRegistrationForms extends FormWidget {
                   admin: admin,
                   title: 'Change Viewer Code',
                   action: () {
-                    viewAuthCodeData(
-                        admin: admin,
-                        title: 'Change Viewer Code',
-                        action: () {
-                          BlocProvider.of<AdminManagemetBloc>(context).add(
-                              AlterCodeEvent(
-                                  oldCode: oldauthCodeController.text,
-                                  newCode: authCodeController.text,
-                                  field: 'authCode',
-                                  adminCodeField: 'viewerCode'));
-                          BlocProvider.of<AdminManagemetBloc>(context)
-                              .add(const GetCodeEvent());
-                        });
+                    BlocProvider.of<AdminManagemetBloc>(context).add(
+                        AlterCodeEvent(
+                            oldCode: oldauthCodeController.text,
+                            context: context,
+                            newCode: authCodeController.text,
+                            field: 'authCode',
+                            adminCodeField: 'viewerCode'));
+                    BlocProvider.of<AdminManagemetBloc>(context)
+                        .add(const GetCodeEvent());
                   });
             }),
         PopupMenuItemModel(
@@ -164,17 +159,15 @@ class AdminsRegistrationForms extends FormWidget {
                   admin: admin,
                   title: 'Change Admin Code',
                   action: () {
-                    viewAuthCodeData(
-                        admin: admin,
-                        title: 'Change Admin Code',
-                        action: () {
-                          BlocProvider.of<AdminManagemetBloc>(context).add(
-                              AlterCodeEvent(
-                                  oldCode: oldauthCodeController.text,
-                                  newCode: authCodeController.text,
-                                  field: 'authCode',
-                                  adminCodeField: 'adminCode'));
-                        });
+                    BlocProvider.of<AdminManagemetBloc>(context).add(
+                        AlterCodeEvent(
+                            oldCode: oldauthCodeController.text,
+                            context: context,
+                            newCode: authCodeController.text,
+                            field: 'authCode',
+                            adminCodeField: 'adminCode'));
+                    BlocProvider.of<AdminManagemetBloc>(context)
+                        .add(const GetCodeEvent());
                   });
             }),
         PopupMenuItemModel(
@@ -186,10 +179,13 @@ class AdminsRegistrationForms extends FormWidget {
                   action: () {
                     BlocProvider.of<AdminManagemetBloc>(context).add(
                         AlterCodeEvent(
+                            context: context,
                             oldCode: oldauthCodeController.text,
                             newCode: authCodeController.text,
                             field: 'authCode',
                             adminCodeField: 'superAdminCode'));
+                    BlocProvider.of<AdminManagemetBloc>(context)
+                        .add(const GetCodeEvent());
                   });
             })
       ],
@@ -198,7 +194,7 @@ class AdminsRegistrationForms extends FormWidget {
   }
 
   ///[IF ADMIN CODE IS CHANGED TO A HIGHER ACCESS CODE USER ACTIONS  ARE UOPDATED]
-  viewAuthCodeData({title, AdminModel? admin, action}) {
+  viewAuthCodeData({title, AdminModel? admin, void Function()? action}) {
     buildCenterFormField(
         title: title,
         context: context,
@@ -227,7 +223,7 @@ class AdminsRegistrationForms extends FormWidget {
         btNtype2: ButtonType.fill,
         alertType: AlertType.twoBtns,
         onSubmit2: () {
-          action;
+          action!();
           BlocProvider.of<AdminManagemetBloc>(context)
               .add(const GetCodeEvent());
         });

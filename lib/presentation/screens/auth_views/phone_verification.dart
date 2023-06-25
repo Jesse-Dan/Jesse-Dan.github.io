@@ -118,6 +118,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         focusedPinTheme: focusedPinTheme,
         submittedPinTheme: submittedPinTheme,
         length: 6,
+        autofocus: true,
         pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
         showCursor: true,
         onCompleted: (pin) => BlocProvider.of<AuthenticationBloc>(context).add(
@@ -135,23 +136,23 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
               builder: ((context) =>
                   const Center(child: CircularProgressIndicator())));
         }
-        if (state is PhoneAuthentictionSuccesful) {
+        if (state is OTPSentSuccesful) {
           Alertify.success(message: 'Phone Number Verified successfully');
           Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
+        if (state is MobileNumberUpdateSuccessfully) {
+          Alertify.success(message: 'Phone Number Updated successfully');
+          Navigator.pop(context);
+        }
+       
+        if (state is PhoneAuthentictionSuccesful) {
+          Alertify.success(message: 'Account Created successfully');
           Navigator.pushNamedAndRemoveUntil(
               context, SignInScreen.routeName, (_) => false);
         }
-
-        if (state is MobileNumberUpdateSuccessfully) {
-          Navigator.pop(context);
-          Alertify.success(message: 'Phone Number Updated successfully');
-        }
         if (state is AuthentictionFailed) {
-          Navigator.pop(context);
-          Alertify.error(message: state.error);
-        }
-        if (state is PhoneAuthentictionUnsucessful) {
-          Navigator.pop(context);
           Alertify.error(
               message:
                   'Phone number is invalid, Please contact your admin for futher information');

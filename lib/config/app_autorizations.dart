@@ -13,16 +13,16 @@ class AppAuthorizations {
   const AppAuthorizations({required this.localStorageService, this.context});
 
   /// [GET ADMIN AUTH CODES]
-  AdminCodesModel get getAdminCodesFromLocalStorage {
+  AdminCodesModel  getAdminCodesFromLocalStorage (){
     return AdminCodesModel.fromJson(
         localStorageService.getreadFromDisk('ADMIN_CODES'));
   }
 
   ///[VALIDATE SIGNUP BASED ON AVALIBLE ADMIN AUTH CODES ]
   bool validateAdminAuthCode(input) {
-    if (input == getAdminCodesFromLocalStorage.adminCode ||
-        input == getAdminCodesFromLocalStorage.superAdminCode ||
-        input == getAdminCodesFromLocalStorage.viewerCode) {
+    if (input == getAdminCodesFromLocalStorage().adminCode ||
+        input == getAdminCodesFromLocalStorage().superAdminCode ||
+        input == getAdminCodesFromLocalStorage().viewerCode) {
       return true;
     }
     return false;
@@ -57,7 +57,7 @@ class AppAuthorizations {
   /// [CHECK AUTH LEVEL]
   bool isSuperAdmin({required String adminCode}) {
     log('Code Is: $adminCode');
-    if (adminCode == getAdminCodesFromLocalStorage.superAdminCode) {
+    if (adminCode == getAdminCodesFromLocalStorage().superAdminCode) {
       return true;
     } else {
       return false;
@@ -66,7 +66,7 @@ class AppAuthorizations {
 
   bool isAdmin({required String adminCode}) {
     log('Code Is: $adminCode');
-    if (adminCode == getAdminCodesFromLocalStorage.adminCode) {
+    if (adminCode == getAdminCodesFromLocalStorage().adminCode) {
       return true;
     } else {
       return false;
@@ -75,7 +75,7 @@ class AppAuthorizations {
 
   bool isViewer({required String adminCode}) {
     log('Code Is: $adminCode');
-    if (adminCode == getAdminCodesFromLocalStorage.viewerCode) {
+    if (adminCode == getAdminCodesFromLocalStorage().viewerCode) {
       return true;
     } else {
       return false;

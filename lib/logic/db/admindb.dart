@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:tyldc_finaalisima/presentation/widgets/alertify.dart';
 
 import '../../models/auth_code_model.dart';
 import '../../models/models.dart';
@@ -106,15 +107,28 @@ class DB {
   }
 
   /// [ALTER ADMIN CODE]
-  Future<void> alterAdminCode({dynamic newValue, required String field}) async {
+  Future<bool> alterAdminCode(
+      {required String oldValue,
+      required String newValue,
+      required String field}) async {
     try {
-      adminCodesDB.doc('ADMINCODES').update({field: newValue});
+      var doc = await adminCodesDB.doc('ADMINCODES').get();
+      var codeModel = doc.data()!;
+      if (codeModel.containsKey(field) && codeModel[field] == oldValue) {
+        log('do-able');
+        adminCodesDB.doc('ADMINCODES').update({field: newValue});
+        return true;
+      } else {
+        log('not do-able (view model:  ${codeModel.values})');
+        return false;
+      }
     } on FirebaseException catch (e) {
       log(e.toString());
+      return false;
     }
   }
 
-  Future<bool> updateAdminCodes(
+  Future<bool> updateAdminCodeAcrossDB(
       {dynamic oldValue, dynamic newValue, required String field}) async {
     try {
       final snapshot = await adminDB.get();
@@ -125,12 +139,12 @@ class DB {
         final data = doc.data();
         if (data.containsKey(field) && data[field] == oldValue) {
           batchUpdate.update(doc.reference, {field: newValue});
+        } else {
+          log('$data _doesn\'t match');
         }
       }
-
       await batchUpdate.commit();
-      log('Data updated successfully.');
-      return true;
+      return false;
     } catch (error) {
       log('Error updating data: $error');
       return false;

@@ -112,26 +112,12 @@ class _SignUpScreenState extends State<SignUpScreen>
               builder: ((context) =>
                   const Center(child: CircularProgressIndicator())));
         }
-
-        if (state is OTPSentSuccesful) {
-          Navigator.pop(context);
+        if (state is AuthentictionSuccesful) {
+          // Alertify.success(message: 'An otp has been sent to ${PhoneCtl.text}');
           Navigator.pushNamedAndRemoveUntil(
-              context, PhoneVerificationScreen.routeName, (_) => false);
-          BlocProvider.of<AuthenticationBloc>(context).add(SignUpEvent(context,
-              adminModel: AdminModel(
-                firstName: firstNameCtl.text,
-                lastName: LastnameCtl.text,
-                email: emailCtl.text,
-                phoneNumber: PhoneCtl.text,
-                gender: GenderCtl.text,
-                dept: DeptCtl.text,
-                role: RoleCtl.text,
-                authCode: AuthCodeCtl.text,
-                password: confirmPasswordCtl.text,
-                imageUrl: '',
-                id: '',
-              )));
-          Alertify.success(message: 'An otp has been sent to ${PhoneCtl.text}');
+              context, SignInScreen.routeName, (_) => false);
+          // BlocProvider.of<AuthenticationBloc>(context)
+          //     .add(SendOtpEvent(int.parse(PhoneCtl.text)));
         }
         if (state is AuthentictionFailed) {
           Navigator.pop(context);
@@ -293,7 +279,9 @@ class _SignUpScreenState extends State<SignUpScreen>
                                               'Password doesn\'t meet requirements');
                                     } else if (PhoneCtl.text.length
                                             .isLowerThan(10) ||
-                                        PhoneCtl.text[0] == '0') {
+                                        PhoneCtl.text[0] == '0' ||
+                                        PhoneCtl.text
+                                            .contains(RegExp(r'[a-zA-Z]'))) {
                                       Alertify.error(
                                           title: 'Registration Error',
                                           message:
@@ -302,12 +290,30 @@ class _SignUpScreenState extends State<SignUpScreen>
                                       verifyAction(
                                           title: 'SignUp Process',
                                           text:
-                                              'Are you certain of the details you\'ve entered ? any issue encountered here can only be resolved by your Admin!! ',
+                                              'Are you certain of the details  you\'ve entered? any issue encountered here can only be resolved by your Admin!! ',
                                           action: () {
                                             BlocProvider.of<AuthenticationBloc>(
                                                     context)
-                                                .add(SendOtpEvent(
-                                                    int.parse(PhoneCtl.text)));
+                                                .add(SignUpEvent(context,
+                                                    adminModel: AdminModel(
+                                                      firstName:
+                                                          firstNameCtl.text,
+                                                      lastName:
+                                                          LastnameCtl.text,
+                                                      email: emailCtl.text,
+                                                      phoneNumber:
+                                                          PhoneCtl.text,
+                                                      gender: GenderCtl.text,
+                                                      dept: DeptCtl.text,
+                                                      role: RoleCtl.text,
+                                                      authCode:
+                                                          AuthCodeCtl.text,
+                                                      password:
+                                                          confirmPasswordCtl
+                                                              .text,
+                                                      imageUrl: '',
+                                                      id: '',
+                                                    )));
                                           },
                                           context: context);
                                     }

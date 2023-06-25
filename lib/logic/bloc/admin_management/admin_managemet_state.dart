@@ -11,7 +11,8 @@ abstract class AdminManagemetState extends Equatable {
 
 class AdminManagemetInitial extends AdminManagemetState {}
 
-class AdminManagemetLoading extends AdminManagemetState {}
+class AdminManagementLoading extends AdminManagemetState {}
+
 class AdminManagemetAltered extends AdminManagemetState {}
 
 class AdminManagemetLoaded extends AdminManagemetState {

@@ -102,7 +102,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
       var data = event.adminModel;
       try {
         log(data.authCode);
-        if (await AppAuthorizations(localStorageService: localStorageService)
+        if (AppAuthorizations(localStorageService: localStorageService)
             .validateAdminAuthCode(data.authCode)) {
           emit(AuthentictionLoading());
           await auth.createUserWithEmailAndPassword(
@@ -223,15 +223,13 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
 
       try {
         PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificationIdValue,
-          smsCode: (event.otp).toString(),
-        );
+            verificationId: verificationIdValue,
+            smsCode: (event.otp).toString());
         await auth.signInWithCredential(credential);
         emit(PhoneAuthentictionSuccesful());
         log('User signed in with phone number successfully.');
       } on FirebaseAuthException catch (e) {
         emit(AuthentictionFailed(e.toString()));
-
         log('Failed to sign in with phone number. Error: $e');
       } catch (e) {
         emit(AuthentictionFailed(e.toString()));
@@ -244,9 +242,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
     on<ForgottenPasswordEvent>((event, emit) async {
       try {
         emit(AuthentictionLoading());
-        await auth
-            .sendPasswordResetEmail(email: event.email)
-            .timeout(const Duration(seconds: 20));
+        await auth.sendPasswordResetEmail(email: event.email);
         emit(ForgottenPasswordEmailSent());
       } on FirebaseAuthException catch (e) {
         if (e.message == 'auth/missing-email') {
@@ -266,10 +262,12 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
     on<UpdateNumberEvent>((event, emit) async {
       try {
         emit(AuthentictionLoading());
-        await DB(auth: auth).updateAdminData(
-            auth: auth, newData: event.phoneNumber, field: 'phoneNumber');
-        BlocProvider.of<AuthenticationBloc>(event.context)
-            .add(SendOtpEvent(int.parse(event.phoneNumber)));
+        await DB(auth: auth)
+            .updateAdminData(
+                auth: auth, newData: event.phoneNumber, field: 'phoneNumber')
+            .then((value) => BlocProvider.of<AuthenticationBloc>(event.context)
+                .add(SendOtpEvent(int.parse(event.phoneNumber))));
+
         emit(MobileNumberUpdateSuccessfully());
       } on FirebaseAuthException catch (e) {
         emit(AuthentictionFailed(e.toString()));
