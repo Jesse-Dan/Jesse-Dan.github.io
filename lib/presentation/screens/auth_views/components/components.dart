@@ -39,7 +39,7 @@ class AuthViewComponents extends FormWidget {
         top: 10,
       ),
       height: Responsive.isDesktop(context) ? size.height / 10 : size.width / 8,
-      width: size.width / 2,
+      width: size.width / 1.22,
       alignment: Alignment.center,
       padding: EdgeInsets.only(right: size.width / 30),
       decoration: BoxDecoration(
@@ -66,7 +66,7 @@ class AuthViewComponents extends FormWidget {
             icon,
             color: inputColors ?? Colors.black.withOpacity(.7),
           ),
-          suffixIconConstraints: BoxConstraints.loose(size),
+          // suffixIconConstraints: BoxConstraints.loose(size),
           suffixIcon: InkWell(
             onTap: onTapSuffixIcon,
             child: Icon(
