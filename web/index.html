@@ -1,56 +1,72 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="TYLDC REGISTRATION PORTAL FOR ORGANIZING HER ACTIVITIES AND MEMBER | DEVELOPED BY JESSE DAN.">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description"
+    content="TYLDC REGISTRATION PORTAL FOR ORGANIZING HER ACTIVITIES AND MEMBER | DEVELOPED BY JESSE DAN.">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="TYLDC PORTAL">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-    <script src="flutter.js" defer></script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet" href="style/index.css" />
+
+  <title>TYLDC PORTAL</title>
+  <link rel="manifest" href="manifest.json">
 
   <script>
-    window.addEventListener('load', function(ev) {
+    var serviceWorkerVersion = null;
+  </script>
+  <script src="flutter.js" defer></script>
+</head>
+
+<body class="b">
+  <div class="loader-container">
+    <div class="loader"></div>
+  </div>
+  <div id="loading"></div>
+  <script>
+
+    var loading = document.querySelector('#loading');
+    var showLoader = false;
+    showLoader = true
+    loading.textContent = "TYLDC LOADING ENTRYPOINT...";
+    window.addEventListener('load', function (ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
+        onEntrypointLoaded: function (engineInitializer) {
+          loading.textContent = "TYLDC LOADING ENTRYPOINT INITIALIZING ENGINE...";
+          engineInitializer.initializeEngine().then(function (appRunner) {
+            loading.textContent = "TYLDC LOADING ENTRYPOINT RUNNING APP...";
+            showLoader =false;
             appRunner.runApp();
           });
         }
       });
     });
+    setTimeout(function () {
+        if (showLoader) {
+          // Hide the loader and show the content
+          document.querySelector('.loader-container').style.display = 'none';
+          document.body.style.visibility = 'visible';
+        }
+      }, 50000);
+    
   </script>
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js"></script>
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDSLBAPo2v4pZFs2wV6o8WeXseS8tOGXIU",
       authDomain: "tyldc-registry.firebaseapp.com",
@@ -61,25 +77,12 @@
       appId: "1:390567584749:web:a1aa9135fef7df72d57de4",
       measurementId: "G-FVRGNG2S19"
     };
-
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+
   </script>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>TYLDC PORTAL</title>
-  <link rel="manifest" href="manifest.json">
-
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = null;
   </script>
-  <!-- This script adds the flutter initialization JS code -->
-</head>
-<body>
-
 </body>
+
 </html>
