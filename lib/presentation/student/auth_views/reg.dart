@@ -322,6 +322,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                                                       lastName:
                                                           LastnameCtl.text,
                                                       email: emailCtl.text,
+                                                      enabled: true,
                                                       phoneNumber:
                                                           PhoneCtl.text,
                                                       gender: GenderCtl.text,

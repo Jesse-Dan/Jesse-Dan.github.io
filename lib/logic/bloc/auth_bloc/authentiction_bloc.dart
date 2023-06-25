@@ -18,6 +18,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
   final LocalStorageService localStorageService;
   String verificationIdValue = '';
   String smsCodeValue = '';
+  bool doing = false;
 
   AuthenticationBloc({required this.auth, required this.localStorageService})
       : super(AuthentictionInitial()) {
@@ -113,6 +114,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
               id: auth.currentUser!.uid,
               lastName: data.lastName,
               email: data.email,
+              enabled: data.enabled,
               phoneNumber: data.phoneNumber,
               gender: data.gender,
               dept: data.dept,
@@ -155,11 +157,15 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
   logout() async {
     on<LogoutEvent>((event, emit) async {
       try {
-        emit(AuthentictionLoading());
-        await UtilsDB(auth: auth).sendNotificationData(
-            Notifier.logout(data: 'You ended your session'));
-        await auth.signOut().then((value) => log('User Logged Out'));
-        emit(AuthentictionSuccesful());
+        if (doing) {
+          doing = true;
+          emit(AuthentictionLoading());
+          await UtilsDB(auth: auth).sendNotificationData(
+              Notifier.logout(data: 'You ended your session'));
+          await auth.signOut().then((value) => log('User Logged Out'));
+          emit(AuthentictionSuccesful());
+          doing = false;
+        }
       } on FirebaseAuthException catch (e) {
         emit(AuthentictionFailed(e.message.toString().toUpperCase()));
       } catch (e) {

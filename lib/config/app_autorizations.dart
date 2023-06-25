@@ -7,7 +7,7 @@ import '../models/auth_code_model.dart';
 
 enum AdminAuthLevel { superAdmin, admin, viewer }
 
-// TODO: [VIEWER SHOULD SEE THIS TABS : DASHBOARD, SEASONS, PROFILE, SETTINGS, END SESSION (AS PER AUTHORIZATION LEVEL)]
+///[this class is responsible for dictating who is permited to do what and see what]
 class AppAuthorizations {
   final LocalStorageService localStorageService;
   final BuildContext? context;

@@ -106,6 +106,24 @@ class DB {
     }
   }
 
+  ///[UPDATE ADMIN DATA]
+  Future<bool> updateEnabledStatus(
+      { String? id, newData, field}) async {
+    if (id != null) {
+      try {
+        await adminDB.doc(id).update({field: newData});
+        log("Data updated successfully!");
+        return true;
+      } catch (e) {
+        log('error updating data: $e');
+        return false;
+      }
+    } else {
+      log('error updating data ');
+      return false;
+    }
+  }
+
   /// [ALTER ADMIN CODE]
   Future<bool> alterAdminCode(
       {required String oldValue,

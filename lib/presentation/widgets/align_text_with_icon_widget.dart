@@ -18,26 +18,29 @@ class AlignIconWithTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          text,
-          style: GoogleFonts.dmSans(
-            color: textColor,
-            fontSize: 15,
+    return Container(
+      width: text.length.toDouble(),
+      child: Row(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            text,
+            style: GoogleFonts.dmSans(
+              color: textColor,
+              fontSize: 15,
+            ),
           ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Icon(
-          icon,
-          size: 15,
-          color: iconColor,
-        ),
-      ],
+          const SizedBox(
+            width: 10,
+          ),
+          Icon(
+            icon,
+            size: 15,
+            color: iconColor,
+          ),
+        ],
+      ),
     );
   }
 }

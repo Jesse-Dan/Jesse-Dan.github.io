@@ -32,8 +32,10 @@ class GetCodeEvent extends AdminManagemetEvent {
 
 class EnableAdminEvent extends AdminManagemetEvent {
   final AdminModel performedBy;
+  final bool enabledStatus;
   final String id;
-  const EnableAdminEvent({
+  const EnableAdminEvent(
+    this.enabledStatus, {
     required this.performedBy,
     required this.id,
   });
@@ -43,8 +45,10 @@ class EnableAdminEvent extends AdminManagemetEvent {
 
 class DisableAdminEvent extends AdminManagemetEvent {
   final AdminModel performedBy;
+  final bool enabledStatus;
   final String id;
-  const DisableAdminEvent({
+  const DisableAdminEvent(
+    this.enabledStatus, {
     required this.performedBy,
     required this.id,
   });

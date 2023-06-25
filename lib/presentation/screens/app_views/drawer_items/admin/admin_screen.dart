@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +12,6 @@ import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
-import '../../../../widgets/customm_text_btn.dart';
 import '../../../../widgets/data_table.dart';
 import '../../components/header.dart';
 import '../../components/prefered_size_widget.dart';
@@ -30,6 +30,8 @@ class AdminScreen extends StatefulWidget {
 }
 
 class _AdminScreenState extends State<AdminScreen> {
+  bool enabled = false;
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
@@ -75,79 +77,85 @@ class _AdminScreenState extends State<AdminScreen> {
                 // and it takes 1/6 part of the screen
                 child: SideMenu(),
               ),
-            Expanded(
-              // It takes 5/6 part of the screen
-              flex: 9,
-              child: BlocBuilder<DashBoardBloc, DashBoardState>(
-                builder: (context, state) {
-                  bool fetched = state is DashBoardFetched;
-                  return PageContentWidget(
-                    actions: [
-                      AdminsRegistrationForms(context: context).showOptions(
-                          admin: fetched ? state.user : null,
-                          icon: const AlignIconWithTextWidget(
-                            icon: Icons.admin_panel_settings_rounded,
-                            text: 'Set Auth Codes',
-                          )),
-                      const TextBtn(
-                        icon: Icons.filter_list,
-                        text: 'Filter',
-                      )
-                    ],
-                    columns: [
-                      DataColumn(
-                        label: Text(
-                          "Profile Picture",
-                          style: GoogleFonts.dmSans(
-                              color: kSecondaryColor, fontSize: 15),
-                        ),
+            BlocBuilder<DashBoardBloc, DashBoardState>(
+              builder: (context, state) {
+                bool fetched = state is DashBoardFetched;
+                return PageContentWidget(
+                  actions: [
+                    AdminsRegistrationForms(context: context).showOptions(
+                        admin: fetched ? state.user : null,
+                        icon: const AlignIconWithTextWidget(
+                          icon: Icons.admin_panel_settings_rounded,
+                          text: 'Set Auth Codes',
+                        )),
+                  ],
+                  columns: [
+                    DataColumn(
+                      label: Text(
+                        "Profile Picture",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
                       ),
-                      DataColumn(
-                        label: Text(
-                          "Fullname",
-                          style: GoogleFonts.dmSans(
-                              color: kSecondaryColor, fontSize: 15),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          "Department",
-                          style: GoogleFonts.dmSans(
-                              color: kSecondaryColor, fontSize: 15),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          "Role",
-                          style: GoogleFonts.dmSans(
-                              color: kSecondaryColor, fontSize: 15),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          "Phone",
-                          style: GoogleFonts.dmSans(
-                              color: kSecondaryColor, fontSize: 15),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          "Gender",
-                          style: GoogleFonts.dmSans(
-                              color: kSecondaryColor, fontSize: 15),
-                        ),
-                      ),
-                    ],
-                    row: List.generate(
-                      fetched ? state.admins.length : 0,
-                      (index) => (recentFileDataRow(
-                          fetched ? state.admins[index] : null, context,
-                          performedBy: fetched ? state.user : null)),
                     ),
-                    title: 'Admins',
-                  );
-                },
-              ),
+                    DataColumn(
+                      label: Text(
+                        "Fullname",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Department",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Role",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Phone",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Gender",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Edit",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Enabled",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                  ],
+                  row: List.generate(
+                    fetched ? state.admins.length : 0,
+                    (index) => (recentFileDataRow(
+                        fetched ? state.admins[index] : null, context,
+                        performedBy: fetched ? state.user : null)),
+                  ),
+                  title: 'Admins',
+                );
+              },
             ),
           ],
         )),
@@ -162,7 +170,6 @@ class _AdminScreenState extends State<AdminScreen> {
 
   DataRow recentFileDataRow(AdminModel? registerdAdmin, context,
       {required AdminModel? performedBy}) {
-    bool enabled = true;
     return DataRow(
       onLongPress: () {
         AdminsRegistrationForms(context: context).viewSelectedAdminStaffData(
@@ -177,7 +184,6 @@ class _AdminScreenState extends State<AdminScreen> {
             : CircleAvatar(
                 backgroundImage:
                     NetworkImage(registerdAdmin.imageUrl, scale: 10))),
-
         DataCell(
           Text(
             registerdAdmin.firstName.toLowerCase(),
@@ -200,20 +206,27 @@ class _AdminScreenState extends State<AdminScreen> {
           registerdAdmin.gender,
           style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
         )),
-        DataCell(CupertinoSwitch(
-            value: enabled,
-            onChanged: (val) {
-              setState(() {
-                enabled = !enabled;
-              });
-              BlocProvider.of<AdminManagemetBloc>(context).add(
-                  DisableAdminEvent(
-                      performedBy: performedBy!, id: registerdAdmin.id));
-            })),
-        // DataCell(Text(
-        //   registerdAdmin.gender.toLowerCase(),
-        //   style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-        // )),
+        DataCell(Icon(
+          Icons.edit_document,
+          size: 30,
+          color: kSecondaryColor,
+        )),
+        DataCell(Container(
+            alignment: Alignment.center,
+            child: CupertinoSwitch(
+                dragStartBehavior: DragStartBehavior.down,
+                value: registerdAdmin.enabled,
+                onChanged: (val) {
+                  if (registerdAdmin.enabled) {
+                    BlocProvider.of<AdminManagemetBloc>(context).add(
+                        DisableAdminEvent(false,
+                            performedBy: performedBy!, id: registerdAdmin.id));
+                  } else {
+                    BlocProvider.of<AdminManagemetBloc>(context).add(
+                        EnableAdminEvent(true,
+                            performedBy: performedBy!, id: registerdAdmin.id));
+                  }
+                }))),
       ],
     );
   }

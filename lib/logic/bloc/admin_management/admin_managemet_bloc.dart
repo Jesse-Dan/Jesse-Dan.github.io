@@ -30,6 +30,8 @@ class AdminManagemetBloc
       : super(AdminManagemetInitial()) {
     getAdminCode();
     alterAdminCode();
+    disAbleAdmin();
+    enableAdmin();
   }
   alterAdminCode() {
     on<AlterCodeEvent>((event, emit) async {
@@ -75,12 +77,13 @@ class AdminManagemetBloc
     });
   }
 
-  diaAbleAdmin() {
+  disAbleAdmin() {
     on<DisableAdminEvent>((event, emit) async {
       try {
         emit(AdminManagementLoading());
-        await UtilsDB(auth: auth).disableAdmin(event.id);
-        emit(AdminManagementENABLEDISABLE());
+    var data=    await DB(auth: auth).updateEnabledStatus(
+            id: event.id, field: 'enabled', newData: event.enabledStatus);
+        emit(AdminManagementENABLEDISABLE(data));
       } on FirebaseAuthException catch (e) {
         emit(AdminManagemetFailed(error: e.toString()));
       } catch (e) {
@@ -90,12 +93,13 @@ class AdminManagemetBloc
     });
   }
 
-  emableAdmin() {
+  enableAdmin() {
     on<EnableAdminEvent>((event, emit) async {
       try {
         emit(AdminManagementLoading());
-        await UtilsDB(auth: auth).enableAdmin(event.id);
-        emit(AdminManagementENABLEDISABLE());
+       var data = await DB(auth: auth).updateEnabledStatus(
+            id: event.id, field: 'enabled', newData: event.enabledStatus);
+        emit(AdminManagementENABLEDISABLE(data));
       } on FirebaseAuthException catch (e) {
         emit(AdminManagemetFailed(error: e.toString()));
       } catch (e) {

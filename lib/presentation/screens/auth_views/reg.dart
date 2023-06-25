@@ -317,6 +317,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                                                     context)
                                                 .add(SignUpEvent(context,
                                                     adminModel: AdminModel(
+                                                      enabled: true,
                                                       firstName:
                                                           firstNameCtl.text,
                                                       lastName:

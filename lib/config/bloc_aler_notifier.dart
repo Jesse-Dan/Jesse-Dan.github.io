@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tyldc_finaalisima/logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../logic/bloc/admin_management/admin_managemet_bloc.dart';
+import '../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../logic/bloc/index_blocs.dart';
 import '../logic/bloc/non_admin_management/non_admin_management_bloc.dart';
 import '../logic/bloc/user_management/user_management_bloc.dart';
@@ -10,6 +12,8 @@ import '../presentation/widgets/alertify.dart';
 
 import '../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
 import '../presentation/screens/auth_views/login.dart';
+
+///[this methods are responsible for navigating users based on permissions and states]
 
 /// [DISPLAY ERROR ON SPECIFIC ERROR STATE EMITTED]
 updateFailedBlocState({state, context}) {
@@ -83,6 +87,11 @@ updatetSuccessBlocState({state, context}) {
       break;
     case AuthentictionSuccesful:
       Alertify.success();
+      break;
+    case AdminManagementENABLEDISABLE:
+      Alertify.success();
+      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+      Navigator.of(context).pop();
       break;
     case AttendeeRegistrationLoaded:
       Alertify.success();
@@ -178,6 +187,22 @@ updateSessionState({state, context}) {
     case AuthentictionLostSession:
       Navigator.pushNamedAndRemoveUntil(
           context, SignInScreen.routeName, (_) => false);
+      break;
+    // case AdminManagementENABLEDISABLE:
+    //   if (!state.enabled) {
+    //     Navigator.pushNamedAndRemoveUntil(
+    //         context, SignInScreen.routeName, (_) => false);
+    //     BlocProvider.of<AuthenticationBloc>(context).add(LogoutEvent());
+    //     Alertify.error(message: 'Your account has been disabled');
+    //   }
+    //   break;
+    case DashBoardFetched:
+      if (!state.user.enabled) {
+        Alertify.error(message: 'Your account has been disabled');
+        BlocProvider.of<AuthenticationBloc>(context).add(LogoutEvent());
+        Navigator.pushNamedAndRemoveUntil(
+            context, SignInScreen.routeName, (_) => false);
+      }
       break;
     default:
   }

@@ -29,18 +29,23 @@
 </head>
 
 <body class="b">
-  <div class="loader-container">
+  <!-- <div class="loader-container">
     <div class="loader"></div>
-  </div>
+  </div> -->
   <div id="loading"></div>
   <script>
-
+//  setTimeout(function () {
+//         if (showLoader) {
+//           // Hide the loader and show the content
+//           document.querySelector('.loader-container').style.display = 'none';
+//           document.body.style.visibility = 'visible';
+//         }
+//       }, 4000);
     var loading = document.querySelector('#loading');
     var showLoader = false;
     showLoader = true
     loading.textContent = "TYLDC LOADING ENTRYPOINT...";
     window.addEventListener('load', function (ev) {
-      // Download main.dart.js
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
@@ -55,13 +60,7 @@
         }
       });
     });
-    setTimeout(function () {
-        if (showLoader) {
-          // Hide the loader and show the content
-          document.querySelector('.loader-container').style.display = 'none';
-          document.body.style.visibility = 'visible';
-        }
-      }, 50000);
+   
     
   </script>
   <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
@@ -79,7 +78,6 @@
     };
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
-
   </script>
 
   </script>

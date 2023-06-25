@@ -10,6 +10,7 @@ String adminModelToJson(AdminModel data) => json.encode(data.toMap());
 
 class AdminModel extends Equatable {
   final String id;
+  final bool enabled;
   final String firstName;
   final String lastName;
   final String email;
@@ -22,6 +23,7 @@ class AdminModel extends Equatable {
   final String imageUrl;
 
   const AdminModel({
+    required this.enabled,
     required this.id,
     required this.lastName,
     required this.email,
@@ -41,6 +43,7 @@ class AdminModel extends Equatable {
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
+      'enabled': enabled,
       'phoneNumber': phoneNumber,
       'gender': gender,
       'dept': dept,
@@ -57,6 +60,7 @@ class AdminModel extends Equatable {
         firstName: map['firstName'],
         lastName: map['lastName'],
         email: map['email'],
+        enabled: map['enabled'],
         phoneNumber: map['phoneNumber'],
         gender: map['gender'],
         dept: map['dept'],
@@ -66,10 +70,6 @@ class AdminModel extends Equatable {
         imageUrl: map['imageUrl']);
   }
 
-// static const empty =  AdminModel(id: '');
-
-//   bool get IsNull => this == AdminModel.empty;
-//   bool get IsNotNull => this  = AdminModel.empty;
 
   @override
   // TODO: implement props
@@ -77,6 +77,7 @@ class AdminModel extends Equatable {
         id,
         lastName,
         email,
+        enabled,
         phoneNumber,
         gender,
         dept,

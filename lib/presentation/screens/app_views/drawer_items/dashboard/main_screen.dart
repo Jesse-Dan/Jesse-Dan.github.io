@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tyldc_finaalisima/presentation/widgets/index.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 
 import '../../../../../config/constants/responsive.dart';
@@ -36,14 +37,23 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
-        if (state is DashBoardFetched) Navigator.of(context).pop();
-        updateSessionState(state: state, context: context);
-        // updateLoadingBlocState(state: state, context: context);
-        updatetSuccessBlocState(state: state, context: context);
-        updateFailedBlocState(state: state, context: context);
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RegistrationBloc, RegistrationState>(
+          listener: (context, state) {
+            if (state is DashBoardFetched) Navigator.of(context).pop();
+            updateSessionState(state: state, context: context);
+            // updateLoadingBlocState(state: state, context: context);
+            updatetSuccessBlocState(state: state, context: context);
+            updateFailedBlocState(state: state, context: context);
+          },
+        ),
+        BlocListener<DashBoardBloc, DashBoardState>(
+          listener: (context, state) {
+            updateSessionState(state: state, context: context);
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: (Responsive.isMobile(context))
             ? CustomPreferredSizeWidget(

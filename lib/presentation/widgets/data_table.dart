@@ -119,7 +119,7 @@ class _PageContentWidgetState extends State<PageContentWidget>
                                   color: kSecondaryColor, fontSize: 20),
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: widget.actions ?? [],
                             ),

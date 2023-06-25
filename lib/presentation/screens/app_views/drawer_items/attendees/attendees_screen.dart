@@ -53,7 +53,7 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
             updateFailedBlocState(state: state, context: context);
           },
         ),
-          BlocListener<DashBoardBloc, DashBoardState>(
+        BlocListener<DashBoardBloc, DashBoardState>(
           listener: (context, state) {
             updateSessionState(state: state, context: context);
             updateLoadingBlocState(state: state, context: context);
@@ -85,100 +85,97 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                   // and it takes 1/6 part of the screen
                   child: SideMenu(),
                 ),
-              Expanded(
-                  // It takes 5/6 part of the screen
-                  flex: 9,
-                  child: BlocConsumer<DashBoardBloc, DashBoardState>(
-                      listener: (context, state) {
-                    if (state is DashBoardFetched) {
-                      for (var element in state.nonAdminModel) {
-                        log(element.firstName!);
-                      }
-                    }
-                  }, builder: (context, state) {
-                    bool fetched = state is DashBoardFetched;
-                    return PageContentWidget(
-                      columns:[
-                              DataColumn(
-                                label: Text(
-                                  "Fullname",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "CamperStatus",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                  label: Text(
-                                    "Code",
-                                    style: GoogleFonts.dmSans(
-                                        color: kSecondaryColor, fontSize: 15),
-                                  ),
-                                  numeric: true),
-                              DataColumn(
-                                label: Text(
-                                  "Phone",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Disability Cluster",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Commitment Fee",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Action",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                            ],
-                      row: List.generate(
-                        fetched ? state.attendeeModel.length : 0,
-                        (index) => (recentFileDataRow(
-                            fetched ? state.attendeeModel[index] : null,
-                            context,
-                            admin: fetched ? state.user : null,
-                            id: fetched ? state.userIds[index] : '')),
+
+              BlocConsumer<DashBoardBloc, DashBoardState>(
+                  listener: (context, state) {
+                if (state is DashBoardFetched) {
+                  for (var element in state.nonAdminModel) {
+                    log(element.firstName!);
+                  }
+                }
+              }, builder: (context, state) {
+                bool fetched = state is DashBoardFetched;
+                return PageContentWidget(
+                  columns: [
+                    DataColumn(
+                      label: Text(
+                        "Fullname",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
                       ),
-                      title: 'Attendees',
-                      actions: [
-                        TextBtn(
-                          icon: Icons.person_add,
-                          text: 'Add Attendee',
-                          onTap: () {
-                            AttendeeRegistrationForms(context: context)
-                                .registerNewAttandeeForm(
-                              attendees: fetched ? state.attendeeModel : null,
-                              title: 'Attendee',
-                              admin: fetched ? state.user : null,
-                              length: fetched ? state.attendeeModel.length : 0,
-                            );
-                          },
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "CamperStatus",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                        label: Text(
+                          "Code",
+                          style: GoogleFonts.dmSans(
+                              color: kSecondaryColor, fontSize: 15),
                         ),
-                        const TextBtn(
-                          icon: Icons.filter_list,
-                          text: 'Filter',
-                        )
-                      ],
-                    );
-                  })),
+                        numeric: true),
+                    DataColumn(
+                      label: Text(
+                        "Phone",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Disability Cluster",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Commitment Fee",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Action",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                  ],
+                  row: List.generate(
+                    fetched ? state.attendeeModel.length : 0,
+                    (index) => (recentFileDataRow(
+                        fetched ? state.attendeeModel[index] : null, context,
+                        admin: fetched ? state.user : null,
+                        id: fetched ? state.userIds[index] : '')),
+                  ),
+                  title: 'Attendees',
+                  actions: [
+                    TextBtn(
+                      icon: Icons.person_add,
+                      text: 'Add Attendee',
+                      onTap: () {
+                        AttendeeRegistrationForms(context: context)
+                            .registerNewAttandeeForm(
+                          attendees: fetched ? state.attendeeModel : null,
+                          title: 'Attendee',
+                          admin: fetched ? state.user : null,
+                          length: fetched ? state.attendeeModel.length : 0,
+                        );
+                      },
+                    ),
+                    const TextBtn(
+                      icon: Icons.filter_list,
+                      text: 'Filter',
+                    )
+                  ],
+                );
+              }),
             ],
           ),
         ),
@@ -201,55 +198,54 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {admin, id}) {
           attendee: registerdUser);
     },
     cells: [
-            DataCell(
-              Text(
-                registerdUser!.firstName.toLowerCase(),
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-              ),
-            ),
-            DataCell(Text(
-              registerdUser.wouldCamp.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdUser.id,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdUser.phoneNo,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdUser.disabilityCluster,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdUser.commitmentFee.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(IconButton(
-              splashRadius: 5,
-              icon: Icon(
-                Icons.delete,
-                color: kSecondaryColor,
-                size: 20,
-              ),
-              onPressed: () {
-                verifyAction(
-                  context: context,
-                  text: 'Do you wish to proceed to delete this Attendee?',
-                  title:
-                      'Attendee ${registerdUser.firstName} ${registerdUser.lastName}',
-                  action: () {
-                    BlocProvider.of<UserManagementBloc>(context).add(
-                        DeleteUserEvent(
-                            attendeeID: id,
-                            attendeeModel: registerdUser,
-                            adminModel: admin));
-                  },
-                );
-              },
-            )),
-          ],
+      DataCell(
+        Text(
+          registerdUser!.firstName.toLowerCase(),
+          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        ),
+      ),
+      DataCell(Text(
+        registerdUser.wouldCamp.toLowerCase(),
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        registerdUser.id,
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        registerdUser.phoneNo,
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        registerdUser.disabilityCluster,
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        registerdUser.commitmentFee.toLowerCase(),
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(IconButton(
+        splashRadius: 5,
+        icon: Icon(
+          Icons.delete,
+          color: kSecondaryColor,
+          size: 20,
+        ),
+        onPressed: () {
+          verifyAction(
+            context: context,
+            text: 'Do you wish to proceed to delete this Attendee?',
+            title:
+                'Attendee ${registerdUser.firstName} ${registerdUser.lastName}',
+            action: () {
+              BlocProvider.of<UserManagementBloc>(context).add(DeleteUserEvent(
+                  attendeeID: id,
+                  attendeeModel: registerdUser,
+                  adminModel: admin));
+            },
+          );
+        },
+      )),
+    ],
   );
 }
