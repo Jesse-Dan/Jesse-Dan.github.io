@@ -73,7 +73,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
                   return PageContentWidget(
-                    title: 'Profile',
+                    title: 'Settings',
                     child: Padding(
                       padding: const EdgeInsets.only(top: defaultPadding),
                       child: SingleChildScrollView(

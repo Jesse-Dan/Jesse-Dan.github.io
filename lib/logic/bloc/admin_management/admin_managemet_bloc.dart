@@ -7,8 +7,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tyldc_finaalisima/config/app_autorizations.dart';
+import 'package:tyldc_finaalisima/logic/db/utilsdb.dart';
 
 import '../../../models/auth_code_model.dart';
+import '../../../models/user_model.dart';
 import '../../db/admindb.dart';
 import '../../local_storage_service.dart/local_storage.dart';
 
@@ -44,7 +46,7 @@ class AdminManagemetBloc
         await Future.wait([response_1, response_2]);
         var code = await DB(auth: auth).getAdminCode();
         await localStorageService.getsaveToDisk('ADMIN_CODES', code!.toJson());
-        
+
         emit(AdminManagemetAltered());
       } on FirebaseAuthException catch (e) {
         emit(AdminManagemetFailed(error: e.toString()));
@@ -64,6 +66,36 @@ class AdminManagemetBloc
         localStorageService.getsaveToDisk('ADMIN_CODES', code!.toJson());
         emit(AdminManagemetLoaded(code));
         log('Codes: ${code.adminCode}');
+      } on FirebaseAuthException catch (e) {
+        emit(AdminManagemetFailed(error: e.toString()));
+      } catch (e) {
+        emit(AdminManagemetFailed(error: e.toString()));
+        log(e.toString());
+      }
+    });
+  }
+
+  diaAbleAdmin() {
+    on<DisableAdminEvent>((event, emit) async {
+      try {
+        emit(AdminManagementLoading());
+        await UtilsDB(auth: auth).disableAdmin(event.id);
+        emit(AdminManagementENABLEDISABLE());
+      } on FirebaseAuthException catch (e) {
+        emit(AdminManagemetFailed(error: e.toString()));
+      } catch (e) {
+        emit(AdminManagemetFailed(error: e.toString()));
+        log(e.toString());
+      }
+    });
+  }
+
+  emableAdmin() {
+    on<EnableAdminEvent>((event, emit) async {
+      try {
+        emit(AdminManagementLoading());
+        await UtilsDB(auth: auth).enableAdmin(event.id);
+        emit(AdminManagementENABLEDISABLE());
       } on FirebaseAuthException catch (e) {
         emit(AdminManagemetFailed(error: e.toString()));
       } catch (e) {

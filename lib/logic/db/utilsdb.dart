@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_functions_dart/firebase_functions_dart.dart';
 
 import '../../models/notifier_model.dart';
 import '../../models/recently_deleted_model.dart';
@@ -67,5 +68,36 @@ class UtilsDB {
     }
   }
 
+  Future<bool> disableAdmin(String userId) async {
+    try {
+      HttpsCallable callable =
+          FirebaseFunctions.instance.httpsCallable('disableAdmin');
+      await callable.call(<String, dynamic>{
+        'userId': userId,
+      });
+      print('Admin disabled successfully.');
+      return true;
+    } catch (e) {
+      // Handle errors
+      print('Error disabling admin: $e');
+      return false;
+    }
+  }
 
+  Future<bool> enableAdmin(String userId) async {
+    try {
+      HttpsCallable callable =
+          FirebaseFunctions.instance.httpsCallable('enableAdmin');
+      await callable.call(<String, dynamic>{
+        'userId': userId,
+      });
+      print('Admin enabled successfully.');
+
+      return true;
+    } catch (e) {
+      // Handle errors
+      print('Error enabling admin: $e');
+      return false;
+    }
+  }
 }

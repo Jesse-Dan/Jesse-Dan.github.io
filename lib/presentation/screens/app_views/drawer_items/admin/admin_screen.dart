@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -140,7 +141,8 @@ class _AdminScreenState extends State<AdminScreen> {
                     row: List.generate(
                       fetched ? state.admins.length : 0,
                       (index) => (recentFileDataRow(
-                          fetched ? state.admins[index] : null, context)),
+                          fetched ? state.admins[index] : null, context,
+                          performedBy: fetched ? state.user : null)),
                     ),
                     title: 'Admins',
                   );
@@ -158,7 +160,9 @@ class _AdminScreenState extends State<AdminScreen> {
     );
   }
 
-  DataRow recentFileDataRow(AdminModel? registerdAdmin, context) {
+  DataRow recentFileDataRow(AdminModel? registerdAdmin, context,
+      {required AdminModel? performedBy}) {
+    bool enabled = true;
     return DataRow(
       onLongPress: () {
         AdminsRegistrationForms(context: context).viewSelectedAdminStaffData(
@@ -196,6 +200,16 @@ class _AdminScreenState extends State<AdminScreen> {
           registerdAdmin.gender,
           style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
         )),
+        DataCell(CupertinoSwitch(
+            value: enabled,
+            onChanged: (val) {
+              setState(() {
+                enabled = !enabled;
+              });
+              BlocProvider.of<AdminManagemetBloc>(context).add(
+                  DisableAdminEvent(
+                      performedBy: performedBy!, id: registerdAdmin.id));
+            })),
         // DataCell(Text(
         //   registerdAdmin.gender.toLowerCase(),
         //   style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),

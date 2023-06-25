@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/settings/setting_screen.dart';
 import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../../logic/local_storage_service.dart/local_storage.dart';
 import '../../profile/profile_screen.dart';
@@ -187,11 +188,20 @@ class _SideMenuState extends State<SideMenu> {
                       context, ProfileScreen.routeName, (_) => false);
                 },
               ),
-              DrawerListTile(
-                title: "Settings",
-                svgSrc: "assets/icons/menu_setting.svg",
-                press: () {},
-              ),
+              fetched
+                  ? AppAuthorizations(
+                          localStorageService: LocalStorageService())
+                      .displayForSuperAdmin(
+                          adminCode: state.user.authCode,
+                          child: DrawerListTile(
+                            title: "Settings",
+                            svgSrc: "assets/icons/menu_setting.svg",
+                            press: () {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  SettingsScreen.routeName, (_) => false);
+                            },
+                          ))
+                  : const SizedBox.shrink(),
               BlocListener<AuthenticationBloc, AuthentictionState>(
                 listener: (context, state) {
                   updateSessionState(state: state, context: context);

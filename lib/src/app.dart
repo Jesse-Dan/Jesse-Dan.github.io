@@ -24,6 +24,7 @@ import '../presentation/screens/app_views/drawer_items/dashboard/dashboard_scree
 import '../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
 import '../presentation/screens/app_views/drawer_items/groups/groups_screen.dart';
 import '../presentation/screens/app_views/drawer_items/notification/notification_screen.dart';
+import '../presentation/screens/app_views/drawer_items/settings/setting_screen.dart';
 import '../presentation/screens/auth_views/login.dart';
 import '../presentation/screens/auth_views/phone_verification.dart';
 import '../presentation/screens/auth_views/reg.dart';
@@ -156,6 +157,8 @@ class _MyAppState extends State<MyApp> {
                       return const ForgottenPasswordScreen();
                     case ProfileScreen.routeName:
                       return const ProfileScreen();
+                    case SettingsScreen.routeName:
+                      return const SettingsScreen();
 
                     default:
                       return const SignInScreen();

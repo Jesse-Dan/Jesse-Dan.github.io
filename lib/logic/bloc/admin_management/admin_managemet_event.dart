@@ -29,3 +29,25 @@ class GetCodeEvent extends AdminManagemetEvent {
   @override
   List<Object> get props => [];
 }
+
+class EnableAdminEvent extends AdminManagemetEvent {
+  final AdminModel performedBy;
+  final String id;
+  const EnableAdminEvent({
+    required this.performedBy,
+    required this.id,
+  });
+  @override
+  List<Object> get props => [];
+}
+
+class DisableAdminEvent extends AdminManagemetEvent {
+  final AdminModel performedBy;
+  final String id;
+  const DisableAdminEvent({
+    required this.performedBy,
+    required this.id,
+  });
+  @override
+  List<Object> get props => [];
+}

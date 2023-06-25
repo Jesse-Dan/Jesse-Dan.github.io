@@ -15,6 +15,8 @@ class AdminManagementLoading extends AdminManagemetState {}
 
 class AdminManagemetAltered extends AdminManagemetState {}
 
+class AdminManagementENABLEDISABLE extends AdminManagemetState {}
+
 class AdminManagemetLoaded extends AdminManagemetState {
   final AdminCodesModel adminCodesModel;
 
