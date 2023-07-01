@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously, unrelated_type_equality_checks
+// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously, unrelated_type_equality_checks, invalid_use_of_visible_for_testing_member
 
 import 'dart:developer';
 
@@ -42,12 +42,11 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
         }
       } on FirebaseAuthException catch (e) {
         if (e.message == 'user-disabled') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Account Dissabled');
+          emit(AuthentictionFailed('Account Dissabled'));
         }
       } catch (e) {
         emit(AuthentictionFailed(e.toString()));
-        log('Incorrect password.');
+        emit(AuthentictionFailed('Incorrect password.'));
       }
     });
   }
@@ -66,31 +65,30 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
 
         emit(AuthentictionSuccesful());
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'invalid-email' || e.code == 'permission-denied') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Invalid email address.');
+        if (e.code == 'invalid-email') {
+          emit(AuthentictionFailed('Invalid email address.'));
         } else if (e.code == 'wrong-password') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Incorrect password.');
+          emit(AuthentictionFailed('Incorrect password.'));
         } else if (e.code == 'user-not-found') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('No user found for that email.');
+          emit(AuthentictionFailed('No user found for that email.'));
         } else if (e.code == 'user-disabled') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('User account has been disabled.');
+          emit(AuthentictionFailed('User account has been disabled.'));
         } else if (e.code == 'too-many-requests') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Too many unsuccessful sign-in attempts. Try again later.');
+          emit(AuthentictionFailed(
+              'Too many unsuccessful sign-in attempts. Try again later.'));
         } else if (e.code == 'operation-not-allowed') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Sign-in method is not enabled.');
+          emit(AuthentictionFailed('Sign-in method is not enabled.'));
         } else if (e.code == 'email-already-in-use') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Email address is already in use.');
+          emit(AuthentictionFailed('Email address is already in use.'));
+        } else if (e.code == 'permission-denied') {
+          emit(AuthentictionFailed('Permission Denied | User Disabled'));
+        } else if (e.code == 'unknown') {
+          emit(AuthentictionFailed(
+              'An unknown error occured contact your admin'));
         } else {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Login Error${e.message}');
+          emit(AuthentictionFailed('Login Error${e.message}'));
         }
+        log(e.code.toString());
       } catch (e) {
         emit(AuthentictionFailed('type error $e'));
       }
@@ -102,7 +100,7 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
       emit(AuthentictionLoading());
       var data = event.adminModel;
       try {
-        log(data.authCode);
+        emit(AuthentictionFailed(data.authCode));
         if (AppAuthorizations(localStorageService: localStorageService)
             .validateAdminAuthCode(data.authCode)) {
           emit(AuthentictionLoading());
@@ -132,23 +130,19 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'invalid-email' || e.code == 'permission-denied') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Invalid email address.');
+          emit(AuthentictionFailed('Invalid email address.'));
         } else if (e.code == 'email-already-in-use') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Email address is already in use.');
+          emit(AuthentictionFailed('Email address is already in use.'));
         } else if (e.code == 'operation-not-allowed') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Sign-up method is not enabled.');
+          emit(AuthentictionFailed('Sign-up method is not enabled.'));
         } else if (e.code == 'weak-password') {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Password is too weak.');
+          emit(AuthentictionFailed('Password is too weak.'));
         } else {
-          emit(AuthentictionFailed(e.message.toString()));
-          log('Error occurred while signing up: ${e.message}');
+          emit(AuthentictionFailed(
+              'Error occurred while signing up: ${e.message}'));
         }
       } catch (e) {
-        log("MESINK : $e");
+        emit(AuthentictionFailed("MESINK : $e"));
         emit(AuthentictionFailed(e.toString()));
       }
     });
@@ -157,20 +151,18 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
   logout() async {
     on<LogoutEvent>((event, emit) async {
       try {
-        if (doing) {
-          doing = true;
-          emit(AuthentictionLoading());
-          await UtilsDB(auth: auth).sendNotificationData(
-              Notifier.logout(data: 'You ended your session'));
-          await auth.signOut().then((value) => log('User Logged Out'));
-          emit(AuthentictionSuccesful());
-          doing = false;
-        }
+        emit(AuthentictionLoading());
+        await UtilsDB(auth: auth).sendNotificationData(
+            Notifier.logout(data: 'You ended your session'));
+        await auth
+            .signOut()
+            .then((value) => emit(AuthentictionFailed('User Logged Out')));
+        emit(AuthentictionSuccesful());
       } on FirebaseAuthException catch (e) {
         emit(AuthentictionFailed(e.message.toString().toUpperCase()));
       } catch (e) {
         emit(AuthentictionFailed(e.toString()));
-        log(e.toString());
+        emit(AuthentictionFailed(e.toString()));
       }
     });
   }
@@ -199,20 +191,22 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
         } else {
           emit(AuthentictionFailed(error.toString()));
         }
-        log(error.toString());
+        emit(AuthentictionFailed(error.toString()));
       } catch (e) {
         emit(AuthentictionFailed(e.toString()));
-        log(e.toString());
+        emit(AuthentictionFailed(e.toString()));
       }
     });
   }
 
   void verificationCompleted(PhoneAuthCredential credential) async {
-    log('Phone number automatically verified and user signed in.');
+    emit(AuthentictionFailed(
+        'Phone number automatically verified and user signed in.'));
   }
 
   void verificationFailed(FirebaseAuthException exception) {
-    log('Phone number verification failed. Error: ${exception.message}');
+    emit(AuthentictionFailed(
+        'Phone number verification failed. Error: ${exception.message}'));
   }
 
   void codeSent(String verificationId, int? resendToken) {
@@ -233,13 +227,16 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
             smsCode: (event.otp).toString());
         await auth.signInWithCredential(credential);
         emit(PhoneAuthentictionSuccesful());
-        log('User signed in with phone number successfully.');
+        emit(AuthentictionFailed(
+            'User signed in with phone number successfully.'));
       } on FirebaseAuthException catch (e) {
         emit(AuthentictionFailed(e.toString()));
-        log('Failed to sign in with phone number. Error: $e');
+        emit(AuthentictionFailed(
+            'Failed to sign in with phone number. Error: $e'));
       } catch (e) {
         emit(AuthentictionFailed(e.toString()));
-        log('Failed to sign in with phone number. Error: $e');
+        emit(AuthentictionFailed(
+            'Failed to sign in with phone number. Error: $e'));
       }
     });
   }
@@ -255,11 +252,13 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
           emit(const AuthentictionFailed('Please enter an email'));
         } else {
           emit(AuthentictionFailed(e.toString()));
-          log('failed to send password reset email. Error: ${e.message}');
+          emit(AuthentictionFailed(
+              'failed to send password reset email. Error: ${e.message}'));
         }
       } catch (e) {
         emit(AuthentictionFailed(e.toString()));
-        log('failed to send password reset email. Error: $e');
+        emit(AuthentictionFailed(
+            'failed to send password reset email. Error: $e'));
       }
     });
   }
@@ -277,10 +276,11 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
         emit(MobileNumberUpdateSuccessfully());
       } on FirebaseAuthException catch (e) {
         emit(AuthentictionFailed(e.toString()));
-        log('failed to update phone number. Error: ${e.message}');
+        emit(AuthentictionFailed(
+            'failed to update phone number. Error: ${e.message}'));
       } catch (e) {
         emit(AuthentictionFailed(e.toString()));
-        log('failed to  update phone number. Error: $e');
+        emit(AuthentictionFailed('failed to  update phone number. Error: $e'));
       }
     });
   }

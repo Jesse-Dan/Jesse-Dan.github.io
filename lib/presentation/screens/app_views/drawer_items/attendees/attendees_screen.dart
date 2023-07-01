@@ -141,7 +141,14 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                     ),
                     DataColumn(
                       label: Text(
-                        "Action",
+                        "Delete Attendee",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Edit",
                         style: GoogleFonts.dmSans(
                             color: kSecondaryColor, fontSize: 15),
                       ),
@@ -194,6 +201,8 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {admin, id}) {
   return DataRow(
     onLongPress: () {
       AttendeeViewForms(context: context).viewSelectedAttendeeData(
+         attendeeID: id,
+                  adminModel: admin,
           title: '${registerdUser.firstName} ${registerdUser.lastName}',
           attendee: registerdUser);
     },
@@ -244,6 +253,19 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {admin, id}) {
                   adminModel: admin));
             },
           );
+        },
+      )),
+      DataCell(IconButton(
+        splashRadius: 5,
+        icon: Icon(
+          Icons.edit,
+          color: kSecondaryColor,
+          size: 20,
+        ),
+        onPressed: () {
+          AttendeeViewForms(context: context)
+              .viewSelectedAttendeeData(title: 'Update Attendee',attendee: registerdUser, attendeeID: id,
+                  adminModel: admin);
         },
       )),
     ],

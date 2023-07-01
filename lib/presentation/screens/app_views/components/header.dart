@@ -63,7 +63,6 @@ class _HeaderState extends State<Header> {
         return Row(children: [
           Text(
             fetched
-
                 /// [if state is  loaded && is mobile]
                 ? Responsive.isMobile(context)
                     ? AppAuthorizations(

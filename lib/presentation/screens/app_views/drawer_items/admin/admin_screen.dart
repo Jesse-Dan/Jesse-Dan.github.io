@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
+import 'package:tyldc_finaalisima/presentation/widgets/alertify.dart';
 import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../../models/user_model.dart';
 import '../../../../widgets/align_text_with_icon_widget.dart';
@@ -217,14 +218,25 @@ class _AdminScreenState extends State<AdminScreen> {
                 dragStartBehavior: DragStartBehavior.down,
                 value: registerdAdmin.enabled,
                 onChanged: (val) {
-                  if (registerdAdmin.enabled) {
-                    BlocProvider.of<AdminManagemetBloc>(context).add(
-                        DisableAdminEvent(false,
-                            performedBy: performedBy!, id: registerdAdmin.id));
+                  if (registerdAdmin != performedBy) {
+                    switch (registerdAdmin.enabled) {
+                      case true:
+                        BlocProvider.of<AdminManagemetBloc>(context).add(
+                            DisableAdminEvent(false,
+                                performedBy: performedBy!,
+                                id: registerdAdmin.id));
+                        break;
+                      case false:
+                        BlocProvider.of<AdminManagemetBloc>(context).add(
+                            EnableAdminEvent(true,
+                                performedBy: performedBy!,
+                                id: registerdAdmin.id));
+                        break;
+                      default:
+                    }
                   } else {
-                    BlocProvider.of<AdminManagemetBloc>(context).add(
-                        EnableAdminEvent(true,
-                            performedBy: performedBy!, id: registerdAdmin.id));
+                    Alertify.error(
+                        message: 'You can not disable your account');
                   }
                 }))),
       ],

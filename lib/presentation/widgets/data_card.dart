@@ -9,6 +9,7 @@ import '../../logic/bloc/group_management_bloc/group_management_bloc.dart';
 import '../../models/atendee_model.dart';
 import '../../models/group_model.dart';
 import '../screens/app_views/drawer_items/attendees/forms/view_form.dart';
+import 'verify_action_dialogue.dart';
 
 class TransactionCard extends StatefulWidget {
   TransactionCard({
@@ -63,7 +64,7 @@ class _TransactionCardState extends State<TransactionCard> {
             // A SlidableAction can have an icon and/or a label.
             SlidableAction(
               onPressed: (_) =>
-                  AttendeeViewForms(context: context).verifyAction(
+                verifyAction(
                       text: 'Do you want to proceed to edit this GROUP USER?',
                       title: 'Delete user ${widget.data!.firstName}  ',
                       action: () {
@@ -81,6 +82,7 @@ class _TransactionCardState extends State<TransactionCard> {
             SlidableAction(
               onPressed: (_) {
                 AttendeeViewForms(context: context).viewSelectedAttendeeData(
+                  
                     attendee: widget.data!,
                     title:
                         '${widget.data!.firstName} ${widget.data!.lastName}');

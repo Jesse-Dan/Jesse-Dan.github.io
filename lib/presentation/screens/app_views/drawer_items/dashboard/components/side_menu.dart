@@ -74,7 +74,6 @@ class _SideMenuState extends State<SideMenu> {
                     color: primaryColor.withOpacity(0.9),
                     image: DecorationImage(
                         fit: BoxFit.contain,
-                        colorFilter: ColorFilter.srgbToLinearGamma(),
                         image: AssetImage('assets/images/app_logo.png'))),
                 child: SizedBox.shrink(),
               ),

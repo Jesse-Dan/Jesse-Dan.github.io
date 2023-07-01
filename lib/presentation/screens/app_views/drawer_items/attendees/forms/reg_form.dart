@@ -35,7 +35,6 @@ class AttendeeRegistrationForms extends FormWidget {
   final TextEditingController createdBy = TextEditingController();
   final Rx<TextEditingController> dob = TextEditingController().obs;
   final Rx<DateTime> picked = DateTime.now().obs;
-  final Rx<DateTime> viewPicked = DateTime.now().obs;
 
   registerNewAttandeeForm(
       {required String title,

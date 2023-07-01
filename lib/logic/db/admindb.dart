@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
-import 'package:tyldc_finaalisima/presentation/widgets/alertify.dart';
-
 import '../../models/auth_code_model.dart';
 import '../../models/models.dart';
 

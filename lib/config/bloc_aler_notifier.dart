@@ -188,14 +188,6 @@ updateSessionState({state, context}) {
       Navigator.pushNamedAndRemoveUntil(
           context, SignInScreen.routeName, (_) => false);
       break;
-    // case AdminManagementENABLEDISABLE:
-    //   if (!state.enabled) {
-    //     Navigator.pushNamedAndRemoveUntil(
-    //         context, SignInScreen.routeName, (_) => false);
-    //     BlocProvider.of<AuthenticationBloc>(context).add(LogoutEvent());
-    //     Alertify.error(message: 'Your account has been disabled');
-    //   }
-    //   break;
     case DashBoardFetched:
       if (!state.user.enabled) {
         Alertify.error(message: 'Your account has been disabled');

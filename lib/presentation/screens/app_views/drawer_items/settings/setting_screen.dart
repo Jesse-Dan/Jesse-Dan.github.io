@@ -54,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 preferredWidth: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.all(kdefaultPadding),
-                  child: Header(title: 'Notification', onPressed: () {}),
+                  child: Header(title: 'Settings', onPressed: () {}),
                 ),
               )
             : null,
@@ -68,8 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const Expanded(
                   child: SideMenu(),
                 ),
-              BlocConsumer<DashBoardBloc, DashBoardState>(
-                listener: (context, state) {},
+              BlocBuilder<DashBoardBloc, DashBoardState>(
                 builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
                   return PageContentWidget(

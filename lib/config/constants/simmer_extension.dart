@@ -13,3 +13,11 @@ extension ContainerExtension on Container {
     );
   }
 }
+extension TextStyleExtension on String {
+  TextSpan applyTextStyle({TextStyle? style}) {
+    return TextSpan(
+      text: this,
+      style: style,
+    );
+  }
+}

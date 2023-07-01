@@ -13,10 +13,14 @@ class AttendeeDB {
 
   /// [REGISTER ATTENDEE]
   Future<void> sendRegisteeData(AttendeeModel attendeeModel) async {
-    await attendeeDB
-        .add(attendeeModel.toMap())
-        .then((value) => log('Attendee Created'));
-    try {} on FirebaseException catch (e) {
+    try {
+      await attendeeDB
+          .doc(attendeeModel.id)
+          .set(attendeeModel.toMap())
+          .then((value) async {
+        log('Attendee Created');
+      });
+    } on FirebaseException catch (e) {
       log(e.toString());
     }
   }
@@ -75,4 +79,5 @@ class AttendeeDB {
       return false;
     }
   }
+
 }

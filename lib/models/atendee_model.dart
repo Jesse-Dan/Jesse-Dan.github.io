@@ -80,7 +80,8 @@ class AttendeeModel extends Equatable {
       disabilityCluster: map['disabilityCluster'] as String,
       commitmentFee: map['commitmentFee'] as String,
       parentConsent: map['parentConsent'] as String,
-      passIssued: map['passIssued'] as String, wouldCamp: map['wouldCamp'] as String,
+      passIssued: map['passIssued'] as String,
+      wouldCamp: map['wouldCamp'] as String,
     );
   }
 
@@ -111,6 +112,44 @@ class AttendeeModel extends Equatable {
 
   factory AttendeeModel.fromJson(String source) =>
       AttendeeModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  AttendeeModel copyWith({
+    String? createdBy,
+    String? id,
+    DateTime? dob,
+    String? firstName,
+    String? middleName,
+    String? lastName,
+    String? gender,
+    String? phoneNo,
+    String? parentName,
+    String? parentNo,
+    String? homeAddress,
+    String? disabilityCluster,
+    String? commitmentFee,
+    String? parentConsent,
+    String? passIssued,
+    String? wouldCamp,
+  }) {
+    return AttendeeModel(
+      createdBy: createdBy ?? this.createdBy,
+      id: id ?? this.id,
+      dob: dob ?? this.dob,
+      firstName: firstName ?? this.firstName,
+      middleName: middleName ?? this.middleName,
+      lastName: lastName ?? this.lastName,
+      gender: gender ?? this.gender,
+      phoneNo: phoneNo ?? this.phoneNo,
+      parentName: parentName ?? this.parentName,
+      parentNo: parentNo ?? this.parentNo,
+      homeAddress: homeAddress ?? this.homeAddress,
+      disabilityCluster: disabilityCluster ?? this.disabilityCluster,
+      commitmentFee: commitmentFee ?? this.commitmentFee,
+      parentConsent: parentConsent ?? this.parentConsent,
+      passIssued: passIssued ?? this.passIssued,
+      wouldCamp: wouldCamp ?? this.wouldCamp,
+    );
+  }
 }
 
 class UserGroups {
