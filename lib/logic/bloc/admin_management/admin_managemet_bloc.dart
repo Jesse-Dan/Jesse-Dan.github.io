@@ -6,8 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tyldc_finaalisima/config/app_autorizations.dart';
-import 'package:tyldc_finaalisima/logic/db/utilsdb.dart';
 
 import '../../../models/auth_code_model.dart';
 import '../../../models/user_model.dart';

@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tyldc_finaalisima/config/bloc_aler_notifier.dart';
 import '../../../config/constants/responsive.dart';
 import '../../../config/theme.dart';
 import '../../../logic/bloc/admin_management/admin_managemet_bloc.dart';
-import '../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../app_views/drawer_items/dashboard/main_screen.dart';
 import 'components/components.dart';
 import 'forgotten_password.dart';
@@ -38,6 +36,7 @@ class _SignInScreenState extends State<SignInScreen>
   @override
   void initState() {
     BlocProvider.of<AdminManagemetBloc>(context).add(const GetCodeEvent());
+    
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
