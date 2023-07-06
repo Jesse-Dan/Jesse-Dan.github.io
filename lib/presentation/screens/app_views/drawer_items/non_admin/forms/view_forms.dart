@@ -1,12 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../../../config/overlay_config/overlay_service.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../models/non_admin_staff.dart';
 import '../../../../../widgets/CustomViewTextField.dart';
 import '../../../../../widgets/custom_submit_btn.dart';
 import '../../../../../widgets/dialogue_forms.dart';
+import '../../../../../widgets/verify_action_dialogue.dart';
+
 class NonAdminViewForms extends FormWidget {
   NonAdminViewForms({required this.context});
 
@@ -25,29 +27,6 @@ class NonAdminViewForms extends FormWidget {
 
   ///[ADMIN AUTH CODE CONTROLLERS]
   final authCodeController = TextEditingController();
-
-  verifyAction({
-    title,
-    text,
-    action,
-  }) {
-    buildCenterFormField(
-      title: title,
-      context: context,
-      widgetsList: [getBody(text)],
-      onSubmit: () {
-        Navigator.of(context).pop();
-      },
-      btNtype1: ButtonType.fill,
-      color1: (Colors.green),
-      onSubmitText: 'Cancel',
-      onSubmitText2: 'Proceed',
-      color2: (Colors.red),
-      btNtype2: ButtonType.fill,
-      alertType: AlertType.twoBtns,
-      onSubmit2: action,
-    );
-  }
 
   viewSelectedNonAdminStaffData({title, required NonAdminModel nonAdmin}) {
     buildCenterFormField(
@@ -111,7 +90,7 @@ class NonAdminViewForms extends FormWidget {
           ),
         ],
         onSubmit: () {
-          Navigator.of(context).pop();
+          OverlayService.closeAlert();
         },
         btNtype1: ButtonType.fill,
         color1: (Colors.green),
@@ -122,6 +101,7 @@ class NonAdminViewForms extends FormWidget {
         alertType: AlertType.twoBtns,
         onSubmit2: () {
           verifyAction(
+              context: context,
               title: nonAdmin.firstName,
               text:
                   'Do you want to proceed to edit ${nonAdmin.firstName} ${nonAdmin.lastName}?');

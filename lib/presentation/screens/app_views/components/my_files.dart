@@ -40,7 +40,6 @@ class _MyFilesState extends State<MyFiles> {
             BlocBuilder<DashBoardBloc, DashBoardState>(
               builder: (context, state) {
                 bool fetched = state is DashBoardFetched;
-
                 return ElevatedButton.icon(
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(

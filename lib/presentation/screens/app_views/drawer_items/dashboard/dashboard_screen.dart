@@ -29,7 +29,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               if (Responsive.isDesktop(context))
                 Header(
                   title: 'Dashboard',
-                 
                 ),
               const SizedBox(height: defaultPadding),
               Row(

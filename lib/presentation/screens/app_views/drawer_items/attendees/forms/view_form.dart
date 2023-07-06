@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/config/overlay_config/overlay_service.dart';
 import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
 import '../../../../../../config/date_time_formats.dart';
 import '../../../../../../config/theme.dart';
@@ -151,7 +152,7 @@ class AttendeeViewForms extends FormWidget {
               controller: authCodeController),
         ],
         onSubmit: () {
-          Navigator.of(context).pop();
+          OverlayService.closeAlert();
         },
         btNtype1: ButtonType.fill,
         color1: (Colors.green),

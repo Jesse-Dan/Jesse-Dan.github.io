@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../../../../../config/date_time_formats.dart';
+import '../../../../../../config/overlay_config/overlay_service.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../../logic/bloc/group_management_bloc/group_management_bloc.dart';
-import '../../../../../../config/bloc_aler_notifier.dart';
+import '../../../../../../config/bloc_controller.dart';
 import '../../../../../../models/atendee_model.dart';
 import '../../../../../../models/group_model.dart';
 import '../../../../../widgets/CustomViewTextField.dart';
@@ -18,6 +18,7 @@ import '../../../../../widgets/costum_text_field.dart';
 import '../../../../../widgets/custom_submit_btn.dart';
 import '../../../../../widgets/data_card.dart';
 import '../../../../../widgets/dialogue_forms.dart';
+import '../../../../../widgets/verify_action_dialogue.dart';
 
 class GroupsViewForms extends FormWidget {
   GroupsViewForms({required this.context});
@@ -165,7 +166,7 @@ class GroupsViewForms extends FormWidget {
           ),
         ],
         onSubmit: () {
-          Navigator.of(context).pop();
+          OverlayService.closeAlert();
         },
         btNtype1: ButtonType.fill,
         color1: (Colors.green),
@@ -176,6 +177,7 @@ class GroupsViewForms extends FormWidget {
         alertType: AlertType.twoBtns,
         onSubmit2: () {
           verifyAction(
+              context: context,
               title: title,
               text: 'Do you want to proceed to edit this GROUP DATA?');
         });
@@ -384,7 +386,7 @@ class GroupsViewForms extends FormWidget {
           ),
         ],
         onSubmit: () {
-          Navigator.of(context).pop();
+          OverlayService.closeAlert();
         },
         btNtype1: ButtonType.fill,
         color1: (Colors.green),
@@ -399,28 +401,5 @@ class GroupsViewForms extends FormWidget {
               text:
                   'Do you want to proceed to edit ${attendee.firstName} ${attendee.lastName}?');
         });
-  }
-
-  verifyAction({
-    title,
-    text,
-    action,
-  }) {
-    buildCenterFormField(
-      title: title,
-      context: context,
-      widgetsList: [getBody(text)],
-      onSubmit: () {
-        Navigator.of(context).pop();
-      },
-      btNtype1: ButtonType.fill,
-      color1: (Colors.green),
-      onSubmitText: 'Cancel',
-      onSubmitText2: 'Proceed',
-      color2: (Colors.red),
-      btNtype2: ButtonType.fill,
-      alertType: AlertType.twoBtns,
-      onSubmit2: action,
-    );
   }
 }

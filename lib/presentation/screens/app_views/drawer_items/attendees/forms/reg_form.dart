@@ -66,20 +66,21 @@ class AttendeeRegistrationForms extends FormWidget {
             suffix: const Icon(Icons.male_rounded),
             controller: gender),
         CustomTextField(
-            readOnly: true,
-            onTap: () async {
-              DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime.now());
-              dob.value.text = dateWithoutTIme.format(pickedDate!);
-              picked.value = (pickedDate);
-            },
-            fieldsType: TextInputType.text,
-            hint: 'Date of Birth',
-            suffix: const Icon(Icons.calendar_view_day_rounded),
-            controller: dob.value),
+          readOnly: false,
+          onTap: () async {
+            // DateTime? pickedDate = await showDatePicker(
+            //     context: context,
+            //     initialDate: DateTime.now(),
+            //     firstDate: DateTime(1900),
+            //     lastDate: DateTime.now());
+            // dob.value.text = dateWithoutTIme.format(pickedDate!);
+            // picked.value = (pickedDate);
+          },
+          fieldsType: TextInputType.text,
+          hint: 'YYYY-MM-DD',
+          suffix: const Icon(Icons.calendar_view_day_rounded),
+          controller: dob.value,
+        ),
         CustomTextField(
             fieldsType: const TextInputType.numberWithOptions(),
             hint: 'Phone Number',
@@ -172,7 +173,7 @@ class AttendeeRegistrationForms extends FormWidget {
                     parentConsent: parentConsent.text,
                     passIssued: passIssued.text,
                     wouldCamp: wouldCamp.text,
-                    dob: picked.value,
+                    dob: DateTime.parse(dob.value.text),
                   ),
                 ),
               );

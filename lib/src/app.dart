@@ -1,24 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:bot_toast/bot_toast.dart';
+import 'package:alert_system/systems/initializer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
-import 'package:tyldc_finaalisima/logic/bloc/group_management_bloc/group_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/non_admin_management/non_admin_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/local_storage_service.dart/local_storage.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/profile/profile_screen.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/recently_deleted/recenttly_deleted_screen.dart';
 import 'package:tyldc_finaalisima/presentation/screens/auth_views/forgotten_password.dart';
+import '../config/bloc_controller.dart';
 import '../config/constants/enums.dart';
 import '../logic/bloc/auth_bloc/authentiction_bloc.dart';
-import '../logic/bloc/connectivity_cubit/connectivity_cubit.dart';
 import '../logic/bloc/cubit/methods_cubit.dart';
-import '../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
-import '../logic/bloc/registeration_bloc/registeration_bloc.dart';
+import '../logic/bloc/index_blocs.dart';
 import '../presentation/screens/app_views/drawer_items/attendees/attendees_screen.dart';
 import '../presentation/screens/app_views/drawer_items/dashboard/dashboard_screen.dart';
 import '../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
@@ -115,8 +113,8 @@ class _MyAppState extends State<MyApp> {
           if (state is ConnectivityDisConnected) {}
           return MaterialApp(
             key: _scaffoldKey,
-            navigatorObservers: [BotToastNavigatorObserver()],
-            builder: BotToastInit(),
+            navigatorObservers: [OverlayManagerInit.navigatorObserver],
+            builder: OverlayManagerInit.builder,
             debugShowCheckedModeBanner: false,
             restorationScopeId: MainScreen.routeName,
             localizationsDelegates: const [],

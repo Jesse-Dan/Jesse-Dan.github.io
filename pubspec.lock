@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  alert_system:
+    dependency: "direct main"
+    description:
+      name: alert_system
+      sha256: f6763893fd24a4f373058df453611f8f4f2780a344eed3930cc681a56d8b83ac
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   archive:
     dependency: transitive
     description:
@@ -926,5 +934,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.0.0-0 <4.0.0"
+  dart: ">=3.0.5 <4.0.0"
   flutter: ">=3.7.0"

@@ -3,9 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../config/overlay_config/overlay_service.dart';
+import '../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
+import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../../../logic/bloc/non_admin_management/non_admin_management_bloc.dart';
+import '../../../../widgets/alertify.dart';
+import '../../../auth_views/login.dart';
 import 'forms/view_forms.dart';
-import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
 
@@ -40,26 +44,53 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
         listeners: [
           BlocListener<RegistrationBloc, RegistrationState>(
             listener: (context, state) {
-              updateSessionState(state: state, context: context);
-              updateLoadingBlocState(state: state, context: context);
-              updatetSuccessBlocState(state: state, context: context);
-              updateFailedBlocState(state: state, context: context);
+              if (state is NonAdminRegistrationLoaded ||
+                  state is GroupRegistrationLoaded ||
+                  state is AttendeeRegistrationLoaded) {
+                OverlayService.closeAlert();
+                BlocProvider.of<DashBoardBloc>(context)
+                    .add(DashBoardDataEvent());
+              }
+              if (state is RegistrationLoading) OverlayService.showLoading();
+              if (state is RegistrationFailed) {
+                Alertify.error(
+                    title: 'Registration Error', message: state.error);
+                OverlayService.closeAlert();
+              }
             },
           ),
           BlocListener<NonAdminManagementBloc, NonAdminManagementState>(
             listener: (context, state) {
-              updateSessionState(state: state, context: context);
-              updateLoadingBlocState(state: state, context: context);
-              updatetSuccessBlocState(state: state, context: context);
-              updateFailedBlocState(state: state, context: context);
+              if (state is NonAdminManagementLoaded) {
+                OverlayService.closeAlert();
+                BlocProvider.of<DashBoardBloc>(context)
+                    .add(DashBoardDataEvent());
+              }
+              if (state is NonAdminManagementLoading)
+                OverlayService.showLoading();
+              if (state is NonAdminManagementFailed) {
+                Alertify.error(
+                    title: 'Non Admin Management Error', message: state.error);
+                OverlayService.closeAlert();
+              }
             },
           ),
           BlocListener<DashBoardBloc, DashBoardState>(
             listener: (context, state) {
-              updateSessionState(state: state, context: context);
-              updateLoadingBlocState(state: state, context: context);
-              updatetSuccessBlocState(state: state, context: context);
-              updateFailedBlocState(state: state, context: context);
+              if (state is DashBoardFetched) {
+                OverlayService.closeAlert();
+              }
+              if (state is DashBoardLoading) OverlayService.showLoading();
+              if (state is DashBoardFailed) {
+                Alertify.error(title: 'DashBooard Error', message: state.error);
+                OverlayService.closeAlert();
+              }
+              if (state is DashBoardFetched && !state.user.enabled) {
+                Alertify.error(message: 'Your account has been disabled');
+                BlocProvider.of<AuthenticationBloc>(context).add(LogoutEvent());
+                Navigator.pushNamedAndRemoveUntil(
+                    context, SignInScreen.routeName, (_) => false);
+              }
             },
           ),
         ],
@@ -97,64 +128,44 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                 }, builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
                   return PageContentWidget(
-                    columns:  [
-                            DataColumn(
-                              label: Text(
-                                "Fullname",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Department",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Id",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Role",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Phone",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Gender",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Created By",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Action",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                          ],
+                    columns: [
+                      DataColumn(
+                          label: Text("Fullname",
+                              style: GoogleFonts.dmSans(
+                                  color: kSecondaryColor, fontSize: 15))),
+                      DataColumn(
+                          label: Text("Department",
+                              style: GoogleFonts.dmSans(
+                                  color: kSecondaryColor, fontSize: 15))),
+                      DataColumn(
+                          label: Text("Id",
+                              style: GoogleFonts.dmSans(
+                                  color: kSecondaryColor, fontSize: 15))),
+                      DataColumn(
+                          label: Text("Role",
+                              style: GoogleFonts.dmSans(
+                                  color: kSecondaryColor, fontSize: 15))),
+                      DataColumn(
+                          label: Text("Phone",
+                              style: GoogleFonts.dmSans(
+                                  color: kSecondaryColor, fontSize: 15))),
+                      DataColumn(
+                          label: Text("Gender",
+                              style: GoogleFonts.dmSans(
+                                  color: kSecondaryColor, fontSize: 15))),
+                      DataColumn(
+                          label: Text("Created By",
+                              style: GoogleFonts.dmSans(
+                                  color: kSecondaryColor, fontSize: 15))),
+                      DataColumn(
+                          label: Text("Edit",
+                              style: GoogleFonts.dmSans(
+                                  color: kSecondaryColor, fontSize: 15))),
+                      DataColumn(
+                          label: Text("Delete",
+                              style: GoogleFonts.dmSans(
+                                  color: kSecondaryColor, fontSize: 15))),
+                    ],
                     row: List.generate(
                       fetched ? state.nonAdminModel.length : 0,
                       (index) => (recentFileDataRow(
@@ -199,64 +210,48 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
 DataRow recentFileDataRow(NonAdminModel? registerdNonAdmin, context,
     {nonAdminId, adminModel}) {
   return DataRow(
-    onLongPress: () {
-      NonAdminViewForms(context: context).viewSelectedNonAdminStaffData(
-          title: '${registerdNonAdmin.firstName} ${registerdNonAdmin.lastName}',
-          nonAdmin: registerdNonAdmin);
-    },
-    cells:[
-            DataCell(
-              Text(
-                registerdNonAdmin!.firstName!.toLowerCase(),
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-              ),
-            ),
-            DataCell(Text(
-              registerdNonAdmin.dept!.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdNonAdmin.id!,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdNonAdmin.role!,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdNonAdmin.phoneNumber!,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdNonAdmin.gender!.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdNonAdmin.createdBy!.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(IconButton(
-              splashRadius: 5,
-              icon: Icon(
-                Icons.delete,
-                color: kSecondaryColor,
-                size: 20,
-              ),
-              onPressed: () {
-                verifyAction(
-                  context: context,
-                  text: 'Do you wish to proceed to delete this Non Admin?',
-                  title: 'Non Admin ${registerdNonAdmin.firstName} ',
-                  action: () {
-                    BlocProvider.of<NonAdminManagementBloc>(context).add(
-                        DeleteNonAdminEvent(
-                            nonAdminId: nonAdminId,
-                            nonAdminModel: registerdNonAdmin,
-                            adminModel: adminModel));
-                  },
-                );
-              },
-            )),
-          ],
+    cells: [
+      DataCell(Text(registerdNonAdmin!.firstName!.toLowerCase(),
+          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+      DataCell(Text(registerdNonAdmin.dept!.toLowerCase(),
+          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+      DataCell(Text(registerdNonAdmin.id!,
+          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+      DataCell(Text(registerdNonAdmin.role!,
+          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+      DataCell(Text(
+        registerdNonAdmin.phoneNumber!,
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(registerdNonAdmin.gender!.toLowerCase(),
+          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+      DataCell(Text(registerdNonAdmin.createdBy!.toLowerCase(),
+          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+      DataCell(IconButton(
+          splashRadius: 5,
+          icon: Icon(Icons.edit_document, color: kSecondaryColor, size: 20),
+          onPressed: () {
+            NonAdminViewForms(context: context).viewSelectedNonAdminStaffData(
+                title:
+                    '${registerdNonAdmin.firstName} ${registerdNonAdmin.lastName}',
+                nonAdmin: registerdNonAdmin);
+          })),
+      DataCell(IconButton(
+          splashRadius: 5,
+          icon: Icon(Icons.delete, color: kSecondaryColor, size: 20),
+          onPressed: () {
+            verifyAction(
+                context: context,
+                text: 'Do you wish to proceed to delete this Non Admin?',
+                title: 'Non Admin ${registerdNonAdmin.firstName} ',
+                action: () {
+                  BlocProvider.of<NonAdminManagementBloc>(context).add(
+                      DeleteNonAdminEvent(
+                          nonAdminId: nonAdminId,
+                          nonAdminModel: registerdNonAdmin,
+                          adminModel: adminModel));
+                });
+          }))
+    ],
   );
 }

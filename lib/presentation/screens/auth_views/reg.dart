@@ -10,6 +10,7 @@ import 'package:tyldc_finaalisima/config/validators.dart';
 import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
 import 'package:tyldc_finaalisima/presentation/screens/auth_views/phone_verification.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/verify_action_dialogue.dart';
+import '../../../config/overlay_config/overlay_service.dart';
 import '../../../config/theme.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_event.dart';
@@ -52,6 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen>
   @override
   void initState() {
     BlocProvider.of<AdminManagemetBloc>(context).add(GetCodeEvent());
+    OverlayService.closeAlert();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
@@ -110,20 +112,17 @@ class _SignUpScreenState extends State<SignUpScreen>
     return BlocConsumer<AuthenticationBloc, AuthentictionState>(
       listener: (context, state) {
         if (state is AuthentictionLoading) {
-          showDialog(
-              context: context,
-              builder: ((context) =>
-                  const Center(child: CircularProgressIndicator())));
+          OverlayService.showLoading();
         }
         if (state is AuthentictionSuccesful) {
-          // Alertify.success(message: 'An otp has been sent to ${PhoneCtl.text}');
           Navigator.pushNamedAndRemoveUntil(
               context, SignInScreen.routeName, (_) => false);
           // BlocProvider.of<AuthenticationBloc>(context)
           //     .add(SendOtpEvent(int.parse(PhoneCtl.text)));
+          // Alertify.success(message: 'An otp has been sent to ${PhoneCtl.text}');
         }
         if (state is AuthentictionFailed) {
-          Navigator.pop(context);
+          OverlayService.closeAlert();
           Alertify.error(message: state.error);
         }
       },
@@ -274,7 +273,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                                     suffixIcon: Icons.remove_red_eye,
                                     onTapSuffixIcon: () {
                                   setState(() {
-                                    obs_1 = !obs_1;
+                                    obs_2 = !obs_2;
                                   });
                                 }),
                                 const SizedBox(height: 25),
@@ -308,36 +307,31 @@ class _SignUpScreenState extends State<SignUpScreen>
                                           message:
                                               'Phone Number entered appears invalid');
                                     } else {
-                                      verifyAction(
-                                          title: 'SignUp Process',
-                                          text:
-                                              'Are you certain of the details  you\'ve entered? any issue encountered here can only be resolved by your Admin!! ',
-                                          action: () {
-                                            BlocProvider.of<AuthenticationBloc>(
-                                                    context)
-                                                .add(SignUpEvent(context,
-                                                    adminModel: AdminModel(
-                                                      enabled: true,
-                                                      firstName:
-                                                          firstNameCtl.text,
-                                                      lastName:
-                                                          LastnameCtl.text,
-                                                      email: emailCtl.text,
-                                                      phoneNumber:
-                                                          PhoneCtl.text,
-                                                      gender: GenderCtl.text,
-                                                      dept: DeptCtl.text,
-                                                      role: RoleCtl.text,
-                                                      authCode:
-                                                          AuthCodeCtl.text,
-                                                      password:
-                                                          confirmPasswordCtl
-                                                              .text,
-                                                      imageUrl: '',
-                                                      id: '',
-                                                    )));
-                                          },
-                                          context: context);
+                                      // verifyAction(
+                                      //     title: 'SignUp Process',
+                                      //     text:
+                                      //         'Are you certain of the details  you\'ve entered? any issue encountered here can only be resolved by your Admin!! ',
+                                      //     action: () {
+                                      BlocProvider.of<AuthenticationBloc>(
+                                              context)
+                                          .add(SignUpEvent(context,
+                                              adminModel: AdminModel(
+                                                enabled: true,
+                                                firstName: firstNameCtl.text,
+                                                lastName: LastnameCtl.text,
+                                                email: emailCtl.text,
+                                                phoneNumber: PhoneCtl.text,
+                                                gender: GenderCtl.text,
+                                                dept: DeptCtl.text,
+                                                role: RoleCtl.text,
+                                                authCode: AuthCodeCtl.text,
+                                                password:
+                                                    confirmPasswordCtl.text,
+                                                imageUrl: '',
+                                                id: '',
+                                              )));
+                                      //       },
+                                      //       context: context);
                                     }
                                   },
                                   size,

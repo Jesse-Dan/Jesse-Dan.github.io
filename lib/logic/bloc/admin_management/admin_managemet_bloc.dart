@@ -79,7 +79,7 @@ class AdminManagemetBloc
     on<DisableAdminEvent>((event, emit) async {
       try {
         emit(AdminManagementLoading());
-    var data=    await DB(auth: auth).updateEnabledStatus(
+        var data = await DB(auth: auth).updateEnabledStatus(
             id: event.id, field: 'enabled', newData: event.enabledStatus);
         emit(AdminManagementENABLEDISABLE(data));
       } on FirebaseAuthException catch (e) {
@@ -95,7 +95,7 @@ class AdminManagemetBloc
     on<EnableAdminEvent>((event, emit) async {
       try {
         emit(AdminManagementLoading());
-       var data = await DB(auth: auth).updateEnabledStatus(
+        var data = await DB(auth: auth).updateEnabledStatus(
             id: event.id, field: 'enabled', newData: event.enabledStatus);
         emit(AdminManagementENABLEDISABLE(data));
       } on FirebaseAuthException catch (e) {

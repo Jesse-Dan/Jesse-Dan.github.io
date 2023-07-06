@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../config/constants/responsive.dart';
+import '../../../config/overlay_config/overlay_service.dart';
 import '../../../config/theme.dart';
 import '../../../logic/bloc/admin_management/admin_managemet_bloc.dart';
 import '../app_views/drawer_items/dashboard/main_screen.dart';
@@ -35,8 +36,9 @@ class _SignInScreenState extends State<SignInScreen>
 
   @override
   void initState() {
+    OverlayService.closeAlert();
     BlocProvider.of<AdminManagemetBloc>(context).add(const GetCodeEvent());
-    
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
@@ -92,16 +94,14 @@ class _SignInScreenState extends State<SignInScreen>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    OverlayService.closeAlert();
     return MultiBlocListener(
       listeners: [
         BlocListener<AuthenticationBloc, AuthentictionState>(
           listener: (context, state) {
             log(state.toString());
             if (state is AuthentictionLoading) {
-              showDialog(
-                  context: context,
-                  builder: ((context) =>
-                      const Center(child: CircularProgressIndicator())));
+              OverlayService.showLoading();
             }
             if (state is AuthentictionSuccesful) {
               Navigator.pushNamedAndRemoveUntil(
@@ -110,7 +110,7 @@ class _SignInScreenState extends State<SignInScreen>
             }
 
             if (state is AuthentictionFailed) {
-              Navigator.pop(context);
+              OverlayService.closeAlert();
               Alertify.error(message: state.error);
             }
           },

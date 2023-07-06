@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../config/overlay_config/overlay_service.dart';
+import '../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
+import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../../../logic/bloc/group_management_bloc/group_management_bloc.dart';
-import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../../models/group_model.dart';
+import '../../../../widgets/alertify.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
 
@@ -13,6 +16,8 @@ import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 
 import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../widgets/customm_text_btn.dart';
+import '../../../../widgets/verify_action_dialogue.dart';
+import '../../../auth_views/login.dart';
 import '../../components/header.dart';
 import '../../components/prefered_size_widget.dart';
 import '../dashboard/components/side_menu.dart';
@@ -35,27 +40,44 @@ class _GroupsScreenState extends State<GroupsScreen> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
         listeners: [
-          BlocListener<GroupManagementBloc, GroupManagementState>(
-              listener: (context, state) {
-            updateSessionState(state: state, context: context);
-            updateLoadingBlocState(state: state, context: context);
-            updatetSuccessBlocState(state: state, context: context);
-            updateFailedBlocState(state: state, context: context);
-          }),
           BlocListener<RegistrationBloc, RegistrationState>(
             listener: (context, state) {
-              updateSessionState(state: state, context: context);
-              updateLoadingBlocState(state: state, context: context);
-              updatetSuccessBlocState(state: state, context: context);
-              updateFailedBlocState(state: state, context: context);
+              if (state is NonAdminRegistrationLoaded ||
+                  state is GroupRegistrationLoaded ||
+                  state is AttendeeRegistrationLoaded) {
+                OverlayService.closeAlert();
+                BlocProvider.of<DashBoardBloc>(context)
+                    .add(DashBoardDataEvent());
+              }
+              if (state is RegistrationLoading) OverlayService.showLoading();
+              if (state is RegistrationFailed) OverlayService.closeAlert();
+            },
+          ),
+          BlocListener<GroupManagementBloc, GroupManagementState>(
+            listener: (context, state) {
+              if (state is GroupManagementLoaded) {
+                OverlayService.closeAlert();
+                BlocProvider.of<DashBoardBloc>(context)
+                    .add(DashBoardDataEvent());
+              }
+              if (state is GroupManagementLoading) OverlayService.showLoading();
+              if (state is GroupManagementFailed) OverlayService.closeAlert();
             },
           ),
           BlocListener<DashBoardBloc, DashBoardState>(
             listener: (context, state) {
-              updateSessionState(state: state, context: context);
-              updateLoadingBlocState(state: state, context: context);
-              updatetSuccessBlocState(state: state, context: context);
-              updateFailedBlocState(state: state, context: context);
+              if (state is DashBoardFetched) {
+                OverlayService.closeAlert();
+              }
+              if (state is DashBoardLoading) OverlayService.showLoading();
+              if (state is DashBoardFailed) OverlayService.closeAlert();
+
+              if (state is DashBoardFetched && !state.user.enabled) {
+                Alertify.error(message: 'Your account has been disabled');
+                BlocProvider.of<AuthenticationBloc>(context).add(LogoutEvent());
+                Navigator.pushNamedAndRemoveUntil(
+                    context, SignInScreen.routeName, (_) => false);
+              }
             },
           ),
         ],
@@ -83,60 +105,62 @@ class _GroupsScreenState extends State<GroupsScreen> {
                     child: SideMenu(),
                   ),
                 //table
-                BlocConsumer<DashBoardBloc, DashBoardState>(
-                    listener: (context, state) {
-                  updateSessionState(state: state, context: context);
-                  updateLoadingBlocState(state: state, context: context);
-                  updatetSuccessBlocState(state: state, context: context);
-                  updateFailedBlocState(state: state, context: context);
-                }, builder: (context, state) {
+                BlocBuilder<DashBoardBloc, DashBoardState>(
+                    builder: (context, state) {
                   bool fetched = state is DashBoardFetched;
                   return PageContentWidget(
                     searchIndex: 2,
-                    columns:[
-                            DataColumn(
-                              label: Text(
-                                "Group Name",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Group Description",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Members count",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Id",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Created By",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                "Action",
-                                style: GoogleFonts.dmSans(
-                                    color: kSecondaryColor, fontSize: 15),
-                              ),
-                            ),
-                          ],
+                    columns: [
+                      DataColumn(
+                        label: Text(
+                          "Group Name",
+                          style: GoogleFonts.dmSans(
+                              color: kSecondaryColor, fontSize: 15),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          "Group Description",
+                          style: GoogleFonts.dmSans(
+                              color: kSecondaryColor, fontSize: 15),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          "Members count",
+                          style: GoogleFonts.dmSans(
+                              color: kSecondaryColor, fontSize: 15),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          "Id",
+                          style: GoogleFonts.dmSans(
+                              color: kSecondaryColor, fontSize: 15),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          "Created By",
+                          style: GoogleFonts.dmSans(
+                              color: kSecondaryColor, fontSize: 15),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          "Edit",
+                          style: GoogleFonts.dmSans(
+                              color: kSecondaryColor, fontSize: 15),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          "Delete",
+                          style: GoogleFonts.dmSans(
+                              color: kSecondaryColor, fontSize: 15),
+                        ),
+                      ),
+                    ],
                     row: List.generate(
                       fetched ? state.groups.length : 0,
                       (index) => (recentFileDataRow(
@@ -188,59 +212,68 @@ DataRow recentFileDataRow(
     atttendees,
     specificGroupId}) {
   return DataRow(
-    onLongPress: () {
-      GroupsViewForms(context: context).viewGroupData(
-          presenttGroupId: groupsId,
-          title: '${registerdGroup.name} Group',
-          presentGroupModel: registerdGroup,
-          attendees: atttendees);
-    },
     cells: [
-            DataCell(
-              Text(
-                registerdGroup!.name.toLowerCase(),
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-              ),
-            ),
-            DataCell(Text(
-              registerdGroup.description.length >= 40
-                  ? '${registerdGroup.description.substring(0, 5)[0]}...'
-                  : registerdGroup.description.toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdGroup.groupMembers.length.toString(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdGroup.id,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              registerdGroup.createdBy,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(IconButton(
-              splashRadius: 5,
-              icon: Icon(
-                Icons.delete,
-                color: kSecondaryColor,
-                size: 20,
-              ),
-              onPressed: () {
-                GroupsViewForms(context: context).verifyAction(
-                  text: 'Do you wish to proceed to delete this group?',
-                  title: '${registerdGroup.name} Group',
-                  action: () {
-                    BlocProvider.of<GroupManagementBloc>(context).add(
-                        DeleteGroupEvent(
-                            groupId: specificGroupId,
-                            groupModel: registerdGroup,
-                            adminModel: admin));
-                  },
-                );
-              },
-            )),
-          ],
+      DataCell(
+        Text(
+          registerdGroup!.name.toLowerCase(),
+          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        ),
+      ),
+      DataCell(Text(
+        registerdGroup.description.length >= 40
+            ? '${registerdGroup.description.substring(0, 5)[0]}...'
+            : registerdGroup.description.toLowerCase(),
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        registerdGroup.groupMembers.length.toString(),
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        registerdGroup.id,
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        registerdGroup.createdBy,
+        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(IconButton(
+        splashRadius: 5,
+        icon: Icon(
+          Icons.edit_document,
+          color: kSecondaryColor,
+          size: 20,
+        ),
+        onPressed: () {
+          GroupsViewForms(context: context).viewGroupData(
+              presenttGroupId: groupsId,
+              title: '${registerdGroup.name} Group',
+              presentGroupModel: registerdGroup,
+              attendees: atttendees);
+        },
+      )),
+      DataCell(IconButton(
+        splashRadius: 5,
+        icon: Icon(
+          Icons.delete,
+          color: kSecondaryColor,
+          size: 20,
+        ),
+        onPressed: () {
+          verifyAction(
+            context: context,
+            text: 'Do you wish to proceed to delete this group?',
+            title: '${registerdGroup.name} Group',
+            action: () {
+              BlocProvider.of<GroupManagementBloc>(context).add(
+                  DeleteGroupEvent(
+                      groupId: specificGroupId,
+                      groupModel: registerdGroup,
+                      adminModel: admin));
+            },
+          );
+        },
+      )),
+    ],
   );
 }

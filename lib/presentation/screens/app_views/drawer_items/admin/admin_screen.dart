@@ -4,16 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
+import 'package:tyldc_finaalisima/presentation/screens/auth_views/login.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/alertify.dart';
-import '../../../../../config/bloc_aler_notifier.dart';
+import '../../../../../config/overlay_config/overlay_service.dart';
+import '../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
+import '../../../../../logic/bloc/index_blocs.dart';
 import '../../../../../models/user_model.dart';
 import '../../../../widgets/align_text_with_icon_widget.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
-
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
-import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../widgets/data_table.dart';
+import '../../../../widgets/functional_widgets/adminImageWidget.dart';
 import '../../components/header.dart';
 import '../../components/prefered_size_widget.dart';
 import '../dashboard/components/side_menu.dart';
@@ -37,20 +39,16 @@ class _AdminScreenState extends State<AdminScreen> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<DashBoardBloc, DashBoardState>(
-          listener: (context, state) {
-            updateSessionState(state: state, context: context);
-            updateLoadingBlocState(state: state, context: context);
-            updatetSuccessBlocState(state: state, context: context);
-            updateFailedBlocState(state: state, context: context);
-          },
-        ),
         BlocListener<AdminManagemetBloc, AdminManagemetState>(
           listener: (context, state) {
-            updateSessionState(state: state, context: context);
-            updateLoadingBlocState(state: state, context: context);
-            updatetSuccessBlocState(state: state, context: context);
-            updateFailedBlocState(state: state, context: context);
+            if (state is AdminManagementENABLEDISABLE ||
+                state is AdminManagemetLoaded ||
+                state is AdminManagemetAltered) {
+              OverlayService.closeAlert();
+              BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+            }
+            if (state is AdminManagementLoading) OverlayService.showLoading();
+            if (state is AdminManagemetFailed) OverlayService.closeAlert();
           },
         ),
       ],
@@ -61,8 +59,9 @@ class _AdminScreenState extends State<AdminScreen> {
                 preferredWidth: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.all(kdefaultPadding),
-                  child:
-                      Header(title: 'Administrative Staffs', onPressed: () {}),
+                  child: Header(
+                    title: 'Administrative Staffs',
+                  ),
                 ))
             : null,
         drawer: const SideMenu(),
@@ -71,11 +70,11 @@ class _AdminScreenState extends State<AdminScreen> {
             child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // We want this side menu only for large screen
+            //  We want this side menu only for large screen
             if (Responsive.isDesktop(context))
               const Expanded(
-                // default flex = 1
-                // and it takes 1/6 part of the screen
+                //  default flex = 1
+                //  and it takes 1/6 part of the screen
                 child: SideMenu(),
               ),
             BlocBuilder<DashBoardBloc, DashBoardState>(
@@ -86,74 +85,48 @@ class _AdminScreenState extends State<AdminScreen> {
                     AdminsRegistrationForms(context: context).showOptions(
                         admin: fetched ? state.user : null,
                         icon: const AlignIconWithTextWidget(
-                          icon: Icons.admin_panel_settings_rounded,
-                          text: 'Set Auth Codes',
-                        )),
+                            icon: Icons.admin_panel_settings_rounded,
+                            text: 'Set Auth Codes'))
                   ],
                   columns: [
                     DataColumn(
-                      label: Text(
-                        "Profile Picture",
-                        style: GoogleFonts.dmSans(
-                            color: kSecondaryColor, fontSize: 15),
-                      ),
-                    ),
+                        label: Text("Profile Picture",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
-                      label: Text(
-                        "Fullname",
-                        style: GoogleFonts.dmSans(
-                            color: kSecondaryColor, fontSize: 15),
-                      ),
-                    ),
+                        label: Text("Fullname",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
-                      label: Text(
-                        "Department",
-                        style: GoogleFonts.dmSans(
-                            color: kSecondaryColor, fontSize: 15),
-                      ),
-                    ),
+                        label: Text("Department",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
-                      label: Text(
-                        "Role",
-                        style: GoogleFonts.dmSans(
-                            color: kSecondaryColor, fontSize: 15),
-                      ),
-                    ),
+                        label: Text("Role",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
-                      label: Text(
-                        "Phone",
-                        style: GoogleFonts.dmSans(
-                            color: kSecondaryColor, fontSize: 15),
-                      ),
-                    ),
+                        label: Text("Phone",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
-                      label: Text(
-                        "Gender",
-                        style: GoogleFonts.dmSans(
-                            color: kSecondaryColor, fontSize: 15),
-                      ),
-                    ),
+                        label: Text("Gender",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
-                      label: Text(
-                        "Edit",
-                        style: GoogleFonts.dmSans(
-                            color: kSecondaryColor, fontSize: 15),
-                      ),
-                    ),
+                        label: Text("Edit",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
-                      label: Text(
-                        "Enabled",
-                        style: GoogleFonts.dmSans(
-                            color: kSecondaryColor, fontSize: 15),
-                      ),
-                    ),
+                        label: Text("Enabled",
+                            style: GoogleFonts.dmSans(
+                                color: kSecondaryColor, fontSize: 15))),
                   ],
                   row: List.generate(
-                    fetched ? state.admins.length : 0,
-                    (index) => (recentFileDataRow(
-                        fetched ? state.admins[index] : null, context,
-                        performedBy: fetched ? state.user : null)),
-                  ),
+                      fetched ? state.admins.length : 0,
+                      (index) => (recentFileDataRow(
+                          fetched ? state.admins[index] : null, context,
+                          performedBy: fetched ? state.user : null))),
                   title: 'Admins',
                 );
               },
@@ -172,44 +145,25 @@ class _AdminScreenState extends State<AdminScreen> {
   DataRow recentFileDataRow(AdminModel? registerdAdmin, context,
       {required AdminModel? performedBy}) {
     return DataRow(
-      onLongPress: () {
-        AdminsRegistrationForms(context: context).viewSelectedAdminStaffData(
-            title: registerdAdmin.firstName, admin: registerdAdmin);
-      },
       cells: [
-        DataCell(registerdAdmin!.imageUrl == ''
-            ? const Icon(
-                Icons.person,
-                color: primaryColor,
-              )
-            : CircleAvatar(
-                backgroundImage:
-                    NetworkImage(registerdAdmin.imageUrl, scale: 10))),
-        DataCell(
-          Text(
-            registerdAdmin.firstName.toLowerCase(),
-            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-          ),
-        ),
-        DataCell(Text(
-          registerdAdmin.dept.toLowerCase(),
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-        )),
-        DataCell(Text(
-          registerdAdmin.role,
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-        )),
-        DataCell(Text(
-          registerdAdmin.phoneNumber,
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-        )),
-        DataCell(Text(
-          registerdAdmin.gender,
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-        )),
-        DataCell(Icon(
-          Icons.edit_document,
-          size: 30,
+        DataCell(AdminUserImage(registerdAdmin: registerdAdmin)),
+        DataCell(Text(registerdAdmin!.firstName.toLowerCase(),
+            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+        DataCell(Text(registerdAdmin.dept.toLowerCase(),
+            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+        DataCell(Text(registerdAdmin.role,
+            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+        DataCell(Text(registerdAdmin.phoneNumber,
+            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+        DataCell(Text(registerdAdmin.gender,
+            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+        DataCell(IconButton(
+          onPressed: () {
+            AdminsRegistrationForms(context: context)
+                .viewSelectedAdminStaffData(
+                    title: registerdAdmin.firstName, admin: registerdAdmin);
+          },
+          icon: Icon(Icons.edit_document),
           color: kSecondaryColor,
         )),
         DataCell(Container(
@@ -235,8 +189,7 @@ class _AdminScreenState extends State<AdminScreen> {
                       default:
                     }
                   } else {
-                    Alertify.error(
-                        message: 'You can not disable your account');
+                    Alertify.error(message: 'You can not disable your account');
                   }
                 }))),
       ],

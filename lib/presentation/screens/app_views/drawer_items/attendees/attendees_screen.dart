@@ -3,9 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../config/overlay_config/overlay_service.dart';
+import '../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
+import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
+import '../../../../../logic/bloc/index_blocs.dart';
 import '../../../../../logic/bloc/user_management/user_management_bloc.dart';
+import '../../../../widgets/alertify.dart';
+import '../../../auth_views/login.dart';
 import 'forms/view_form.dart';
-import '../../../../../config/bloc_aler_notifier.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
 
@@ -13,7 +18,6 @@ import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../../models/atendee_model.dart';
-import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../../../../widgets/verify_action_dialogue.dart';
 import '../../components/header.dart';
@@ -37,28 +41,39 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<DashBoardBloc, DashBoardState>(
+          listener: (context, state) {
+            if (state is DashBoardFetched) {
+              OverlayService.closeAlert();
+            }
+            if (state is DashBoardLoading) OverlayService.showLoading();
+            if (state is DashBoardFailed) OverlayService.closeAlert();
+            if (state is DashBoardFetched && !state.user.enabled) {
+              Alertify.error(message: 'Your account has been disabled');
+              BlocProvider.of<AuthenticationBloc>(context).add(LogoutEvent());
+              Navigator.pushNamedAndRemoveUntil(
+                  context, SignInScreen.routeName, (_) => false);
+            }
+          },
+        ),
         BlocListener<RegistrationBloc, RegistrationState>(
           listener: (context, state) {
-            updateSessionState(state: state, context: context);
-            updateLoadingBlocState(state: state, context: context);
-            updatetSuccessBlocState(state: state, context: context);
-            updateFailedBlocState(state: state, context: context);
+            if (state is AttendeeRegistrationLoaded) {
+              OverlayService.closeAlert();
+              BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+            }
+            if (state is RegistrationLoading) OverlayService.showLoading();
+            if (state is RegistrationFailed) OverlayService.closeAlert();
           },
         ),
         BlocListener<UserManagementBloc, UserManagementState>(
           listener: (context, state) {
-            updateSessionState(state: state, context: context);
-            updateLoadingBlocState(state: state, context: context);
-            updatetSuccessBlocState(state: state, context: context);
-            updateFailedBlocState(state: state, context: context);
-          },
-        ),
-        BlocListener<DashBoardBloc, DashBoardState>(
-          listener: (context, state) {
-            updateSessionState(state: state, context: context);
-            updateLoadingBlocState(state: state, context: context);
-            updatetSuccessBlocState(state: state, context: context);
-            updateFailedBlocState(state: state, context: context);
+            if (state is UserManagementLoaded) {
+              OverlayService.closeAlert();
+              BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+            }
+            if (state is UserManagementLoading) OverlayService.showLoading();
+            if (state is UserManagementFailed) OverlayService.closeAlert();
           },
         ),
       ],
@@ -86,14 +101,8 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                   child: SideMenu(),
                 ),
 
-              BlocConsumer<DashBoardBloc, DashBoardState>(
-                  listener: (context, state) {
-                if (state is DashBoardFetched) {
-                  for (var element in state.nonAdminModel) {
-                    log(element.firstName!);
-                  }
-                }
-              }, builder: (context, state) {
+              BlocBuilder<DashBoardBloc, DashBoardState>(
+                  builder: (context, state) {
                 bool fetched = state is DashBoardFetched;
                 return PageContentWidget(
                   columns: [
@@ -201,8 +210,8 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {admin, id}) {
   return DataRow(
     onLongPress: () {
       AttendeeViewForms(context: context).viewSelectedAttendeeData(
-         attendeeID: id,
-                  adminModel: admin,
+          attendeeID: id,
+          adminModel: admin,
           title: '${registerdUser.firstName} ${registerdUser.lastName}',
           attendee: registerdUser);
     },
@@ -263,9 +272,11 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {admin, id}) {
           size: 20,
         ),
         onPressed: () {
-          AttendeeViewForms(context: context)
-              .viewSelectedAttendeeData(title: 'Update Attendee',attendee: registerdUser, attendeeID: id,
-                  adminModel: admin);
+          AttendeeViewForms(context: context).viewSelectedAttendeeData(
+              title: 'Update Attendee',
+              attendee: registerdUser,
+              attendeeID: id,
+              adminModel: admin);
         },
       )),
     ],

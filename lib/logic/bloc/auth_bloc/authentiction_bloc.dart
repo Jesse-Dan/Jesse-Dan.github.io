@@ -157,12 +157,12 @@ class AuthenticationBloc extends Bloc<AuthentictionEvent, AuthentictionState> {
         await auth
             .signOut()
             .then((value) => emit(AuthentictionFailed('User Logged Out')));
-        emit(AuthentictionSuccesful());
+        emit(AuthentictionLostSession());
       } on FirebaseAuthException catch (e) {
-        emit(AuthentictionFailed(e.message.toString().toUpperCase()));
+        emit(AuthentictionLostSession());
+        log(e.toString());
       } catch (e) {
-        emit(AuthentictionFailed(e.toString()));
-        emit(AuthentictionFailed(e.toString()));
+        emit(AuthentictionLostSession());
       }
     });
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/config/overlay_config/overlay_service.dart';
 import '../../../../../../logic/bloc/admin_management/admin_managemet_bloc.dart';
 import '../../../../../../models/auth_code_model.dart';
 import '../../../../../../config/theme.dart';
@@ -114,7 +115,7 @@ class AdminsRegistrationForms extends FormWidget {
           ),
         ],
         onSubmit: () {
-          Navigator.of(context).pop();
+          OverlayService.closeAlert();
         },
         btNtype1: ButtonType.fill,
         color1: (Colors.green),
@@ -213,7 +214,7 @@ class AdminsRegistrationForms extends FormWidget {
           ),
         ],
         onSubmit: () {
-          Navigator.of(context).pop();
+          OverlayService.closeAlert();
         },
         btNtype1: ButtonType.fill,
         color1: (Colors.green),

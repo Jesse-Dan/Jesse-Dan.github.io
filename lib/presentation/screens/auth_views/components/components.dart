@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tyldc_finaalisima/presentation/widgets/dropdown_widget.dart';
 import '../../../../config/constants/responsive.dart';
+import '../../../../config/overlay_config/overlay_service.dart';
 import '../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../../logic/bloc/auth_bloc/authentiction_event.dart';
 import '../../../widgets/index.dart';
@@ -128,7 +129,7 @@ class AuthViewComponents extends FormWidget {
               limit: 10),
         ],
         onSubmit: () {
-          Navigator.of(context).pop();
+          OverlayService.closeAlert();
         },
         alertType: AlertType.twoBtns,
         btNtype1: ButtonType.fill,

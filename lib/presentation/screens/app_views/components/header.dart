@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/presentation/widgets/functional_widgets/adminImageWidget.dart';
 import '../../../../config/app_autorizations.dart';
 
 import '../../../../config/constants/responsive.dart';
@@ -63,6 +64,7 @@ class _HeaderState extends State<Header> {
         return Row(children: [
           Text(
             fetched
+
                 /// [if state is  loaded && is mobile]
                 ? Responsive.isMobile(context)
                     ? AppAuthorizations(
@@ -103,9 +105,9 @@ class ProfileCard extends StatefulWidget {
 class _ProfileCardState extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DashBoardBloc, DashBoardState>(
-      listener: (context, state) {},
+    return BlocBuilder<DashBoardBloc, DashBoardState>(
       builder: (context, state) {
+        bool fetched = state is DashBoardFetched;
         return GestureDetector(
           onTap: (() {}),
           child: Container(
@@ -121,9 +123,10 @@ class _ProfileCardState extends State<ProfileCard> {
             ),
             child: Row(
               children: [
-                Image.asset(
-                  "assets/images/profile_pic.png",
-                  height: 38,
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: AdminUserImage(
+                      registerdAdmin: fetched ? state.user : null),
                 ),
                 if (!Responsive.isMobile(context))
                   Padding(
