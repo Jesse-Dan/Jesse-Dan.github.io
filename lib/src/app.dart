@@ -157,7 +157,6 @@ class _MyAppState extends State<MyApp> {
                       return const ProfileScreen();
                     case SettingsScreen.routeName:
                       return const SettingsScreen();
-
                     default:
                       return const SignInScreen();
                   }
