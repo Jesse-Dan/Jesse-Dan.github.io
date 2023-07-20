@@ -8,8 +8,6 @@ import 'package:get/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/config/validators.dart';
 import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
-import 'package:tyldc_finaalisima/presentation/screens/auth_views/phone_verification.dart';
-import 'package:tyldc_finaalisima/presentation/widgets/verify_action_dialogue.dart';
 import '../../../config/overlay_config/overlay_service.dart';
 import '../../../config/theme.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
@@ -19,6 +17,7 @@ import '../../../models/user_model.dart';
 import 'package:tyldc_finaalisima/config/constants/responsive.dart';
 import 'package:tyldc_finaalisima/presentation/screens/auth_views/components/components.dart';
 
+import '../../landing_page/page_builder/ball.dart';
 import '../../widgets/alertify.dart';
 import 'login.dart';
 
@@ -128,229 +127,251 @@ class _SignUpScreenState extends State<SignUpScreen>
       },
       builder: (context, state) {
         return Scaffold(
-          body: ScrollConfiguration(
-            behavior: MyBehavior(),
-            child: SingleChildScrollView(
-              child: SizedBox(
-                height: size.height,
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        cardColors,
-                        primaryColor,
-                      ],
-                    ),
-                  ),
-                  child: Opacity(
-                    opacity: _opacity.value,
-                    child: Transform.scale(
-                      scale: _transform.value,
-                      child: Padding(
-                        padding: const EdgeInsets.all(defaultPadding),
+            body: ScrollConfiguration(
+                behavior: MyBehavior(),
+                child: SingleChildScrollView(
+                    child: Container(
+                  height: size.height,
+                  width: double.infinity,
+                  color: kSecondaryColor,
+                  child: Stack(
+                    children: [
+                      /// TOP
+                      BgAnime(),
+                      SizedBox(
+                        height: size.height,
                         child: Container(
-                          width: Responsive.isDesktop(context)
-                              ? size.width / 3
-                              : size.width * .9,
-                          height: Responsive.isDesktop(context)
-                              ? size.width / 2.3
-                              : size.width * 1.1,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(.1),
-                                blurRadius: 90,
-                              ),
-                            ],
-                          ),
-                          child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const SizedBox(height: 25),
-                                Text(
-                                  textAlign: TextAlign.center,
-                                  'TYLDC PORTAL\nCREATE ACCOUNT',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black.withOpacity(.7),
+                          alignment: Alignment.center,
+                          // decoration: const BoxDecoration(
+                          //   gradient: LinearGradient(
+                          //     begin: Alignment.topLeft,
+                          //     end: Alignment.bottomRight,
+                          //     colors: [
+                          //       cardColors,
+                          //       primaryColor,
+                          //     ],
+                          // ),
+                          // ),
+                          child: Opacity(
+                            opacity: _opacity.value,
+                            child: Transform.scale(
+                              scale: _transform.value,
+                              child: Padding(
+                                padding: const EdgeInsets.all(defaultPadding),
+                                child: Container(
+                                  width: Responsive.isDesktop(context)
+                                      ? size.width / 3
+                                      : size.width * .9,
+                                  height: Responsive.isDesktop(context)
+                                      ? size.width / 2.3
+                                      : size.width * 1.1,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(.1),
+                                        blurRadius: 90,
+                                      ),
+                                    ],
+                                  ),
+                                  child: SingleChildScrollView(
+                                    physics: const BouncingScrollPhysics(),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const SizedBox(height: 25),
+                                        Text(
+                                          textAlign: TextAlign.center,
+                                          'TYLDC PORTAL\nCREATE ACCOUNT',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black.withOpacity(.7),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 25),
+                                        const SizedBox(),
+                                        AuthViewComponents(context: context)
+                                            .component1(
+                                                Icons.account_circle_outlined,
+                                                'First Name...',
+                                                false,
+                                                true,
+                                                size,
+                                                controller: firstNameCtl),
+                                        AuthViewComponents(context: context)
+                                            .component1(
+                                                Icons.account_circle_outlined,
+                                                'Last Name...',
+                                                false,
+                                                true,
+                                                size,
+                                                controller: LastnameCtl),
+                                        AuthViewComponents(context: context)
+                                            .component1(Icons.email_outlined,
+                                                'Email...', false, true, size,
+                                                controller: emailCtl),
+                                        AuthViewComponents(context: context)
+                                            .component1(Icons.phone_outlined,
+                                                'Phone...', false, true, size,
+                                                controller: PhoneCtl,
+                                                limit: 10,
+                                                type: TextInputType.phone),
+                                        AuthViewComponents(context: context)
+                                            .component1(Icons.male_outlined,
+                                                'Gender...', false, true, size,
+                                                controller: GenderCtl),
+                                        AuthViewComponents(context: context)
+                                            .component1(
+                                                Icons
+                                                    .admin_panel_settings_outlined,
+                                                'Dept...',
+                                                false,
+                                                true,
+                                                size,
+                                                controller: DeptCtl),
+                                        AuthViewComponents(context: context)
+                                            .component1(
+                                                Icons
+                                                    .admin_panel_settings_outlined,
+                                                'Role...',
+                                                false,
+                                                true,
+                                                size,
+                                                controller: RoleCtl),
+                                        AuthViewComponents(context: context)
+                                            .component1(
+                                                Icons
+                                                    .admin_panel_settings_outlined,
+                                                'AuthCode...',
+                                                a_d_obs_1,
+                                                false,
+                                                size,
+                                                controller: AuthCodeCtl,
+                                                suffixIcon:
+                                                    Icons.remove_red_eye,
+                                                onTapSuffixIcon: () {
+                                          setState(() {
+                                            a_d_obs_1 = !a_d_obs_1;
+                                          });
+                                        }),
+                                        AuthViewComponents(context: context)
+                                            .component1(
+                                                Icons.password_outlined,
+                                                'Password...',
+                                                obs_1,
+                                                false,
+                                                size,
+                                                controller: passwordCtl,
+                                                suffixIcon:
+                                                    Icons.remove_red_eye,
+                                                onTapSuffixIcon: () {
+                                          setState(() {
+                                            obs_1 = !obs_1;
+                                          });
+                                        }),
+                                        AuthViewComponents(context: context)
+                                            .component1(
+                                                Icons.password_outlined,
+                                                'Confirm Password...',
+                                                obs_2,
+                                                false,
+                                                size,
+                                                controller: confirmPasswordCtl,
+                                                suffixIcon:
+                                                    Icons.remove_red_eye,
+                                                onTapSuffixIcon: () {
+                                          setState(() {
+                                            obs_2 = !obs_2;
+                                          });
+                                        }),
+                                        const SizedBox(height: 25),
+                                        AuthViewComponents(context: context)
+                                            .component2(
+                                          'Create Account',
+                                          2.6,
+                                          () {
+                                            bool isStrongPassword =
+                                                Validators.isValidPassword(
+                                                    passwordCtl.text);
+                                            bool isPasswordMatch =
+                                                Validators.isPasswordMatch(
+                                                    passwordCtl.text,
+                                                    confirmPasswordCtl.text);
+                                            if (!isPasswordMatch) {
+                                              Alertify.error(
+                                                  title: 'Registration Error',
+                                                  message:
+                                                      'Password dosen\'t match');
+                                            } else if (!isStrongPassword) {
+                                              Alertify.error(
+                                                  title: 'Registration Error',
+                                                  message:
+                                                      'Password doesn\'t meet requirements');
+                                            } else if (PhoneCtl.text.length
+                                                    .isLowerThan(10) ||
+                                                PhoneCtl.text[0] == '0' ||
+                                                PhoneCtl.text.contains(
+                                                    RegExp(r'[a-zA-Z]'))) {
+                                              Alertify.error(
+                                                  title: 'Registration Error',
+                                                  message:
+                                                      'Phone Number entered appears invalid');
+                                            } else {
+                                              // verifyAction(
+                                              //     title: 'SignUp Process',
+                                              //     text:
+                                              //         'Are you certain of the details  you\'ve entered? any issue encountered here can only be resolved by your Admin!! ',
+                                              //     action: () {
+                                              BlocProvider.of<
+                                                          AuthenticationBloc>(
+                                                      context)
+                                                  .add(SignUpEvent(context,
+                                                      adminModel: AdminModel(
+                                                        enabled: true,
+                                                        firstName:
+                                                            firstNameCtl.text,
+                                                        lastName:
+                                                            LastnameCtl.text,
+                                                        email: emailCtl.text,
+                                                        phoneNumber:
+                                                            PhoneCtl.text,
+                                                        gender: GenderCtl.text,
+                                                        dept: DeptCtl.text,
+                                                        role: RoleCtl.text,
+                                                        authCode:
+                                                            AuthCodeCtl.text,
+                                                        password:
+                                                            confirmPasswordCtl
+                                                                .text,
+                                                        imageUrl: '',
+                                                        id: '',
+                                                      )));
+                                              //       },
+                                              //       context: context);
+                                            }
+                                          },
+                                          size,
+                                        ),
+                                        const SizedBox(height: 20),
+                                        (toggleCreateAccount()),
+                                        const SizedBox(height: 20),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(height: 25),
-                                const SizedBox(),
-                                AuthViewComponents(context: context).component1(
-                                    Icons.account_circle_outlined,
-                                    'First Name...',
-                                    false,
-                                    true,
-                                    size,
-                                    controller: firstNameCtl),
-                                AuthViewComponents(context: context).component1(
-                                    Icons.account_circle_outlined,
-                                    'Last Name...',
-                                    false,
-                                    true,
-                                    size,
-                                    controller: LastnameCtl),
-                                AuthViewComponents(context: context).component1(
-                                    Icons.email_outlined,
-                                    'Email...',
-                                    false,
-                                    true,
-                                    size,
-                                    controller: emailCtl),
-                                AuthViewComponents(context: context).component1(
-                                    Icons.phone_outlined,
-                                    'Phone...',
-                                    false,
-                                    true,
-                                    size,
-                                    controller: PhoneCtl,
-                                    limit: 10,
-                                    type: TextInputType.phone),
-                                AuthViewComponents(context: context).component1(
-                                    Icons.male_outlined,
-                                    'Gender...',
-                                    false,
-                                    true,
-                                    size,
-                                    controller: GenderCtl),
-                                AuthViewComponents(context: context).component1(
-                                    Icons.admin_panel_settings_outlined,
-                                    'Dept...',
-                                    false,
-                                    true,
-                                    size,
-                                    controller: DeptCtl),
-                                AuthViewComponents(context: context).component1(
-                                    Icons.admin_panel_settings_outlined,
-                                    'Role...',
-                                    false,
-                                    true,
-                                    size,
-                                    controller: RoleCtl),
-                                AuthViewComponents(context: context).component1(
-                                    Icons.admin_panel_settings_outlined,
-                                    'AuthCode...',
-                                    a_d_obs_1,
-                                    false,
-                                    size,
-                                    controller: AuthCodeCtl,
-                                    suffixIcon: Icons.remove_red_eye,
-                                    onTapSuffixIcon: () {
-                                  setState(() {
-                                    a_d_obs_1 = !a_d_obs_1;
-                                  });
-                                }),
-                                AuthViewComponents(context: context).component1(
-                                    Icons.password_outlined,
-                                    'Password...',
-                                    obs_1,
-                                    false,
-                                    size,
-                                    controller: passwordCtl,
-                                    suffixIcon: Icons.remove_red_eye,
-                                    onTapSuffixIcon: () {
-                                  setState(() {
-                                    obs_1 = !obs_1;
-                                  });
-                                }),
-                                AuthViewComponents(context: context).component1(
-                                    Icons.password_outlined,
-                                    'Confirm Password...',
-                                    obs_2,
-                                    false,
-                                    size,
-                                    controller: confirmPasswordCtl,
-                                    suffixIcon: Icons.remove_red_eye,
-                                    onTapSuffixIcon: () {
-                                  setState(() {
-                                    obs_2 = !obs_2;
-                                  });
-                                }),
-                                const SizedBox(height: 25),
-                                AuthViewComponents(context: context).component2(
-                                  'Create Account',
-                                  2.6,
-                                  () {
-                                    bool isStrongPassword =
-                                        Validators.isValidPassword(
-                                            passwordCtl.text);
-                                    bool isPasswordMatch =
-                                        Validators.isPasswordMatch(
-                                            passwordCtl.text,
-                                            confirmPasswordCtl.text);
-                                    if (!isPasswordMatch) {
-                                      Alertify.error(
-                                          title: 'Registration Error',
-                                          message: 'Password dosen\'t match');
-                                    } else if (!isStrongPassword) {
-                                      Alertify.error(
-                                          title: 'Registration Error',
-                                          message:
-                                              'Password doesn\'t meet requirements');
-                                    } else if (PhoneCtl.text.length
-                                            .isLowerThan(10) ||
-                                        PhoneCtl.text[0] == '0' ||
-                                        PhoneCtl.text
-                                            .contains(RegExp(r'[a-zA-Z]'))) {
-                                      Alertify.error(
-                                          title: 'Registration Error',
-                                          message:
-                                              'Phone Number entered appears invalid');
-                                    } else {
-                                      // verifyAction(
-                                      //     title: 'SignUp Process',
-                                      //     text:
-                                      //         'Are you certain of the details  you\'ve entered? any issue encountered here can only be resolved by your Admin!! ',
-                                      //     action: () {
-                                      BlocProvider.of<AuthenticationBloc>(
-                                              context)
-                                          .add(SignUpEvent(context,
-                                              adminModel: AdminModel(
-                                                enabled: true,
-                                                firstName: firstNameCtl.text,
-                                                lastName: LastnameCtl.text,
-                                                email: emailCtl.text,
-                                                phoneNumber: PhoneCtl.text,
-                                                gender: GenderCtl.text,
-                                                dept: DeptCtl.text,
-                                                role: RoleCtl.text,
-                                                authCode: AuthCodeCtl.text,
-                                                password:
-                                                    confirmPasswordCtl.text,
-                                                imageUrl: '',
-                                                id: '',
-                                              )));
-                                      //       },
-                                      //       context: context);
-                                    }
-                                  },
-                                  size,
-                                ),
-                                const SizedBox(height: 20),
-                                (toggleCreateAccount()),
-                                const SizedBox(height: 20),
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ),
-              ),
-            ),
-          ),
-        );
+                ))));
       },
     );
   }

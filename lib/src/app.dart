@@ -12,11 +12,11 @@ import 'package:tyldc_finaalisima/logic/local_storage_service.dart/local_storage
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/profile/profile_screen.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/recently_deleted/recenttly_deleted_screen.dart';
 import 'package:tyldc_finaalisima/presentation/screens/auth_views/forgotten_password.dart';
-import '../config/bloc_controller.dart';
 import '../config/constants/enums.dart';
 import '../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../logic/bloc/cubit/methods_cubit.dart';
 import '../logic/bloc/index_blocs.dart';
+import '../presentation/landing_page/landingPage.dart';
 import '../presentation/screens/app_views/drawer_items/attendees/attendees_screen.dart';
 import '../presentation/screens/app_views/drawer_items/dashboard/dashboard_screen.dart';
 import '../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
@@ -83,9 +83,8 @@ class _MyAppState extends State<MyApp> {
               GroupManagementBloc(auth: widget.auth, storage: widget.storage),
         ),
         BlocProvider(
-          create: (context) => ConnectivityCubit(
-            connectivity: widget.connectivity,
-          ),
+          create: (context) =>
+              ConnectivityCubit(connectivity: widget.connectivity),
         ),
         BlocProvider(
           create: (context) => DashBoardBloc(widget.auth, widget.storage),
@@ -116,14 +115,14 @@ class _MyAppState extends State<MyApp> {
             navigatorObservers: [OverlayManagerInit.navigatorObserver],
             builder: OverlayManagerInit.builder,
             debugShowCheckedModeBanner: false,
-            restorationScopeId: MainScreen.routeName,
+            restorationScopeId: LandingPage.routeName,
             localizationsDelegates: const [],
             supportedLocales: const [
               Locale('en', 'NGN'),
             ],
             // theme: lightThemeData(context),
             // darkTheme: darkThemeData(context),
-            themeMode: ThemeMode.dark,
+            themeMode: ThemeMode.light,
             onGenerateRoute: (RouteSettings routeSettings) {
               return MaterialPageRoute<void>(
                 settings: routeSettings,
@@ -157,8 +156,10 @@ class _MyAppState extends State<MyApp> {
                       return const ProfileScreen();
                     case SettingsScreen.routeName:
                       return const SettingsScreen();
+                    case LandingPage.routeName:
+                      return const LandingPage();
                     default:
-                      return const SignInScreen();
+                      return const LandingPage();
                   }
                 },
               );
