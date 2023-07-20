@@ -129,6 +129,7 @@ Widget buildContactUs(w) {
                     ),
                   ],
                 ),
+                child: TextFormField(),
               ),
               SizedBox(width: spacer.toDouble()),
               Container(
@@ -207,7 +208,7 @@ Widget buildContactUs(w) {
 }
 
 Widget buildAboutDeveloper(w) {
-  var width = w / 0.9;
+  var width = w / 1.4;
   var spacer = 30;
 
   return Container(
@@ -232,19 +233,21 @@ Widget buildAboutDeveloper(w) {
                         color: kSecondaryColor,
                         fontWeight: FontWeight.w700),
                   ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        CircleAvatar(radius: 25),
-                        CircleAvatar(radius: 25),
-                        CircleAvatar(radius: 25),
-                        CircleAvatar(radius: 25),
-                        CircleAvatar(radius: 25),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      CircleAvatar(radius: 25),
+                      SizedBox(width: 5),
+                      CircleAvatar(radius: 25),
+                      SizedBox(width: 5),
+                      CircleAvatar(radius: 25),
+                      SizedBox(width: 5),
+                      CircleAvatar(radius: 25),
+                      SizedBox(width: 5),
+                      CircleAvatar(radius: 25),
+                    ],
                   ),
                   Text(
-                    'Flutter | Node.Js Engineer',
+                    'Developed By | Jesse Dan Amuda',
                     textAlign: TextAlign.end,
                     style: GoogleFonts.josefinSans(
                         height: 1.5,
