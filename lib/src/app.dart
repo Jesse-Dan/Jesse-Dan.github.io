@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
+import 'package:tyldc_finaalisima/logic/bloc/contact_us/contact_us_bloc.dart';
+import 'package:tyldc_finaalisima/logic/bloc/contact_us/contact_us_state.dart';
 import 'package:tyldc_finaalisima/logic/bloc/non_admin_management/non_admin_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
 import 'package:tyldc_finaalisima/logic/local_storage_service.dart/local_storage.dart';
@@ -99,6 +101,12 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
             create: (context) => AdminManagemetBloc(
+                auth: widget.auth,
+                storage: widget.storage,
+                localStorageService: widget.localStorageService)),
+        BlocProvider(
+            create: (context) => ContactUsBloc(
+                initialState: InitialContactUsState(),
                 auth: widget.auth,
                 storage: widget.storage,
                 localStorageService: widget.localStorageService)),

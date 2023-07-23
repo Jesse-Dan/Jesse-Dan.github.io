@@ -6,11 +6,11 @@ import '../../config/theme.dart';
 import 'custom_submit_btn.dart';
 import 'dialogue_forms.dart';
 
-verifyAction({title, text, action, context}) {
+verifyAction({title, text, action, context, padding}) {
   FormWidget().buildCenterFormField(
     title: title,
     context: context,
-    widgetsList: [getBody(text)],
+    widgetsList: [getBody(text, padding)],
     onSubmit: () {
       OverlayService.closeAlert();
     },
@@ -25,9 +25,9 @@ verifyAction({title, text, action, context}) {
   );
 }
 
-Widget getBody(text) {
+Widget getBody(text, p) {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: p ?? const EdgeInsets.all(8.0),
     child: Text(text,
         style: GoogleFonts.gochiHand(
             color: kSecondaryColor, fontSize: 17, fontWeight: FontWeight.w500)),

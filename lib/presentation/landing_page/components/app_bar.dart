@@ -18,15 +18,16 @@ Widget landingPageAppBar(bool isLargeScreen, scaffoldKey, context) {
             borderRadius: BorderRadius.circular(30), side: BorderSide.none),
         backgroundColor: kSecondaryColor,
         foregroundColor: bgColor,
-        elevation: 0,
+        elevation: 5,
         titleSpacing: 0,
         automaticallyImplyLeading: false,
-        leading: isLargeScreen
-            ? null
-            : IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => scaffoldKey.currentState?.openDrawer(),
-              ),
+        // leading: 
+        // isLargeScreen
+        //     ? null
+        //     : IconButton(
+        //         icon: const Icon(Icons.menu),
+        //         onPressed: () => scaffoldKey.currentState?.openDrawer(),
+        //       ),
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(

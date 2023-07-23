@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/config/constants/responsive.dart';
 import '../../../config/theme.dart';
 
 /// Content Builder
@@ -12,47 +13,81 @@ Widget contentWidget(
     double? widgetWidth,
     double? widgetHeight,
     TextAlign? titleTextAlign,
-    Widget? titleContent}) {
-  return Container(
-    height: widgetHeight ?? 600,
-    width: widgetWidth ?? 600,
-    child: Center(
-      child: Column(
-        children: [
-          /// TITLE
-          titleContent ??
-              RichText(
-                  textAlign: titleTextAlign ?? TextAlign.end,
-                  text: TextSpan(
-                      style: GoogleFonts.josefinSans(
-                          fontSize: 40,
-                          color: contentColor ?? kSecondaryColor,
-                          fontWeight: FontWeight.w700),
-                      children: [
-                        TextSpan(text: title?[0]),
-                        TextSpan(
-                          text: title?[1],
-                          style: TextStyle(
+    Widget? titleContent,
+    double? topPadding,
+    required bool addPadding,
+    double? leftPadding,
+    double? rightPadding,
+    double? buttomPadding,
+    required BuildContext context,
+    Color? widgetColor,
+    bool? addCurve}) {
+  return Padding(
+    padding: (!addPadding)
+        ? EdgeInsets.only(
+            top: topPadding ?? 8.0,
+            left: leftPadding ?? 8.0,
+            bottom: buttomPadding ?? 8.0,
+            right: rightPadding ?? 8.0)
+        : EdgeInsets.zero,
+    child: Container(
+      decoration: BoxDecoration(
+          color: widgetColor,
+          borderRadius:
+              Responsive.isMobileORTablet(context) && (addCurve ?? false)
+                  ? BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50))
+                  : BorderRadius.zero),
+      padding: (addPadding)
+          ? EdgeInsets.only(
+              top: topPadding ?? 8.0,
+              left: leftPadding ?? 8.0,
+              bottom: buttomPadding ?? 8.0,
+              right: rightPadding ?? 8.0)
+          : EdgeInsets.zero,
+      height: widgetHeight ?? 600,
+      width: widgetWidth ?? 600,
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              /// TITLE
+              titleContent ??
+                  RichText(
+                      textAlign: titleTextAlign ?? TextAlign.end,
+                      text: TextSpan(
+                          style: GoogleFonts.josefinSans(
                               fontSize: 40,
-                              color: mainTitleColor ?? primaryColor,
-                              fontWeight: FontWeight.w900),
-                        )
-                      ])),
+                              color: contentColor ?? kSecondaryColor,
+                              fontWeight: FontWeight.w700),
+                          children: [
+                            TextSpan(text: title?[0]),
+                            TextSpan(
+                              text: title?[1],
+                              style: TextStyle(
+                                  fontSize: 40,
+                                  color: mainTitleColor ?? primaryColor,
+                                  fontWeight: FontWeight.w900),
+                            )
+                          ])),
 
-          /// SPACE BETWEEN CONTENTS [CARD AND TEXT]
-          SizedBox(
-            height: 10,
-          ),
+              /// SPACE BETWEEN CONTENTS [CARD AND TEXT]
+              SizedBox(
+                height: 10,
+              ),
 
-          /// CONTENT
-          Text(
-            content!,
-            style: GoogleFonts.prompt(
-                fontSize: 15,
-                color: contentColor ?? Colors.white,
-                fontWeight: FontWeight.w500),
+              /// CONTENT
+              Text(
+                content!,
+                style: GoogleFonts.prompt(
+                    fontSize: 14,
+                    color: contentColor ?? Colors.white,
+                    fontWeight: FontWeight.w500),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     ),
   );
