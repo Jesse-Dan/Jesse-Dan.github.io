@@ -15,10 +15,10 @@ verifyAction({title, text, action, context, padding}) {
       OverlayService.closeAlert();
     },
     btNtype1: ButtonType.fill,
-    color1: (Colors.green),
+    color1: (Colors.red),
     onSubmitText: 'Cancel',
     onSubmitText2: 'Proceed',
-    color2: (Colors.red),
+    color2: (Colors.green),
     btNtype2: ButtonType.fill,
     alertType: AlertType.twoBtns,
     onSubmit2: action ?? () {},
@@ -29,7 +29,7 @@ Widget getBody(text, p) {
   return Padding(
     padding: p ?? const EdgeInsets.all(8.0),
     child: Text(text,
-        style: GoogleFonts.gochiHand(
+        style: GoogleFonts.josefinSans(
             color: kSecondaryColor, fontSize: 17, fontWeight: FontWeight.w500)),
   );
 }

@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description"
-    content="TYLDC REGISTRATION PORTAL FOR ORGANIZING HER ACTIVITIES AND MEMBER | DEVELOPED BY JESSE DAN.">
+    content="TYLDC MANAGEMENT SYSTEM FOR ORGANIZING IT'S ACTIVITIES | DEVELOPED BY JESSE DAN.">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,65 +22,77 @@
   <title>TYLDC PORTAL</title>
   <link rel="manifest" href="manifest.json">
 
+   <!--SERVICE WORKER INIT -->
+
   <script>
     var serviceWorkerVersion = null;
   </script>
+   <!--FLUTTER INIT -->
+
   <script src="flutter.js" defer></script>
+   <!--LOADER INIT -->
+
+  
 </head>
+
+ <!--BODY INIT -->
 
 <body class="b">
   <!-- <div class="loader-container">
     <div class="loader"></div>
   </div> -->
   <div id="loading"></div>
-  <script>
-//  setTimeout(function () {
-//         if (showLoader) {
-//           // Hide the loader and show the content
-//           document.querySelector('.loader-container').style.display = 'none';
-//           document.body.style.visibility = 'visible';
-//         }
-//       }, 4000);
-    var loading = document.querySelector('#loading');
-    var showLoader = false;
-    showLoader = true
-    loading.textContent = "TYLDC LOADING ENTRYPOINT...";
-    window.addEventListener('load', function (ev) {
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function (engineInitializer) {
-          loading.textContent = "TYLDC LOADING ENTRYPOINT INITIALIZING ENGINE...";
-          engineInitializer.initializeEngine().then(function (appRunner) {
-            loading.textContent = "TYLDC LOADING ENTRYPOINT RUNNING APP...";
-            showLoader =false;
-            appRunner.runApp();
-          });
-        }
-      });
-    });
-   
-    
-  </script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-  <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDSLBAPo2v4pZFs2wV6o8WeXseS8tOGXIU",
-      authDomain: "tyldc-registry.firebaseapp.com",
-      databaseURL: "https://tyldc-registry-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "tyldc-registry",
-      storageBucket: "tyldc-registry.appspot.com",
-      messagingSenderId: "390567584749",
-      appId: "1:390567584749:web:a1aa9135fef7df72d57de4",
-      measurementId: "G-FVRGNG2S19"
-    };
-    const app = await initializeApp(firebaseConfig);
-    const analytics =await  getAnalytics(app);
-  </script>
-
-  </script>
 </body>
+<script>
+  //  setTimeout(function () {
+  //         if (showLoader) {
+  //           // Hide the loader and show the content
+  //           document.querySelector('.loader-container').style.display = 'none';
+  //           document.body.style.visibility = 'visible';
+  //         }
+  //       }, 4000);
+      var loading = document.querySelector('#loading');
+      var showLoader = false;
+      showLoader = true
+      loading.textContent = "LOADING ENTRYPOINT...";
+      window.addEventListener('load', function (ev) {
+        _flutter.loader.loadEntrypoint({
+          serviceWorker: {
+            serviceWorkerVersion: serviceWorkerVersion,
+          },
+          onEntrypointLoaded: function (engineInitializer) {
+            loading.textContent = "INITIALIZING ENGINE...";
+            engineInitializer.initializeEngine().then(function (appRunner) {
+              loading.textContent = "RUNNING APP...";
+              showLoader =false;
+              appRunner.runApp();
+            });
+          }
+        });
+      });
+     
+      
+    </script>
+   
+<!--FIREBASE INIT -->
+<script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDSLBAPo2v4pZFs2wV6o8WeXseS8tOGXIU",
+    authDomain: "tyldc-registry.firebaseapp.com",
+    databaseURL: "https://tyldc-registry-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "tyldc-registry",
+    storageBucket: "tyldc-registry.appspot.com",
+    messagingSenderId: "390567584749",
+    appId: "1:390567584749:web:a1aa9135fef7df72d57de4",
+    measurementId: "G-FVRGNG2S19"
+  };
+  const app = await initializeApp(firebaseConfig);
+  const analytics =await  getAnalytics(app);
+</script>
+
+</script>
+
 
 </html>

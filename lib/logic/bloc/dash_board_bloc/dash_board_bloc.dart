@@ -5,13 +5,16 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:tyldc_finaalisima/logic/db/contact_usdb.dart';
 import 'package:tyldc_finaalisima/logic/db/non_admindb.dart';
 import 'package:tyldc_finaalisima/logic/db/utilsdb.dart';
 import '../../../models/atendee_model.dart';
+import '../../../models/contact_us_model.dart';
 import '../../../models/group_model.dart';
 import '../../../models/non_admin_staff.dart';
 import '../../../models/notifier_model.dart';
 import '../../../models/recently_deleted_model.dart';
+import '../../../models/socials_model.dart';
 import '../../../models/user_model.dart';
 import '../../db/attendeedb.dart';
 import '../../db/admindb.dart';
@@ -45,6 +48,8 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
         var response_9 = UtilsDB(auth: auth).fetchNotifications();
         var response_10 = UtilsDB(auth: auth).fetchRecentlyDeleted();
         var response_11 = NonAdminDB(auth: auth).getNonAdminIdsOnly();
+        var response_12 = ContactUsDB(auth: auth).getContactUsMessage();
+        var response_13 = ContactUsDB(auth: auth).getSocialsUrls();
 
         List<dynamic> results = await Future.wait([
           response,
@@ -57,7 +62,9 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
           response_8,
           response_9,
           response_10,
-          response_11
+          response_11,
+          response_12,
+          response_13
         ]);
 
         emit(DashBoardFetched(
@@ -71,7 +78,9 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
             userIds: results[7],
             notifications: results[8],
             recentlyDeleted: results[9],
-            nonadminId: results[10]));
+            nonadminId: results[10],
+            contactMessages: results[11],
+            socials: results[12]));
       } catch (e) {
         log(e.toString());
         emit(DashBoardFailed('on bloc $e'));

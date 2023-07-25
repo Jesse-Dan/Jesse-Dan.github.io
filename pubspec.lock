@@ -57,6 +57,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  barcode:
+    dependency: transitive
+    description:
+      name: barcode
+      sha256: "789f898eef0bd88312470bdb2cc996f895ad7dd5f89e9adde84b204546a90b45"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.4"
+  bidi:
+    dependency: transitive
+    description:
+      name: bidi
+      sha256: "6794b226bc939731308b8539c49bb6c2fdbf0e78c3a65e9b9e81e727c256dfe6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   bloc:
     dependency: "direct main"
     description:
@@ -648,6 +664,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.6"
+  pdf:
+    dependency: "direct main"
+    description:
+      name: pdf
+      sha256: "9f75fc7f5580ea5e635b5724de58fb27f684c9ad03ed46fdc1aac768e4557315"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.10.4"
   pedantic:
     dependency: transitive
     description:
@@ -660,10 +684,10 @@ packages:
     dependency: transitive
     description:
       name: petitparser
-      sha256: "49392a45ced973e8d94a85fdb21293fbb40ba805fc49f2965101ae748a3683b4"
+      sha256: cb3798bef7fc021ac45b308f4b51208a152792445cce0448c9a4ba5879dd8750
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.0"
+    version: "5.4.0"
   pinput:
     dependency: "direct main"
     description:
@@ -696,6 +720,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.7.3"
+  printing:
+    dependency: "direct main"
+    description:
+      name: printing
+      sha256: e7c383dca95ee7b88c02dc1c66638628d3dcdc2fb2cc47e7a595facd47e46b56
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.11.0"
   process:
     dependency: transitive
     description:
@@ -712,6 +744,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      sha256: "64957a3930367bf97cc211a5af99551d630f2f4625e38af10edd6b19131b64b3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   rxdart:
     dependency: transitive
     description:
@@ -1041,10 +1081,10 @@ packages:
     dependency: transitive
     description:
       name: xml
-      sha256: ac0e3f4bf00ba2708c33fbabbbe766300e509f8c82dbd4ab6525039813f7e2fb
+      sha256: "5bc72e1e45e941d825fd7468b9b4cc3b9327942649aeb6fc5cdbf135f0a86e84"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.0"
+    version: "6.3.0"
   yaml:
     dependency: transitive
     description:

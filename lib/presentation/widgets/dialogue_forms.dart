@@ -108,12 +108,12 @@ class FormWidget extends OverlayManager {
         return AlertDialog(
           actionsAlignment: MainAxisAlignment.center,
           insetPadding:
-              const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+              const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30.0))),
           titlePadding: const EdgeInsets.only(top: 20),
           contentPadding: const EdgeInsets.all(0),
-          scrollable: true,
+          scrollable: false,
           titleTextStyle: GoogleFonts.gochiHand(
               color: titleColor ?? kSecondaryColor,
               fontSize: 30,

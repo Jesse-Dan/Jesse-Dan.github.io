@@ -7,12 +7,17 @@ class ContactUsModel {
   final String email;
   final String subject;
   final String message;
+  final String id;
+
+  final DateTime timeStamp;
   ContactUsModel({
+    required this.id,
     required this.name,
     required this.phoneNumber,
     required this.email,
     required this.subject,
     required this.message,
+    required this.timeStamp,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,6 +27,8 @@ class ContactUsModel {
       'email': email,
       'subject': subject,
       'message': message,
+      'timeStamp': timeStamp.millisecondsSinceEpoch,
+      'id': id,
     };
   }
 
@@ -32,6 +39,8 @@ class ContactUsModel {
       email: map['email'] as String,
       subject: map['subject'] as String,
       message: map['message'] as String,
+      timeStamp: DateTime.fromMillisecondsSinceEpoch(map['timeStamp'] as int),
+      id: map['id'] as String,
     );
   }
 
@@ -40,12 +49,19 @@ class ContactUsModel {
   factory ContactUsModel.fromJson(String source) =>
       ContactUsModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
+  @override
+  String toString() {
+    return 'ContactUsModel(name: $name, phoneNumber: $phoneNumber, email: $email, subject: $subject, message: $message, timeStamp: $timeStamp)';
+  }
+
   ContactUsModel copyWith({
     String? name,
     String? phoneNumber,
     String? email,
     String? subject,
     String? message,
+    DateTime? timeStamp,
+    String? id,
   }) {
     return ContactUsModel(
       name: name ?? this.name,
@@ -53,32 +69,8 @@ class ContactUsModel {
       email: email ?? this.email,
       subject: subject ?? this.subject,
       message: message ?? this.message,
+      id: id ?? this.id,
+      timeStamp: timeStamp ?? this.timeStamp,
     );
-  }
-
-  @override
-  String toString() {
-    return 'ContactUsModel(name: $name, phoneNumber: $phoneNumber, email: $email, subject: $subject, message: $message)';
-  }
-
-  @override
-  bool operator ==(covariant ContactUsModel other) {
-    if (identical(this, other)) return true;
-  
-    return 
-      other.name == name &&
-      other.phoneNumber == phoneNumber &&
-      other.email == email &&
-      other.subject == subject &&
-      other.message == message;
-  }
-
-  @override
-  int get hashCode {
-    return name.hashCode ^
-      phoneNumber.hashCode ^
-      email.hashCode ^
-      subject.hashCode ^
-      message.hashCode;
   }
 }

@@ -27,12 +27,12 @@ class ContactUsDB {
   }
 
   /// [SEND CONTACT US MESSAGE]
-  Future<void> sendContactuUsMessage({required ContactUsModel contactmessage}) async {
+  Future<void> sendContactuUsMessage(
+      {required ContactUsModel contactmessage}) async {
     try {
       await contactUsDB
           .doc('${contactmessage.name}_${contactmessage.email}')
-          .set(contactmessage
-              .toMap())
+          .set(contactmessage.toMap())
           .then((value) => log('Contact Message Sent Created'));
     } on FirebaseException catch (e) {
       log('error on send contact db:$e');
@@ -64,6 +64,43 @@ class ContactUsDB {
     } catch (e) {
       log('error on get socials db:$e');
       return null;
+    }
+  }
+
+  ///[DELETE CONTACT MESSAGE URLS]
+  Future<bool> deleteContactMessage(
+      {required ContactUsModel contactmessage}) async {
+    try {
+      await contactUsDB.doc(contactmessage.id).delete();
+      return true;
+    } catch (e) {
+      log('error on get socials db:$e');
+      return false;
+    }
+  }
+
+  Future<bool> alterUrlsCode({
+    required SocialsUrls newValue,
+  }) async {
+    try {
+      var doc = await socialsDB.doc('socials').get();
+      var codeModel = SocialsModel.fromMap(doc.data()!);
+
+      for (int i = 0; i < codeModel.socials.length; i++) {
+        var element = codeModel.socials[i];
+        if (element.socialName == newValue.socialName) {
+          // Update the specific value in the list
+          codeModel.socials[i] = newValue;
+          await socialsDB.doc('socials').update(codeModel.toMap());
+          return true;
+        }
+      }
+
+      // If the socialName is not found in the list, return false
+      return false;
+    } on FirebaseException catch (e) {
+      print(e.toString());
+      return false;
     }
   }
 }

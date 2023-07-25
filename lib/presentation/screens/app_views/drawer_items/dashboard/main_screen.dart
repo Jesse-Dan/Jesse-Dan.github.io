@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tyldc_finaalisima/config/bloc_controller.dart';
 import 'package:tyldc_finaalisima/config/overlay_config/overlay_service.dart';
 import 'package:tyldc_finaalisima/logic/bloc/index_blocs.dart';
-import 'package:tyldc_finaalisima/logic/bloc/user_management/user_management_bloc.dart';
 import '../../../../../logic/bloc/admin_management/admin_managemet_bloc.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../../../config/constants/responsive.dart';
 import '../../../../../config/theme.dart';
 import '../../../../../logic/bloc/auth_bloc/authentiction_event.dart';
-import '../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
-import '../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../auth_views/login.dart';
 import '../../components/header.dart';

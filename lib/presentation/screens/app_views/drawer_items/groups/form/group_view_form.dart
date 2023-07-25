@@ -21,20 +21,9 @@ import '../../../../../widgets/dialogue_forms.dart';
 import '../../../../../widgets/verify_action_dialogue.dart';
 
 class GroupsViewForms extends FormWidget {
+  final BuildContext context;
   GroupsViewForms({required this.context});
 
-  Widget getBody(text) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(text,
-          style: GoogleFonts.gochiHand(
-              color: kSecondaryColor,
-              fontSize: 17,
-              fontWeight: FontWeight.w500)),
-    );
-  }
-
-  final BuildContext context;
   viewGroupData(
       {title,
       GroupModel? presentGroupModel,

@@ -67,6 +67,8 @@ dependencies:
   url_launcher: ^6.1.12
   url_launcher_plus: ^1.2.0
   avatar_glow: ^2.0.2
+  pdf: ^3.10.4
+  printing: ^5.11.0
 
 
 dev_dependencies:

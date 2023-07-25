@@ -30,7 +30,6 @@ class _LandingPageState extends State<LandingPage>
   final subject = TextEditingController();
   final message = TextEditingController();
   bool _isGlowing = false;
-
   void _toggleGlowing() {
     setState(() {
       _isGlowing = !_isGlowing;
@@ -45,10 +44,17 @@ class _LandingPageState extends State<LandingPage>
     BlocProvider.of<ContactUsBloc>(context).add(GetSocialEvent());
   }
 
-  void _startTimer() {
-    Timer.periodic(Duration(milliseconds: 800), (_) {
+  Timer _startTimer() {
+    var timer = Timer.periodic(Duration(milliseconds: 800), (_) {
       _toggleGlowing();
     });
+    return timer;
+  }
+
+  @override
+  void dispose() {
+    _startTimer().cancel();
+    super.dispose();
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();

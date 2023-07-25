@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/contact_us/contact_us_data.dart';
 import 'package:tyldc_finaalisima/presentation/screens/app_views/drawer_items/settings/setting_screen.dart';
-import '../../../../../../logic/bloc/admin_management/admin_managemet_bloc.dart';
-import '../../../../../../logic/bloc/cubit/methods_cubit.dart';
 import '../../../../../../logic/bloc/index_blocs.dart';
-import '../../../../../../logic/bloc/non_admin_management/non_admin_management_bloc.dart';
-import '../../../../../../logic/bloc/user_management/user_management_bloc.dart';
 import '../../../../../../logic/local_storage_service.dart/local_storage.dart';
 import '../../profile/profile_screen.dart';
 import '../../recently_deleted/recenttly_deleted_screen.dart';
@@ -43,207 +40,218 @@ class SideMenu extends StatefulWidget {
 class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
-    return
-      BlocBuilder<DashBoardBloc, DashBoardState>(
-        builder: (context, state) {
-          bool fetched = state is DashBoardFetched;
-          return Drawer(
-            backgroundColor: bgColor,
-            child: ListView(
-              children: [
-                if (Responsive.isMobile(context) ||
-                    Responsive.isTablet(context))
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: IconButton(
-                        focusColor: Colors.transparent,
-                        color: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        icon: const Icon(
-                          Icons.close,
-                          size: 30,
-                          color: primaryColor,
-                        ),
-                        onPressed: () async {
-                          Scaffold.of(context).closeDrawer();
-                          // Navigator.of(context).pop();
-                        },
+    return BlocBuilder<DashBoardBloc, DashBoardState>(
+      builder: (context, state) {
+        bool fetched = state is DashBoardFetched;
+        return Drawer(
+          backgroundColor: bgColor,
+          child: ListView(
+            children: [
+              if (Responsive.isMobile(context) || Responsive.isTablet(context))
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      focusColor: Colors.transparent,
+                      color: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      icon: const Icon(
+                        Icons.close,
+                        size: 30,
+                        color: primaryColor,
                       ),
+                      onPressed: () async {
+                        Scaffold.of(context).closeDrawer();
+                        // Navigator.of(context).pop();
+                      },
                     ),
                   ),
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                      color: primaryColor.withOpacity(0.9),
-                      image: DecorationImage(
-                          fit: BoxFit.contain,
-                          image: AssetImage('assets/images/app_logo.png'))),
-                  child: SizedBox.shrink(),
                 ),
-                DrawerListTile(
-                  title: "Dashboard",
-                  svgSrc: "assets/icons/menu_dashboard.svg",
-                  press: () {
+              DrawerHeader(
+                decoration: BoxDecoration(
+                    color: primaryColor.withOpacity(0.9),
+                    image: DecorationImage(
+                        fit: BoxFit.contain,
+                        image: AssetImage('assets/images/app_logo.png'))),
+                child: SizedBox.shrink(),
+              ),
+              DrawerListTile(
+                title: "Dashboard",
+                svgSrc: "assets/icons/menu_dashboard.svg",
+                press: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, MainScreen.routeName, (_) => false);
+                },
+              ),
+              fetched
+                  ? AppAuthorizations(
+                          localStorageService: LocalStorageService())
+                      .displayForSuperAdmin(
+                          adminCode: state.user.authCode,
+                          child: DrawerListTile(
+                            title: "Season",
+                            svgSrc: "assets/icons/menu_tran.svg",
+                            press: () {},
+                          ))
+                  : const SizedBox.shrink(),
+              DrawerListTile(
+                title: "Attendees",
+                svgSrc: "assets/icons/menu_tran.svg",
+                press: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, AttendeesScreen.routeName, (_) => false);
+                },
+              ),
+              DrawerListTile(
+                title: "Groups",
+                svgSrc: "assets/icons/menu_task.svg",
+                press: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, GroupsScreen.routeName, (_) => false);
+                },
+              ),
+              fetched
+                  ? AppAuthorizations(
+                          localStorageService: LocalStorageService())
+                      .displayForSuperAdmin(
+                          adminCode: state.user.authCode,
+                          child: DrawerListTile(
+                            title: "Administative Staffs",
+                            svgSrc: "assets/icons/menu_task.svg",
+                            press: () {
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, AdminScreen.routeName, (_) => false);
+                            },
+                          ))
+                  : const SizedBox.shrink(),
+              fetched
+                  ? AppAuthorizations(
+                          localStorageService: LocalStorageService())
+                      .displayForSuperAdmin(
+                          adminCode: state.user.authCode,
+                          child: DrawerListTile(
+                            title: "Non-Administative Staffs",
+                            svgSrc: "assets/icons/menu_task.svg",
+                            press: () {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  NonAdminScreen.routeName, (_) => false);
+                            },
+                          ))
+                  : const SizedBox.shrink(),
+              fetched
+                  ? AppAuthorizations(
+                          localStorageService: LocalStorageService())
+                      .displayForSuperAdmin(
+                          adminCode: state.user.authCode,
+                          child: DrawerListTile(
+                            title: "Statistics",
+                            svgSrc: "assets/icons/menu_store.svg",
+                            press: () {},
+                          ))
+                  : const SizedBox.shrink(),
+              fetched
+                  ? AppAuthorizations(
+                          localStorageService: LocalStorageService())
+                      .displayForSuperAdmin(
+                          adminCode: state.user.authCode,
+                          child: DrawerListTile(
+                            title: "Notification",
+                            svgSrc: "assets/icons/menu_notification.svg",
+                            press: () {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  NotificationScreen.routeName, (_) => false);
+                            },
+                          ))
+                  : const SizedBox.shrink(),
+              fetched
+                  ? AppAuthorizations(
+                          localStorageService: LocalStorageService())
+                      .displayForSuperAdmin(
+                          adminCode: state.user.authCode,
+                          child: DrawerListTile(
+                            title: "Recently Deleted",
+                            svgSrc: "assets/icons/menu_tran.svg",
+                            press: () {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  RecentlyDeleted.routeName, (_) => false);
+                            },
+                          ))
+                  : const SizedBox.shrink(),
+              DrawerListTile(
+                title: "Profile",
+                svgSrc: "assets/icons/menu_profile.svg",
+                press: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, ProfileScreen.routeName, (_) => false);
+                },
+              ),
+              fetched
+                  ? AppAuthorizations(
+                          localStorageService: LocalStorageService())
+                      .displayForSuperAdmin(
+                          adminCode: state.user.authCode,
+                          child: DrawerListTile(
+                            title: "Contact Messages",
+                            svgSrc: "assets/icons/menu_tran.svg",
+                            press: () {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  ContactUsScreen.routeName, (_) => false);
+                            },
+                          ))
+                  : const SizedBox.shrink(),
+              fetched
+                  ? AppAuthorizations(
+                          localStorageService: LocalStorageService())
+                      .displayForSuperAdmin(
+                          adminCode: state.user.authCode,
+                          child: DrawerListTile(
+                            title: "Settings",
+                            svgSrc: "assets/icons/menu_setting.svg",
+                            press: () {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  SettingsScreen.routeName, (_) => false);
+                            },
+                          ))
+                  : const SizedBox.shrink(),
+              BlocListener<AuthenticationBloc, AuthentictionState>(
+                listener: (context, state) {
+                  updateSessionState(state: state, context: context);
+                  updateLoadingBlocState(state: state, context: context);
+                  updateFailedBlocState(state: state, context: context);
+                  if (state is AuthentictionSuccesful) {
+                    Alertify.success(
+                        title: 'Ending Session Success',
+                        message: 'Session Ended sussecfully');
                     Navigator.pushNamedAndRemoveUntil(
-                        context, MainScreen.routeName, (_) => false);
-                  },
-                ),
-                fetched
-                    ? AppAuthorizations(
-                            localStorageService: LocalStorageService())
-                        .displayForSuperAdmin(
-                            adminCode: state.user.authCode,
-                            child: DrawerListTile(
-                              title: "Season",
-                              svgSrc: "assets/icons/menu_tran.svg",
-                              press: () {},
-                            ))
-                    : const SizedBox.shrink(),
-                DrawerListTile(
-                  title: "Attendees",
-                  svgSrc: "assets/icons/menu_tran.svg",
-                  press: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, AttendeesScreen.routeName, (_) => false);
-                  },
-                ),
-                DrawerListTile(
-                  title: "Groups",
-                  svgSrc: "assets/icons/menu_task.svg",
-                  press: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, GroupsScreen.routeName, (_) => false);
-                  },
-                ),
-                fetched
-                    ? AppAuthorizations(
-                            localStorageService: LocalStorageService())
-                        .displayForSuperAdmin(
-                            adminCode: state.user.authCode,
-                            child: DrawerListTile(
-                              title: "Administative Staffs",
-                              svgSrc: "assets/icons/menu_task.svg",
-                              press: () {
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    AdminScreen.routeName, (_) => false);
-                              },
-                            ))
-                    : const SizedBox.shrink(),
-                fetched
-                    ? AppAuthorizations(
-                            localStorageService: LocalStorageService())
-                        .displayForSuperAdmin(
-                            adminCode: state.user.authCode,
-                            child: DrawerListTile(
-                              title: "Non-Administative Staffs",
-                              svgSrc: "assets/icons/menu_task.svg",
-                              press: () {
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    NonAdminScreen.routeName, (_) => false);
-                              },
-                            ))
-                    : const SizedBox.shrink(),
-                fetched
-                    ? AppAuthorizations(
-                            localStorageService: LocalStorageService())
-                        .displayForSuperAdmin(
-                            adminCode: state.user.authCode,
-                            child: DrawerListTile(
-                              title: "Statistics",
-                              svgSrc: "assets/icons/menu_store.svg",
-                              press: () {},
-                            ))
-                    : const SizedBox.shrink(),
-                fetched
-                    ? AppAuthorizations(
-                            localStorageService: LocalStorageService())
-                        .displayForSuperAdmin(
-                            adminCode: state.user.authCode,
-                            child: DrawerListTile(
-                              title: "Notification",
-                              svgSrc: "assets/icons/menu_notification.svg",
-                              press: () {
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    NotificationScreen.routeName, (_) => false);
-                              },
-                            ))
-                    : const SizedBox.shrink(),
-                fetched
-                    ? AppAuthorizations(
-                            localStorageService: LocalStorageService())
-                        .displayForSuperAdmin(
-                            adminCode: state.user.authCode,
-                            child: DrawerListTile(
-                              title: "Recently Deleted",
-                              svgSrc: "assets/icons/menu_tran.svg",
-                              press: () {
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    RecentlyDeleted.routeName, (_) => false);
-                              },
-                            ))
-                    : const SizedBox.shrink(),
-                DrawerListTile(
-                  title: "Profile",
+                        context, SignInScreen.routeName, (_) => false);
+                  }
+                  if (state is AuthentictionFailed) {
+                    Navigator.pop(context);
+                    Alertify.error(
+                        title: 'Ending Session Error', message: state.error);
+                  }
+                },
+                child: DrawerListTile(
+                  title: "End Session",
                   svgSrc: "assets/icons/menu_profile.svg",
                   press: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, ProfileScreen.routeName, (_) => false);
+                    verifyAction(
+                        title: 'End Session',
+                        text: 'Are you sure you want to End this Session?',
+                        action: () {
+                          BlocProvider.of<AuthenticationBloc>(context)
+                              .add(LogoutEvent());
+                        },
+                        context: context);
                   },
                 ),
-                fetched
-                    ? AppAuthorizations(
-                            localStorageService: LocalStorageService())
-                        .displayForSuperAdmin(
-                            adminCode: state.user.authCode,
-                            child: DrawerListTile(
-                              title: "Settings",
-                              svgSrc: "assets/icons/menu_setting.svg",
-                              press: () {
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    SettingsScreen.routeName, (_) => false);
-                              },
-                            ))
-                    : const SizedBox.shrink(),
-                BlocListener<AuthenticationBloc, AuthentictionState>(
-                  listener: (context, state) {
-                    updateSessionState(state: state, context: context);
-                    updateLoadingBlocState(state: state, context: context);
-                    updateFailedBlocState(state: state, context: context);
-                    if (state is AuthentictionSuccesful) {
-                      Alertify.success(
-                          title: 'Ending Session Success',
-                          message: 'Session Ended sussecfully');
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, SignInScreen.routeName, (_) => false);
-                    }
-                    if (state is AuthentictionFailed) {
-                      Navigator.pop(context);
-                      Alertify.error(
-                          title: 'Ending Session Error', message: state.error);
-                    }
-                  },
-                  child: DrawerListTile(
-                    title: "End Session",
-                    svgSrc: "assets/icons/menu_profile.svg",
-                    press: () {
-                      verifyAction(
-                          title: 'End Session',
-                          text: 'Are you sure you want to End this Session?',
-                          action: () {
-                            BlocProvider.of<AuthenticationBloc>(context)
-                                .add(LogoutEvent());
-                          },
-                          context: context);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -20,6 +20,7 @@ import '../logic/bloc/cubit/methods_cubit.dart';
 import '../logic/bloc/index_blocs.dart';
 import '../presentation/landing_page/landingPage.dart';
 import '../presentation/screens/app_views/drawer_items/attendees/attendees_screen.dart';
+import '../presentation/screens/app_views/drawer_items/contact_us/contact_us_data.dart';
 import '../presentation/screens/app_views/drawer_items/dashboard/dashboard_screen.dart';
 import '../presentation/screens/app_views/drawer_items/dashboard/main_screen.dart';
 import '../presentation/screens/app_views/drawer_items/groups/groups_screen.dart';
@@ -166,6 +167,8 @@ class _MyAppState extends State<MyApp> {
                       return const SettingsScreen();
                     case LandingPage.routeName:
                       return const LandingPage();
+                    case ContactUsScreen.routeName:
+                      return const ContactUsScreen();
                     default:
                       return const LandingPage();
                   }

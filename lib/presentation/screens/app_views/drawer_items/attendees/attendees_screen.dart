@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,13 +8,13 @@ import '../../../../../logic/bloc/index_blocs.dart';
 import '../../../../../logic/bloc/user_management/user_management_bloc.dart';
 import '../../../../widgets/alertify.dart';
 import '../../../auth_views/login.dart';
+import 'forms/pdf_gen.dart';
 import 'forms/view_form.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
 import '../../../../widgets/data_table.dart';
 
 import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
-import '../../../../../../logic/bloc/dash_board_bloc/dash_board_bloc.dart';
 import '../../../../../../models/atendee_model.dart';
 import '../../../../widgets/customm_text_btn.dart';
 import '../../../../widgets/verify_action_dialogue.dart';
@@ -157,7 +155,14 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                     ),
                     DataColumn(
                       label: Text(
-                        "Edit",
+                        "Edit Attendee Details",
+                        style: GoogleFonts.dmSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        "Generate Attendee ID",
                         style: GoogleFonts.dmSans(
                             color: kSecondaryColor, fontSize: 15),
                       ),
@@ -278,6 +283,16 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {admin, id}) {
               attendeeID: id,
               adminModel: admin);
         },
+      )),
+      DataCell(IconButton(
+        splashRadius: 5,
+        icon: Icon(
+          Icons.perm_identity_rounded,
+          color: kSecondaryColor,
+          size: 20,
+        ),
+        onPressed: () =>
+            PdfGenerator(context: context).generatePDF(attendee: registerdUser),
       )),
     ],
   );

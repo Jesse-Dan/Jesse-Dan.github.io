@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -163,14 +164,15 @@ Widget buildContactUs(w, context,
               onSubmit2: () {});
         } else {
           try {
-            BlocProvider.of<ContactUsBloc>(context).add(
-                SendContactUsMessageEvent(
-                    contactUsModel: ContactUsModel(
-                        name: textEditingControllers[0].text,
-                        phoneNumber: textEditingControllers[1].text,
-                        email: textEditingControllers[2].text,
-                        subject: textEditingControllers[3].text,
-                        message: textEditingControllers[4].text)));
+            BlocProvider.of<ContactUsBloc>(context).add(SendContactUsMessageEvent(
+                contactUsModel: ContactUsModel(
+                    name: textEditingControllers[0].text,
+                    phoneNumber: textEditingControllers[1].text,
+                    email: textEditingControllers[2].text,
+                    subject: textEditingControllers[3].text,
+                    message: textEditingControllers[4].text,
+                    timeStamp: DateTime.now(),
+                    id: '${textEditingControllers[0].text}_${textEditingControllers[2].text}')));
             FormWidget().buildCenterFormField(
                 title: 'Message Delivered',
                 context: context,
@@ -473,9 +475,6 @@ Widget buildContactUs(w, context,
 }
 
 Widget buildAboutDeveloper(w, ctx) {
-  var width = w / 1.4;
-  var spacer = 30;
-
   return Container(
       // width: width + spacer,
       padding: Responsive.isMobileORTablet(ctx)
@@ -522,20 +521,30 @@ Widget buildAboutDeveloper(w, ctx) {
                           ? Center(
                               child: CircularProgressIndicator(),
                             )
-                          : SizedBox(
-                              height: 200.0,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
-                                  itemCount: fetched
-                                      ? state.socials.socials.length
-                                      : 0,
-                                  itemBuilder: (_, i) => fetched
-                                      ? socialIcon(
-                                          socialMedia: state.socials.socials[i],
-                                          c: ctx)
-                                      : SizedBox.shrink()),
-                            );
+                          : fetched && state.socials.socials.length == 0
+                              ? Text(
+                                  'An error Occured\nRefesh Page',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.josefinSans(
+                                      fontSize: 10,
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.w500),
+                                )
+                              : SizedBox(
+                                  height: 200.0,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      itemCount: fetched
+                                          ? state.socials.socials.length
+                                          : 0,
+                                      itemBuilder: (_, i) => fetched
+                                          ? socialIcon(
+                                              socialMedia:
+                                                  state.socials.socials[i],
+                                              c: ctx)
+                                          : SizedBox.shrink()),
+                                );
                 },
               ),
               Text(
@@ -544,7 +553,7 @@ Widget buildAboutDeveloper(w, ctx) {
                     : 'Developed by | Jesse Dan Amuda',
                 textAlign: TextAlign.end,
                 style: GoogleFonts.josefinSans(
-                    fontSize: 15,
+                    fontSize: 20,
                     color: primaryColor,
                     fontWeight: FontWeight.w900),
               ),
@@ -554,10 +563,11 @@ Widget buildAboutDeveloper(w, ctx) {
 
 Widget socialIcon({required SocialsUrls socialMedia, c}) {
   return InkWell(
-    onTap: () {
-      _launchUrl(
+    onTap: () async {
+      await _launchUrl(
         uri: Uri.parse(socialMedia.url),
       );
+      log(socialMedia.url.toString());
     },
     child: Padding(
       padding: const EdgeInsets.only(left: 5, right: 5),
@@ -588,10 +598,8 @@ Widget socialIcon({required SocialsUrls socialMedia, c}) {
 
 Future<void> _launchUrl({required Uri uri, c}) async {
   try {
-    if (!await launchUrl(uri,
-        webViewConfiguration: WebViewConfiguration(
-          enableJavaScript: true,
-        ))) {
+    bool lunch_url = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!lunch_url) {
       throw Exception('Could not launch ${uri}');
     }
   } catch (e) {

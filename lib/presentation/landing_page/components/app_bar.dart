@@ -21,7 +21,7 @@ Widget landingPageAppBar(bool isLargeScreen, scaffoldKey, context) {
         elevation: 5,
         titleSpacing: 0,
         automaticallyImplyLeading: false,
-        // leading: 
+        // leading:
         // isLargeScreen
         //     ? null
         //     : IconButton(
@@ -62,7 +62,14 @@ Widget drawer(scaffoldKey) => Drawer(
                   onTap: () {
                     scaffoldKey.currentState?.openEndDrawer();
                   },
-                  title: Text(item.keys.toString().split('(')[1].split(')')[1]),
+                  title: Text(
+                    item.keys.toString().split('(')[1].split(')')[1],
+                    style: GoogleFonts.josefinSans(
+                        height: 1.5,
+                        fontSize: 18,
+                        color: bgColor,
+                        fontWeight: FontWeight.w500),
+                  ),
                 ))
             .toList(),
       ),
@@ -93,7 +100,11 @@ Widget navBarItems() => Row(
                     const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16),
                 child: Text(
                   item.keys.toString().split('(')[1].split(')')[0],
-                  style: const TextStyle(fontSize: 18),
+                  style: GoogleFonts.josefinSans(
+                      height: 1.5,
+                      fontSize: 18,
+                      color: bgColor,
+                      fontWeight: FontWeight.w500),
                 ),
               ),
             ),
@@ -161,14 +172,17 @@ class _LoginPathsState extends State<LoginPaths> {
                 PopupMenuItem<Menu>(
                   value: Menu.attendeeLogin,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: bgColor),
-                    child: Text('Attendee Login',
-                        style: GoogleFonts.dmSans(
-                            fontSize: 18, color: primaryColor)),
-                  ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: bgColor),
+                      child: Text('Attendee Login',
+                          style: GoogleFonts.josefinSans(
+                              height: 1.5,
+                              fontSize: 18,
+                              color: primaryColor,
+                              fontWeight: FontWeight.w500))),
                 ),
                 PopupMenuItem<Menu>(
                     value: Menu.nonAdminLogin,
@@ -179,8 +193,11 @@ class _LoginPathsState extends State<LoginPaths> {
                             borderRadius: BorderRadius.circular(30),
                             color: bgColor),
                         child: Text('Non Admin Login',
-                            style: const TextStyle(
-                                fontSize: 18, color: primaryColor)))),
+                            style: GoogleFonts.josefinSans(
+                                height: 1.5,
+                                fontSize: 18,
+                                color: primaryColor,
+                                fontWeight: FontWeight.w500)))),
                 PopupMenuItem<Menu>(
                     value: Menu.adminLogin,
                     child: Container(
@@ -190,8 +207,11 @@ class _LoginPathsState extends State<LoginPaths> {
                             borderRadius: BorderRadius.circular(30),
                             color: bgColor),
                         child: Text('Admin Login',
-                            style: const TextStyle(
-                                fontSize: 18, color: primaryColor)))),
+                            style: GoogleFonts.josefinSans(
+                                height: 1.5,
+                                fontSize: 18,
+                                color: primaryColor,
+                                fontWeight: FontWeight.w500)))),
               ]),
     );
   }

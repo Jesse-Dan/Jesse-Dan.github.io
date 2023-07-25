@@ -32,8 +32,8 @@ dateWithoutTimeButPosition({required DateTime date}) {
   return finalDate;
 }
 
-/// 2023-02-02
-var dateWithDashesSeperating = DateFormat('yyyy-dd-MMM');
+/// 2023/02/02
+var dateWithDashesSeperating = DateFormat('yyyy/MMM/dd');
 
 /// 17 Jan, 2023
 var dateWithoutTIme = DateFormat.yMMMMd();
