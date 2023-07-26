@@ -7,6 +7,7 @@ import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bl
 import 'package:tyldc_finaalisima/presentation/widgets/alertify.dart';
 import '../../../../../config/overlay_config/overlay_service.dart';
 import '../../../../../logic/bloc/index_blocs.dart';
+import '../../../../../models/departments_type_model.dart';
 import '../../../../../models/user_model.dart';
 import '../../../../widgets/align_text_with_icon_widget.dart';
 import '../../../../widgets/custom_floating_action_btn.dart';
@@ -14,6 +15,7 @@ import '../../../../../../config/constants/responsive.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../widgets/data_table.dart';
 import '../../../../widgets/functional_widgets/adminImageWidget.dart';
+import '../../../../widgets/index.dart';
 import '../../components/header.dart';
 import '../../components/prefered_size_widget.dart';
 import '../dashboard/components/side_menu.dart';
@@ -80,6 +82,18 @@ class _AdminScreenState extends State<AdminScreen> {
                 bool fetched = state is DashBoardFetched;
                 return PageContentWidget(
                   actions: [
+                    TextBtn(
+                        text: 'Create Departments',
+                        icon: Icons.admin_panel_settings_rounded,
+                        onTap: () => AdminsRegistrationForms(context: context)
+                            .createDepatrment(
+                                adminModel: fetched ? state.user : null)),
+                    AdminsRegistrationForms(context: context).showDeptOptions(
+                        adminModel: fetched ? state.user : null,
+                        departments: fetched ? state.departmentTypes : null,
+                        icon: const AlignIconWithTextWidget(
+                            icon: Icons.admin_panel_settings_rounded,
+                            text: 'Update Departments')),
                     AdminsRegistrationForms(context: context).showOptions(
                         admin: fetched ? state.user : null,
                         icon: const AlignIconWithTextWidget(

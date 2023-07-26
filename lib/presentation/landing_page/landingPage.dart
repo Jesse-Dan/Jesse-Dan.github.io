@@ -55,6 +55,7 @@ class _LandingPageState extends State<LandingPage>
   void dispose() {
     _startTimer().cancel();
     super.dispose();
+    _toggleGlowing();
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();

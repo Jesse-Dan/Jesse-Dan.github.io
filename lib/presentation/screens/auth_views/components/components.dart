@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tyldc_finaalisima/presentation/widgets/dropdown_widget.dart';
 import '../../../../config/constants/responsive.dart';
 import '../../../../config/overlay_config/overlay_service.dart';
 import '../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../../logic/bloc/auth_bloc/authentiction_event.dart';
+import '../../../widgets/dropdown_widget.dart';
 import '../../../widgets/index.dart';
-
 import '../../../../config/theme.dart';
 
 enum InputType { dropDown, text, radioInput }
@@ -16,6 +15,32 @@ class AuthViewComponents extends FormWidget {
   AuthViewComponents({required this.context});
   final BuildContext context;
   final mobileNumberCtl = TextEditingController();
+
+  /// Gender
+  final List<String> genderType = ['Male', 'Female'];
+
+  Widget genderDropDown(
+      {void Function(String?)? onChanged,
+      String? value,
+      Size? size,
+      Color? fillColor,
+      IconData? iconsData,
+      Color? inputColors}) {
+    return buildParentCard(
+      fillColor: fillColor != null ? fillColor : null,
+      size: size,
+      child: ReusableDropdown<String>(
+        iconsData: iconsData!,
+        inputColors: null,
+        fillColor: fillColor,
+        labelText: 'Gender',
+        items: genderType,
+        value: value,
+        onChanged: onChanged!,
+      ),
+    );
+  }
+
   Widget component1(
       IconData icon, String hintText, bool isPassword, bool isEmail, Size size,
       {required TextEditingController controller,
@@ -26,27 +51,9 @@ class AuthViewComponents extends FormWidget {
       IconData? suffixIcon,
       InputType? inputType,
       Color? fillColor}) {
-    if (inputType == InputType.dropDown) {
-      return const DropdownWidget(options: ['Male', 'Female']);
-    }
-    if (inputType == InputType.radioInput) {
-      return const DropdownWidget(options: ['Male', 'Female']);
-    }
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      margin: const EdgeInsets.only(
-        left: defaultPadding,
-        right: defaultPadding,
-        top: 10,
-      ),
-      height: Responsive.isDesktop(context) ? size.height / 10 : size.width / 8,
-      width: size.width / 1.22,
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(right: size.width / 30),
-      decoration: BoxDecoration(
-        color: fillColor ?? Colors.black.withOpacity(.05),
-        borderRadius: BorderRadius.circular(10),
-      ),
+    return buildParentCard(
+      fillColor: fillColor != null ? fillColor : null,
+      size: size,
       child: TextFormField(
         maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
         maxLength: limit,
@@ -142,6 +149,68 @@ class AuthViewComponents extends FormWidget {
         },
         onSubmitText: 'Cancel',
         onSubmitText2: 'Update');
+  }
+
+  Widget buildParentCard({
+    child,
+    Color? fillColor,
+    size,
+    padding,
+  }) =>
+      Container(
+          clipBehavior: Clip.hardEdge,
+          margin: const EdgeInsets.only(
+            left: defaultPadding,
+            right: defaultPadding,
+            top: 10,
+          ),
+          height:
+              Responsive.isDesktop(context) ? size.height / 15 : size.width / 8,
+          width: size.width / 1.22,
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(right: size.width / 30),
+          decoration: BoxDecoration(
+            color: fillColor ?? Colors.black.withOpacity(.05),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: child);
+
+  Widget buildChip(
+      {required String label,
+      required Color color,
+      void Function()? onDelete}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: Chip(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        onDeleted: onDelete,
+        deleteIcon: Icon(
+          Icons.clear,
+          size: 10,
+          color: primaryColor,
+        ),
+        labelPadding: EdgeInsets.all(2.0),
+        avatar: CircleAvatar(
+          backgroundColor: Colors.white70,
+          child: Text(
+            label[0],
+            style: TextStyle(
+              color: primaryColor,
+            ),
+          ),
+        ),
+        label: Text(
+          label,
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: color,
+        elevation: 6.0,
+        shadowColor: Colors.grey[60],
+        padding: EdgeInsets.all(8.0),
+      ),
+    );
   }
 }
 

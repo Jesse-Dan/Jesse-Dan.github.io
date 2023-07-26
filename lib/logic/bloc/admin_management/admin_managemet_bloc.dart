@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../models/auth_code_model.dart';
+import '../../../models/departments_type_model.dart';
 import '../../../models/user_model.dart';
 import '../../db/admindb.dart';
 import '../../local_storage_service.dart/local_storage.dart';
@@ -30,6 +31,9 @@ class AdminManagemetBloc
     alterAdminCode();
     disAbleAdmin();
     enableAdmin();
+    updatedeptType();
+    setdeptType();
+    // getdeptType();
   }
   alterAdminCode() {
     on<AlterCodeEvent>((event, emit) async {
@@ -98,6 +102,37 @@ class AdminManagemetBloc
         var data = await DB(auth: auth).updateEnabledStatus(
             id: event.id, field: 'enabled', newData: event.enabledStatus);
         emit(AdminManagementENABLEDISABLE(data));
+      } on FirebaseAuthException catch (e) {
+        emit(AdminManagemetFailed(error: e.toString()));
+      } catch (e) {
+        emit(AdminManagemetFailed(error: e.toString()));
+        log(e.toString());
+      }
+    });
+  }
+
+  updatedeptType() {
+    on<UpdateDeptTypeAdminEvent>((event, emit) async {
+      try {
+        emit(AdminManagementLoading());
+        await DB(auth: auth).updateDepartmentType(
+            newValue: event.dept, oldValue: event.oldvalue);
+      } on FirebaseAuthException catch (e) {
+        emit(AdminManagemetFailed(error: e.toString()));
+      } catch (e) {
+        emit(AdminManagemetFailed(error: e.toString()));
+        log(e.toString());
+      }
+    });
+  }
+
+  setdeptType() {
+    on<CreateNewDeptTypeAdminEvent>((event, emit) async {
+      try {
+        emit(AdminManagementLoading());
+        await DB(auth: auth).updateDepartmentType(
+            newValue: event.dept, createNewDepartmentType: true);
+        emit(AdminManagemetInitial());
       } on FirebaseAuthException catch (e) {
         emit(AdminManagemetFailed(error: e.toString()));
       } catch (e) {

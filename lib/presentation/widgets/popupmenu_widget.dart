@@ -35,7 +35,7 @@ class PopupMenu extends StatelessWidget {
 
 class PopupMenuItemModel {
   final String title;
-  final Function onTap;
+  final Function() onTap;
 
   PopupMenuItemModel({required this.title, required this.onTap});
 }

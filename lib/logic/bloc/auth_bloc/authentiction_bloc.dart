@@ -1,10 +1,8 @@
 // ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously, unrelated_type_equality_checks, invalid_use_of_visible_for_testing_member
 
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../config/app_autorizations.dart';
 import '../../../models/models.dart';
 import '../../db/admindb.dart';

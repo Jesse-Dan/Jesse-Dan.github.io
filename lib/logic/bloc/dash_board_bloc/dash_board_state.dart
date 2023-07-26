@@ -25,6 +25,7 @@ class DashBoardFetched extends DashBoardState {
   final List<RecentlyDeletedModel> recentlyDeleted;
   final List<ContactUsModel> contactMessages;
   final SocialsModel socials;
+  final DepartmentTypes departmentTypes;
 
   const DashBoardFetched({
     required this.userIds,
@@ -40,6 +41,7 @@ class DashBoardFetched extends DashBoardState {
     required this.recentlyDeleted,
     required this.contactMessages,
     required this.socials,
+    required this.departmentTypes,
   });
   List<Object> get props => [
         user,
@@ -54,7 +56,8 @@ class DashBoardFetched extends DashBoardState {
         recentlyDeleted,
         nonadminId,
         contactMessages,
-        socials
+        socials,
+        departmentTypes
       ];
 }
 

@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tyldc_finaalisima/config/constants/responsive.dart';
 import 'package:tyldc_finaalisima/config/overlay_config/overlay_service.dart';
 import '../../../../../../logic/bloc/admin_management/admin_managemet_bloc.dart';
-import '../../../../../../models/auth_code_model.dart';
 import '../../../../../../config/theme.dart';
+import '../../../../../../models/departments_type_model.dart';
 import '../../../../../../models/user_model.dart';
 import '../../../../../widgets/CustomViewTextField.dart';
 import '../../../../../widgets/costum_text_field.dart';
@@ -48,6 +51,12 @@ class AdminsRegistrationForms extends FormWidget {
   final TextEditingController authCodeCtlNonAdminReg = TextEditingController();
   final TextEditingController firstNameCtlNonAdminReg = TextEditingController();
   final TextEditingController createdBy = TextEditingController();
+
+  final TextEditingController newDeptCtl = TextEditingController();
+
+  /// Create new Dept ctl
+  final TextEditingController createNewDeptCtl = TextEditingController();
+  final TextEditingController updateDeptCtl = TextEditingController();
 
   viewSelectedAdminStaffData({title, required AdminModel admin}) {
     buildCenterFormField(
@@ -132,66 +141,184 @@ class AdminsRegistrationForms extends FormWidget {
         });
   }
 
-  showOptions({icon, AdminModel? admin, AdminCodesModel? codes}) {
-    return PopupMenu(
-      items: [
-        PopupMenuItemModel(
-            title: 'Change Viewer Code',
-            onTap: () {
-              viewAuthCodeData(
-                  admin: admin,
-                  title: 'Change Viewer Code',
-                  action: () {
-                    BlocProvider.of<AdminManagemetBloc>(context).add(
-                        AlterCodeEvent(
-                            oldCode: oldauthCodeController.text,
-                            context: context,
-                            newCode: authCodeController.text,
-                            field: 'authCode',
-                            adminCodeField: 'viewerCode'));
-                    BlocProvider.of<AdminManagemetBloc>(context)
-                        .add(const GetCodeEvent());
-                  });
-            }),
-        PopupMenuItemModel(
-            title: 'Change Admin Code',
-            onTap: () {
-              viewAuthCodeData(
-                  admin: admin,
-                  title: 'Change Admin Code',
-                  action: () {
-                    BlocProvider.of<AdminManagemetBloc>(context).add(
-                        AlterCodeEvent(
-                            oldCode: oldauthCodeController.text,
-                            context: context,
-                            newCode: authCodeController.text,
-                            field: 'authCode',
-                            adminCodeField: 'adminCode'));
-                    BlocProvider.of<AdminManagemetBloc>(context)
-                        .add(const GetCodeEvent());
-                  });
-            }),
-        PopupMenuItemModel(
-            title: 'Change Super Admin Code',
-            onTap: () {
-              viewAuthCodeData(
-                  admin: admin,
-                  title: 'Change Super Admin Code',
-                  action: () {
-                    BlocProvider.of<AdminManagemetBloc>(context).add(
-                        AlterCodeEvent(
-                            context: context,
-                            oldCode: oldauthCodeController.text,
-                            newCode: authCodeController.text,
-                            field: 'authCode',
-                            adminCodeField: 'superAdminCode'));
-                    BlocProvider.of<AdminManagemetBloc>(context)
-                        .add(const GetCodeEvent());
-                  });
-            })
-      ],
-      icon: icon,
+  /// CREATE NEW DEPT
+  createDepatrment({AdminModel? adminModel}) {
+    buildCenterFormField(
+        title: 'Create New Department',
+        context: context,
+        widgetsList: [
+          CustomTextField(
+            fieldsType: TextInputType.text,
+            hint: 'New Department Name',
+            suffix: const Icon(Icons.admin_panel_settings_rounded),
+            controller: createNewDeptCtl,
+          ),
+        ],
+        onSubmit: () {
+          OverlayService.closeAlert();
+        },
+        btNtype1: ButtonType.fill,
+        color1: (Colors.green),
+        onSubmitText: 'Done',
+        onSubmitText2: 'Create New Department',
+        color2: (Colors.red),
+        btNtype2: ButtonType.fill,
+        alertType: AlertType.twoBtns,
+        onSubmit2: () {
+          BlocProvider.of<AdminManagemetBloc>(context).add(
+              CreateNewDeptTypeAdminEvent(
+                  dept: Departments(departmentName: createNewDeptCtl.text),
+                  performedBy: adminModel!));
+          BlocProvider.of<AdminManagemetBloc>(context)
+              .add(const GetCodeEvent());
+        });
+  }
+
+  showDeptOptions(
+      {Widget? icon, DepartmentTypes? departments, AdminModel? adminModel}) {
+    if (departments == null) return SizedBox.shrink();
+    var listOdDept = List.generate(
+      departments.departments.length,
+      (index) => PopupMenuItemModel(
+          title:
+              'Change ${departments.departments[index].departmentName} ${Responsive.isMobileORTablet(context) ? 'Dept' : 'Department'} Code',
+          onTap: () {
+            viewForUpdateDeptData(
+                department: departments.departments[index],
+                title:
+                    'Change ${departments.departments[index].departmentName} ${Responsive.isMobileORTablet(context) ? 'Dept' : 'Department'}Code',
+                action: () {
+                  /// UPDATE DEPT
+                  BlocProvider.of<AdminManagemetBloc>(context).add(
+                      UpdateDeptTypeAdminEvent(
+                          dept: Departments(departmentName: updateDeptCtl.text),
+                          performedBy: adminModel!,
+                          oldvalue: departments.departments[index]));
+
+                  BlocProvider.of<AdminManagemetBloc>(context)
+                      .add(const GetCodeEvent());
+                });
+          }),
     );
+    return PopupMenu(icon: icon ?? Icon(Icons.abc), items: listOdDept);
+  }
+
+  viewDeptData({
+    title,
+    Departments? department,
+    void Function()? action,
+  }) {
+    buildCenterFormField(
+        title: title,
+        context: context,
+        widgetsList: [
+          CustomTextField(
+            fieldsType: TextInputType.text,
+            hint: 'New Dept',
+            suffix: const Icon(Icons.admin_panel_settings_rounded),
+            controller: newDeptCtl,
+          ),
+        ],
+        onSubmit: () {
+          OverlayService.closeAlert();
+        },
+        btNtype1: ButtonType.fill,
+        color1: (Colors.green),
+        onSubmitText: 'Done',
+        onSubmitText2: 'Edit ${department!.departmentName} Url',
+        color2: (Colors.red),
+        btNtype2: ButtonType.fill,
+        alertType: AlertType.twoBtns,
+        onSubmit2: () {
+          action!();
+        });
+  }
+
+  viewForUpdateDeptData({
+    title,
+    Departments? department,
+    void Function()? action,
+  }) {
+    buildCenterFormField(
+        title: title,
+        context: context,
+        widgetsList: [
+          CustomTextField(
+            fieldsType: TextInputType.text,
+            hint: 'Update Dept',
+            suffix: const Icon(Icons.admin_panel_settings_rounded),
+            controller: updateDeptCtl,
+          ),
+        ],
+        onSubmit: () {
+          OverlayService.closeAlert();
+        },
+        btNtype1: ButtonType.fill,
+        color1: (Colors.green),
+        onSubmitText: 'Done',
+        onSubmitText2: 'Edit ${department!.departmentName} Url',
+        color2: (Colors.red),
+        btNtype2: ButtonType.fill,
+        alertType: AlertType.twoBtns,
+        onSubmit2: () {
+          action!();
+        });
+  }
+
+  showOptions({icon, AdminModel? admin}) {
+    List<Map<String, void Function()?>> list = [
+      {
+        'Viewer': () {
+          BlocProvider.of<AdminManagemetBloc>(context).add(AlterCodeEvent(
+              oldCode: oldauthCodeController.text,
+              context: context,
+              newCode: authCodeController.text,
+              field: 'authCode',
+              adminCodeField: 'viewerCode'));
+        }
+      },
+      {
+        'Admin': () {
+          BlocProvider.of<AdminManagemetBloc>(context).add(AlterCodeEvent(
+              oldCode: oldauthCodeController.text,
+              context: context,
+              newCode: authCodeController.text,
+              field: 'authCode',
+              adminCodeField: 'adminCode'));
+        }
+      },
+      {
+        'Super Admin': () {
+          BlocProvider.of<AdminManagemetBloc>(context).add(AlterCodeEvent(
+              context: context,
+              oldCode: oldauthCodeController.text,
+              newCode: authCodeController.text,
+              field: 'authCode',
+              adminCodeField: 'superAdminCode'));
+        }
+      }
+    ];
+    var listOdDept = List.generate(
+      list.length,
+      (index) => PopupMenuItemModel(
+        title:
+            'Change ${list[index].keys.toString().split('(')[1].split(')')[0]} Code',
+        onTap: () => viewAuthCodeData()(
+          admin: admin,
+          title:
+              'Change ${list[index]['${list[index].keys.toString().split('(')[1].split(')')[0]}']}',
+          action: () {
+            log('${list[index]['${list[index].keys.toString().split('(')[1].split(')')[0]}']}');
+            list[index][
+                '${list[index].keys.toString().split('(')[1].split(')')[0]}']!();
+            BlocProvider.of<AdminManagemetBloc>(context)
+                .add(const GetCodeEvent());
+          },
+        ),
+      ),
+    ).toList();
+
+    return PopupMenu(icon: icon ?? Icon(Icons.abc), items: listOdDept);
   }
 
   ///[IF ADMIN CODE IS CHANGED TO A HIGHER ACCESS CODE USER ACTIONS  ARE UOPDATED]

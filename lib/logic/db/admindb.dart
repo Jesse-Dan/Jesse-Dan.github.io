@@ -4,12 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import '../../models/auth_code_model.dart';
+import '../../models/departments_type_model.dart';
 import '../../models/models.dart';
 
 class DB {
   final FirebaseAuth auth;
   final adminCodesDB = FirebaseFirestore.instance.collection('AdminCodes');
   final adminDB = FirebaseFirestore.instance.collection('Admins');
+  final departTypesDB =
+      FirebaseFirestore.instance.collection('DepartmentTypes');
 
   var format = DateFormat.yMMMEd();
   List getAttendeeDocIds = [];
@@ -105,8 +108,7 @@ class DB {
   }
 
   ///[UPDATE ADMIN DATA]
-  Future<bool> updateEnabledStatus(
-      { String? id, newData, field}) async {
+  Future<bool> updateEnabledStatus({String? id, newData, field}) async {
     if (id != null) {
       try {
         await adminDB.doc(id).update({field: newData});
@@ -164,6 +166,87 @@ class DB {
     } catch (error) {
       log('Error updating data: $error');
       return false;
+    }
+  }
+
+  /// [ADD ADMIN DATA]
+  Future<void> sendDepartmentType(DepartmentTypes adminModel) async {
+    try {
+      await departTypesDB
+          .doc(adminModel.departments.toString())
+          .set(adminModel.toMap())
+          .then((value) => log('Admin Created'));
+    } on FirebaseException catch (e) {
+      log(e.toString());
+    }
+  }
+
+  ///[GET ADMIN STAFF ID]
+  Future<bool> updateDepartmentType({
+    required Departments newValue,
+      Departments? oldValue,
+    bool createNewDepartmentType = false,
+  }) async {
+    var doc = await departTypesDB.doc('departments').get();
+    var codeModel = DepartmentTypes.fromMap(doc.data()!);
+    if (createNewDepartmentType == true) {
+      try {
+        codeModel.departments.add(newValue);
+        await departTypesDB.doc('departments').update(codeModel.toMap());
+        return true;
+      } on FirebaseException catch (e) {
+        log(e.toString(), name: 'firebase error on add new dept type');
+        return false;
+      } catch (e) {
+        log(e.toString(), name: 'unknown error on add new dept type');
+        return false;
+      }
+    } else {
+      try {
+        for (int i = 0; i < codeModel.departments.length; i++) {
+          var element = codeModel.departments[i];
+          if (element.departmentName == oldValue!.departmentName) {
+            // Update the specific value in the list
+            codeModel.departments[i] = newValue;
+            await departTypesDB.doc('departments').update(codeModel.toMap());
+            return true;
+          }
+        }
+      } on FirebaseException catch (e) {
+        log(e.toString(), name: 'firebase error on add update dept type');
+        return false;
+      } catch (e) {
+        log(e.toString(), name: 'unknown error on add update dept type');
+        return false;
+      }
+      // If the socialName is not found in the list, return false
+      return false;
+    }
+  }
+
+  /// [set departments ]
+  Future<void> setNewUrls(/*{DepartmentTypes? departments}*/) async {
+    try {
+      await departTypesDB
+          .doc('departments')
+          .set(DepartmentTypes(
+              departments: [Departments(departmentName: 'HandyGuys')]).toMap())
+          .then((value) => log('departments Created'));
+    } on FirebaseException catch (e) {
+      log('error on send departments db:$e');
+    }
+  }
+
+  ///[GET departments ]
+  Future<DepartmentTypes?> getDepartmentTypes() async {
+    try {
+      var departments = await departTypesDB.doc('departments').get();
+      var data = DepartmentTypes.fromMap(departments.data()!);
+      log(data.toString());
+      return data;
+    } catch (e) {
+      log('error on get departments db:$e');
+      return null;
     }
   }
 }

@@ -23,9 +23,7 @@ class AppAuthorizations {
   bool validateAdminAuthCode(input) {
     if (input == getAdminCodesFromLocalStorage().adminCode ||
         input == getAdminCodesFromLocalStorage().superAdminCode ||
-        input == getAdminCodesFromLocalStorage().viewerCode) {
-      return true;
-    }
+        input == getAdminCodesFromLocalStorage().viewerCode) return true;
     return false;
   }
 

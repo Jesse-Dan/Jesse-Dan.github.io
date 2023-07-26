@@ -1,5 +1,4 @@
 // ignore_for_file: unnecessary_statements, non_constant_identifier_names, avoid_single_cascade_in_expression_statements
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,6 +46,14 @@ class _SignUpScreenState extends State<SignUpScreen>
   final TextEditingController passwordCtl = TextEditingController();
   final TextEditingController firstNameCtl = TextEditingController();
   final TextEditingController confirmPasswordCtl = TextEditingController();
+  String? gender;
+  String? medicalStatus;
+  String? disabilityStatus;
+  String? disability;
+
+  String? empty;
+
+  List<String> valueable = [];
 
   @override
   void initState() {
@@ -126,241 +133,370 @@ class _SignUpScreenState extends State<SignUpScreen>
       },
       builder: (context, state) {
         return Scaffold(
-            body: ScrollConfiguration(
-                behavior: MyBehavior(),
-                child: SingleChildScrollView(
-                    child: Container(
-                  height: size.height,
-                  width: double.infinity,
-                  color: kSecondaryColor,
-                  child: Stack(
-                    children: [
-                      /// TOP
-                      BgAnime(),
-                      SizedBox(
-                        height: size.height,
-                        child: Container(
-                          alignment: Alignment.center,
-                          // decoration: const BoxDecoration(
-                          //   gradient: LinearGradient(
-                          //     begin: Alignment.topLeft,
-                          //     end: Alignment.bottomRight,
-                          //     colors: [
-                          //       cardColors,
-                          //       primaryColor,
-                          //     ],
-                          // ),
-                          // ),
-                          child: Opacity(
-                            opacity: _opacity.value,
-                            child: Transform.scale(
-                              scale: _transform.value,
-                              child: Padding(
-                                padding: const EdgeInsets.all(defaultPadding),
-                                child: Container(
-                                  width: Responsive.isDesktop(context)
-                                      ? size.width / 3
-                                      : size.width * .9,
-                                  height: Responsive.isDesktop(context)
-                                      ? size.width / 2.3
-                                      : size.width * 1.1,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(.1),
-                                        blurRadius: 90,
-                                      ),
-                                    ],
-                                  ),
-                                  child: SingleChildScrollView(
-                                    physics: const BouncingScrollPhysics(),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const SizedBox(height: 25),
-                                        Text(
-                                          textAlign: TextAlign.center,
-                                          'TYLDC PORTAL\nCREATE ACCOUNT',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black.withOpacity(.7),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 25),
-                                        const SizedBox(),
-                                        AuthViewComponents(context: context)
-                                            .component1(
-                                                Icons.account_circle_outlined,
-                                                'First Name...',
-                                                false,
-                                                true,
-                                                size,
-                                                controller: firstNameCtl),
-                                        AuthViewComponents(context: context)
-                                            .component1(
-                                                Icons.account_circle_outlined,
-                                                'Last Name...',
-                                                false,
-                                                true,
-                                                size,
-                                                controller: LastnameCtl),
-                                        AuthViewComponents(context: context)
-                                            .component1(Icons.email_outlined,
-                                                'Email...', false, true, size,
-                                                controller: emailCtl),
-                                        AuthViewComponents(context: context)
-                                            .component1(Icons.phone_outlined,
-                                                'Phone...', false, true, size,
-                                                controller: PhoneCtl,
-                                                limit: 10,
-                                                type: TextInputType.phone),
-                                        AuthViewComponents(context: context)
-                                            .component1(Icons.male_outlined,
-                                                'Gender...', false, true, size,
-                                                controller: GenderCtl),
-                                        AuthViewComponents(context: context)
-                                            .component1(
-                                                Icons
-                                                    .admin_panel_settings_outlined,
-                                                'Dept...',
-                                                false,
-                                                true,
-                                                size,
-                                                controller: DeptCtl),
-                                        AuthViewComponents(context: context)
-                                            .component1(
-                                                Icons
-                                                    .admin_panel_settings_outlined,
-                                                'Role...',
-                                                false,
-                                                true,
-                                                size,
-                                                controller: RoleCtl),
-                                        AuthViewComponents(context: context)
-                                            .component1(
-                                                Icons
-                                                    .admin_panel_settings_outlined,
-                                                'AuthCode...',
-                                                a_d_obs_1,
-                                                false,
-                                                size,
-                                                controller: AuthCodeCtl,
-                                                suffixIcon:
-                                                    Icons.remove_red_eye,
-                                                onTapSuffixIcon: () {
-                                          setState(() {
-                                            a_d_obs_1 = !a_d_obs_1;
-                                          });
-                                        }),
-                                        AuthViewComponents(context: context)
-                                            .component1(
-                                                Icons.password_outlined,
-                                                'Password...',
-                                                obs_1,
-                                                false,
-                                                size,
-                                                controller: passwordCtl,
-                                                suffixIcon:
-                                                    Icons.remove_red_eye,
-                                                onTapSuffixIcon: () {
-                                          setState(() {
-                                            obs_1 = !obs_1;
-                                          });
-                                        }),
-                                        AuthViewComponents(context: context)
-                                            .component1(
-                                                Icons.password_outlined,
-                                                'Confirm Password...',
-                                                obs_2,
-                                                false,
-                                                size,
-                                                controller: confirmPasswordCtl,
-                                                suffixIcon:
-                                                    Icons.remove_red_eye,
-                                                onTapSuffixIcon: () {
-                                          setState(() {
-                                            obs_2 = !obs_2;
-                                          });
-                                        }),
-                                        const SizedBox(height: 25),
-                                        AuthViewComponents(context: context)
-                                            .component2(
-                                          'Create Account',
-                                          2.6,
-                                          () {
-                                            bool isStrongPassword =
-                                                Validators.isValidPassword(
-                                                    passwordCtl.text);
-                                            bool isPasswordMatch =
-                                                Validators.isPasswordMatch(
-                                                    passwordCtl.text,
-                                                    confirmPasswordCtl.text);
-                                            if (!isPasswordMatch) {
-                                              Alertify.error(
-                                                  title: 'Registration Error',
-                                                  message:
-                                                      'Password dosen\'t match');
-                                            } else if (!isStrongPassword) {
-                                              Alertify.error(
-                                                  title: 'Registration Error',
-                                                  message:
-                                                      'Password doesn\'t meet requirements');
-                                            } else if (PhoneCtl.text.length
-                                                    .isLowerThan(10) ||
-                                                PhoneCtl.text[0] == '0' ||
-                                                PhoneCtl.text.contains(
-                                                    RegExp(r'[a-zA-Z]'))) {
-                                              Alertify.error(
-                                                  title: 'Registration Error',
-                                                  message:
-                                                      'Phone Number entered appears invalid');
-                                            } else {
-                                              // verifyAction(
-                                              //     title: 'SignUp Process',
-                                              //     text:
-                                              //         'Are you certain of the details  you\'ve entered? any issue encountered here can only be resolved by your Admin!! ',
-                                              //     action: () {
-                                              BlocProvider.of<
-                                                          AuthenticationBloc>(
-                                                      context)
-                                                  .add(SignUpEvent(context,
-                                                      adminModel: AdminModel(
-                                                        enabled: true,
-                                                        firstName:
-                                                            firstNameCtl.text,
-                                                        lastName:
-                                                            LastnameCtl.text,
-                                                        email: emailCtl.text,
-                                                        phoneNumber:
-                                                            PhoneCtl.text,
-                                                        gender: GenderCtl.text,
-                                                        dept: DeptCtl.text,
-                                                        role: RoleCtl.text,
-                                                        authCode:
-                                                            AuthCodeCtl.text,
-                                                        password:
-                                                            confirmPasswordCtl
-                                                                .text,
-                                                        imageUrl: '',
-                                                        id: '',
-                                                      )));
-                                              //       },
-                                              //       context: context);
-                                            }
-                                          },
-                                          size,
-                                        ),
-                                        const SizedBox(height: 20),
-                                        (toggleCreateAccount()),
-                                        const SizedBox(height: 20),
-                                      ],
+          body: ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: SingleChildScrollView(
+              child: Container(
+                height: size.height,
+                width: double.infinity,
+                color: kSecondaryColor,
+                child: Stack(
+                  children: [
+                    /// TOP
+                    BgAnime(),
+                    SizedBox(
+                      height: size.height,
+                      child: Container(
+                        alignment: Alignment.center,
+                        // decoration: const BoxDecoration(
+                        //   gradient: LinearGradient(
+                        //     begin: Alignment.topLeft,
+                        //     end: Alignment.bottomRight,
+                        //     colors: [
+                        //       cardColors,
+                        //       primaryColor,
+                        //     ],
+                        // ),
+                        // ),
+                        child: Opacity(
+                          opacity: _opacity.value,
+                          child: Transform.scale(
+                            scale: _transform.value,
+                            child: Padding(
+                              padding: const EdgeInsets.all(defaultPadding),
+                              child: Container(
+                                width: Responsive.isDesktop(context)
+                                    ? size.width / 3
+                                    : size.width * .9,
+                                height: Responsive.isDesktop(context)
+                                    ? size.width / 2.3
+                                    : size.width * 1.1,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(.1),
+                                      blurRadius: 90,
                                     ),
+                                  ],
+                                ),
+                                child: SingleChildScrollView(
+                                  physics: const BouncingScrollPhysics(),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const SizedBox(height: 25),
+                                      Text(
+                                        textAlign: TextAlign.center,
+                                        'TYLDC PORTAL\nCREATE ACCOUNT',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black.withOpacity(.7),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 25),
+                                      const SizedBox(),
+                                      AuthViewComponents(context: context)
+                                          .component1(
+                                              Icons.account_circle_outlined,
+                                              'First Name...',
+                                              false,
+                                              true,
+                                              size,
+                                              controller: firstNameCtl),
+                                      AuthViewComponents(context: context)
+                                          .component1(
+                                              Icons.account_circle_outlined,
+                                              'Last Name...',
+                                              false,
+                                              true,
+                                              size,
+                                              controller: LastnameCtl),
+                                      AuthViewComponents(context: context)
+                                          .component1(Icons.email_outlined,
+                                              'Email...', false, true, size,
+                                              controller: emailCtl),
+                                      AuthViewComponents(context: context)
+                                          .component1(Icons.phone_outlined,
+                                              'Phone...', false, true, size,
+                                              controller: PhoneCtl,
+                                              limit: 10,
+                                              type: TextInputType.phone),
+                                      AuthViewComponents(context: context)
+                                          .genderDropDown(
+                                              iconsData: Icons.male_rounded,
+                                              size: size,
+                                              fillColor: null,
+                                              inputColors: null,
+                                              onChanged: (_) {
+                                                setState(() => gender = _);
+                                              },
+                                              value: gender),
+                                      // AuthViewComponents(context: context)
+                                      //     .valueablesDropDown(
+                                      //         iconsData: Icons.watch,
+                                      //         size: size,
+                                      //         fillColor: null,
+                                      //         inputColors: null,
+                                      //         onChanged: (_) {
+                                      //           setState(() {
+                                      //             if (valueable.contains(_)) {
+                                      //               FormWidget()
+                                      //                   .buildCenterFormField(
+                                      //                       title:
+                                      //                           'Error Selecting Valuables',
+                                      //                       context: context,
+                                      //                       widgetsList: [
+                                      //                         Padding(
+                                      //                           padding:
+                                      //                               const EdgeInsets
+                                      //                                       .all(
+                                      //                                   16.0),
+                                      //                           child: Text(
+                                      //                             'You cannot Select ${_} valuable type multiple times',
+                                      //                             textAlign:
+                                      //                                 TextAlign
+                                      //                                     .center,
+                                      //                             style: GoogleFonts.josefinSans(
+                                      //                                 height:
+                                      //                                     1.5,
+                                      //                                 fontSize:
+                                      //                                     15,
+                                      //                                 color:
+                                      //                                     kSecondaryColor,
+                                      //                                 fontWeight:
+                                      //                                     FontWeight
+                                      //                                         .w500),
+                                      //                           ),
+                                      //                         )
+                                      //                       ],
+                                      //                       onSubmit: () {
+                                      //                         OverlayService
+                                      //                             .closeAlert();
+                                      //                       },
+                                      //                       alertType: AlertType
+                                      //                           .oneBtn,
+                                      //                       onSubmit2: () {});
+                                      //             } else {
+                                      //               valueable.add(_!);
+                                      //             }
+                                      //           });
+                                      //         },
+                                      //         value: empty),
+                                      // if (valueable.length != 0)
+                                      //   AuthViewComponents(context: context)
+                                      //       .buildParentCard(
+                                      //           padding: EdgeInsets.symmetric(
+                                      //               horizontal: 20),
+                                      //           size: size,
+                                      //           child: GridView.count(
+                                      //               shrinkWrap: true,
+                                      //               crossAxisCount: 4,
+                                      //               crossAxisSpacing: 1.0,
+                                      //               mainAxisSpacing: 5.0,
+                                      //               children: List.generate(
+                                      //                   valueable.length,
+                                      //                   (index) =>
+                                      //                       AuthViewComponents(
+                                      //                               context:
+                                      //                                   context)
+                                      //                           .buildChip(
+                                      //                               color:
+                                      //                                   bgColor,
+                                      //                               label: valueable[
+                                      //                                   index],
+                                      //                               onDelete:
+                                      //                                   () {
+                                      //                                 setState(
+                                      //                                     () {
+                                      //                                   valueable
+                                      //                                       .removeAt(index);
+                                      //                                 });
+                                      //                               })))),
+                                      // AuthViewComponents(context: context)
+                                      //     .healthStatusDropDown(
+                                      //         iconsData: Icons
+                                      //             .medical_information_rounded,
+                                      //         size: size,
+                                      //         fillColor: null,
+                                      //         inputColors: null,
+                                      //         onChanged: (_) {
+                                      //           setState(
+                                      //               () => medicalStatus = _);
+                                      //         },
+                                      //         value: medicalStatus),
+                                      // if (medicalStatus == 'Yes')
+                                      //   AuthViewComponents(context: context)
+                                      //       .component1(
+                                      //           Icons
+                                      //               .medical_information_rounded,
+                                      //           'Medical Condition or Prescription...',
+                                      //           false,
+                                      //           true,
+                                      //           size,
+                                      //           controller: DeptCtl),
+                                      // if (medicalStatus == 'Yes')
+                                      //   AuthViewComponents(context: context)
+                                      //       .healthStatusDropDown(
+                                      //           title:
+                                      //               'Do you have any Disabilities',
+                                      //           iconsData: Icons
+                                      //               .medical_information_rounded,
+                                      //           size: size,
+                                      //           fillColor: null,
+                                      //           inputColors: null,
+                                      //           onChanged: (_) {
+                                      //             setState(() =>
+                                      //                 disabilityStatus = _);
+                                      //           },
+                                      //           value: disabilityStatus),
+                                      // if (disabilityStatus == 'Yes')
+                                      //   AuthViewComponents(context: context)
+                                      //       .disabilityDropDown(
+                                      //           iconsData: Icons
+                                      //               .medical_information_rounded,
+                                      //           size: size,
+                                      //           fillColor: null,
+                                      //           inputColors: null,
+                                      //           onChanged: (_) {
+                                      //             setState(
+                                      //                 () => disability = _);
+                                      //           },
+                                      //           value: disability),
+                                      AuthViewComponents(context: context)
+                                          .component1(
+                                              Icons
+                                                  .admin_panel_settings_outlined,
+                                              'Dept...',
+                                              false,
+                                              true,
+                                              size,
+                                              controller: DeptCtl),
+                                      AuthViewComponents(context: context)
+                                          .component1(
+                                              Icons
+                                                  .admin_panel_settings_outlined,
+                                              'Role...',
+                                              false,
+                                              true,
+                                              size,
+                                              controller: RoleCtl),
+                                      AuthViewComponents(context: context)
+                                          .component1(
+                                              Icons
+                                                  .admin_panel_settings_outlined,
+                                              'AuthCode...',
+                                              a_d_obs_1,
+                                              false,
+                                              size,
+                                              controller: AuthCodeCtl,
+                                              suffixIcon: Icons.remove_red_eye,
+                                              onTapSuffixIcon: () {
+                                        setState(() {
+                                          a_d_obs_1 = !a_d_obs_1;
+                                        });
+                                      }),
+                                      AuthViewComponents(context: context)
+                                          .component1(Icons.password_outlined,
+                                              'Password...', obs_1, false, size,
+                                              controller: passwordCtl,
+                                              suffixIcon: Icons.remove_red_eye,
+                                              onTapSuffixIcon: () {
+                                        setState(() {
+                                          obs_1 = !obs_1;
+                                        });
+                                      }),
+                                      AuthViewComponents(context: context)
+                                          .component1(
+                                              Icons.password_outlined,
+                                              'Confirm Password...',
+                                              obs_2,
+                                              false,
+                                              size,
+                                              controller: confirmPasswordCtl,
+                                              suffixIcon: Icons.remove_red_eye,
+                                              onTapSuffixIcon: () {
+                                        setState(() {
+                                          obs_2 = !obs_2;
+                                        });
+                                      }),
+                                      const SizedBox(height: 25),
+                                      AuthViewComponents(context: context)
+                                          .component2(
+                                        'Create Account',
+                                        2.6,
+                                        () {
+                                          bool isStrongPassword =
+                                              Validators.isValidPassword(
+                                                  passwordCtl.text);
+                                          bool isPasswordMatch =
+                                              Validators.isPasswordMatch(
+                                                  passwordCtl.text,
+                                                  confirmPasswordCtl.text);
+                                          if (!isPasswordMatch) {
+                                            Alertify.error(
+                                                title: 'Registration Error',
+                                                message:
+                                                    'Password dosen\'t match');
+                                          } else if (!isStrongPassword) {
+                                            Alertify.error(
+                                                title: 'Registration Error',
+                                                message:
+                                                    'Password doesn\'t meet requirements (A-z,1-9,@\'_)');
+                                          } else if (PhoneCtl.text.length
+                                                  .isLowerThan(10) ||
+                                              PhoneCtl.text[0] == '0' ||
+                                              PhoneCtl.text.contains(
+                                                  RegExp(r'[a-zA-Z]'))) {
+                                            Alertify.error(
+                                                title: 'Registration Error',
+                                                message:
+                                                    'Phone Number entered appears invalid');
+                                          } else {
+                                            // verifyAction(
+                                            //     title: 'SignUp Process',
+                                            //     text:
+                                            //         'Are you certain of the details  you\'ve entered? any issue encountered here can only be resolved by your Admin!! ',
+                                            //     action: () {
+                                            BlocProvider.of<AuthenticationBloc>(
+                                                    context)
+                                                .add(SignUpEvent(context,
+                                                    adminModel: AdminModel(
+                                                      enabled: true,
+                                                      firstName:
+                                                          firstNameCtl.text,
+                                                      lastName:
+                                                          LastnameCtl.text,
+                                                      email: emailCtl.text,
+                                                      phoneNumber:
+                                                          PhoneCtl.text,
+                                                      gender:
+                                                          gender ?? 'notPicked',
+                                                      dept: DeptCtl.text,
+                                                      role: RoleCtl.text,
+                                                      authCode:
+                                                          AuthCodeCtl.text,
+                                                      password:
+                                                          confirmPasswordCtl
+                                                              .text,
+                                                      imageUrl: '',
+                                                      id: '',
+                                                    )));
+                                            //       },
+                                            //       context: context);
+                                          }
+                                        },
+                                        size,
+                                      ),
+                                      const SizedBox(height: 20),
+                                      (toggleCreateAccount()),
+                                      const SizedBox(height: 20),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -368,9 +504,13 @@ class _SignUpScreenState extends State<SignUpScreen>
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ))));
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
       },
     );
   }

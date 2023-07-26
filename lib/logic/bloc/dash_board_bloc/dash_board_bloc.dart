@@ -10,6 +10,7 @@ import 'package:tyldc_finaalisima/logic/db/non_admindb.dart';
 import 'package:tyldc_finaalisima/logic/db/utilsdb.dart';
 import '../../../models/atendee_model.dart';
 import '../../../models/contact_us_model.dart';
+import '../../../models/departments_type_model.dart';
 import '../../../models/group_model.dart';
 import '../../../models/non_admin_staff.dart';
 import '../../../models/notifier_model.dart';
@@ -35,9 +36,11 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
     return on<DashBoardDataEvent>((event, emit) async {
       emit(DashBoardLoading());
       try {
+        /// Initial Setting of Depts
+        // DB(auth: auth).setNewUrls();
         emit(DashBoardLoading());
 
-        var response = DB(auth: auth).fetchAdminData();
+        var response_1 = DB(auth: auth).fetchAdminData();
         var response_2 = AttendeeDB(auth: auth).getAttendeeIDs();
         var response_3 = NonAdminDB(auth: auth).getNonAdminIDs();
         var response_4 = AttendeeDB(auth: auth).getCampersIDs();
@@ -50,9 +53,10 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
         var response_11 = NonAdminDB(auth: auth).getNonAdminIdsOnly();
         var response_12 = ContactUsDB(auth: auth).getContactUsMessage();
         var response_13 = ContactUsDB(auth: auth).getSocialsUrls();
+        var response_14 = DB(auth: auth).getDepartmentTypes();
 
         List<dynamic> results = await Future.wait([
-          response,
+          response_1,
           response_2,
           response_3,
           response_4,
@@ -64,7 +68,8 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
           response_10,
           response_11,
           response_12,
-          response_13
+          response_13,
+          response_14
         ]);
 
         emit(DashBoardFetched(
@@ -80,7 +85,8 @@ class DashBoardBloc extends Bloc<DashBoardEvent, DashBoardState> {
             recentlyDeleted: results[9],
             nonadminId: results[10],
             contactMessages: results[11],
-            socials: results[12]));
+            socials: results[12],
+            departmentTypes: results[13]));
       } catch (e) {
         log(e.toString());
         emit(DashBoardFailed('on bloc $e'));

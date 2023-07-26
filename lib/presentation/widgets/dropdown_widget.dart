@@ -1,41 +1,57 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 
-class DropdownWidget extends StatefulWidget {
-  final List<String> options;
-  final Function(String)? onChanged;
+class ReusableDropdown<T> extends StatefulWidget {
+  final String labelText;
+  final List<T> items;
+  final T? value;
+  final ValueChanged<T?> onChanged;
+  final Color? fillColor;
+  final Color? inputColors;
+  final IconData iconsData;
 
-  const DropdownWidget({Key? key,required this.options, this.onChanged}) : super(key: key);
+  ReusableDropdown({
+    required this.labelText,
+    required this.items,
+    required this.value,
+    required this.onChanged, this.fillColor, this.inputColors, required this.iconsData,
+  });
 
   @override
-  _DropdownWidgetState createState() => _DropdownWidgetState();
+  _ReusableDropdownState<T> createState() => _ReusableDropdownState<T>();
 }
 
-class _DropdownWidgetState extends State<DropdownWidget> {
-  late String selectedOption;
-
+class _ReusableDropdownState<T> extends State<ReusableDropdown<T>> {
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      value: selectedOption,
-      items: widget.options
-          .map((option) => DropdownMenuItem<String>(
-                value: option,
-                child: Text(option),
-              ))
-          .toList(),
-      onChanged: (value) {
-        setState(() {
-          selectedOption = value!;
-        });
-        widget.onChanged!(value!);
-      },
-      decoration: const InputDecoration(
-        labelText: 'Select an option',
-        border: OutlineInputBorder(),
+    return InputDecorator(
+      decoration: InputDecoration(
+        labelText: widget.labelText,
+
+        fillColor: widget.fillColor,
+        filled: widget.fillColor == null ? false : true,
+        prefixIcon: Icon(
+          widget.iconsData,
+          color: widget.inputColors ?? Colors.black.withOpacity(.7),
+        ),
+        // suffixIconConstraints: BoxConstraints.loose(size),
+
+        border: InputBorder.none,
+        hintMaxLines: 1,
+        hintStyle: TextStyle(
+            fontSize: 14, color: widget.inputColors ?? Colors.black.withOpacity(.5)),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<T>(
+          value: widget.value,
+          items: widget.items.map((T item) {
+            return DropdownMenuItem<T>(
+              value: item,
+              child: Text(item.toString()),
+            );
+          }).toList(),
+          onChanged: widget.onChanged,
+        ),
       ),
     );
   }
 }
-
