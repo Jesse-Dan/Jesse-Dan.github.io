@@ -75,7 +75,7 @@ class _HeaderState extends State<Header> {
 
                 /// [if state is not loaded]
                 : 'Loading...| Refresh Page',
-            style: GoogleFonts.dmSans(
+            style: GoogleFonts.josefinSans(
                 fontSize: Responsive.isMobile(context) ? 18 : 22,
                 color: primaryColor),
           ),
@@ -136,7 +136,7 @@ class _ProfileCardState extends State<ProfileCard> {
                       state is DashBoardFetched
                           ? '${state.user.firstName} ${state.user.lastName}'
                           : "Loading User ",
-                      style: GoogleFonts.dmSans(color: Palette.white),
+                      style: GoogleFonts.josefinSans(color: Palette.white),
                     ),
                   ),
               ],
@@ -156,9 +156,9 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: GoogleFonts.dmSans(fontSize: 20, color: Palette.white),
+      style: GoogleFonts.josefinSans(fontSize: 20, color: Palette.white),
       decoration: InputDecoration(
-        hintStyle: GoogleFonts.dmSans(fontSize: 20, color: primaryColor),
+        hintStyle: GoogleFonts.josefinSans(fontSize: 20, color: primaryColor),
         hintText: "Search",
         fillColor: cardColors,
         filled: true,

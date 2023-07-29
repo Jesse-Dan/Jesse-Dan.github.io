@@ -58,7 +58,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               if (state is DashBoardLoading) OverlayService.showLoading();
               if (state is DashBoardFailed) OverlayService.closeAlert();
 
-              
               if (state is DashBoardFetched && !state.user.enabled) {
                 Alertify.error(message: 'Your account has been disabled');
                 BlocProvider.of<AuthenticationBloc>(context).add(LogoutEvent());
@@ -101,49 +100,49 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       DataColumn(
                         label: Text(
                           "Contact Name",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Contact Phone NO",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Contact Time",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Contact Email",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Contact Subject",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Contact Message",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Delete Contact",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
@@ -190,24 +189,24 @@ DataRow recentFileDataRow(
       DataCell(
         Text(
           contactMessage!.name.toLowerCase(),
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+          style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
         ),
       ),
       DataCell(Text(
         contactMessage.phoneNumber.toLowerCase(),
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         dateWithTime.format(contactMessage.timeStamp),
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         contactMessage.email,
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         contactMessage.subject,
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         IconButton(
@@ -226,7 +225,7 @@ DataRow recentFileDataRow(
           contactMessage.message.length >= 40
               ? '${contactMessage.message.split(' ')[0]}...'
               : contactMessage.message,
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+          style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
         ),
       ])),
       DataCell(IconButton(

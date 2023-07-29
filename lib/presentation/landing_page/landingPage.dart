@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/config/constants/responsive.dart';
 import 'package:tyldc_finaalisima/config/overlay_config/overlay_service.dart';
 import 'package:tyldc_finaalisima/config/theme.dart';
+import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/contact_us/contact_us_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/contact_us/contact_us_event.dart';
 import 'package:tyldc_finaalisima/logic/bloc/contact_us/contact_us_state.dart';
@@ -40,8 +41,7 @@ class _LandingPageState extends State<LandingPage>
   void initState() {
     super.initState();
     _startTimer();
-    BlocProvider.of<ContactUsBloc>(context).add(GetContactUsMessageEvent());
-    BlocProvider.of<ContactUsBloc>(context).add(GetSocialEvent());
+    BlocProvider.of<AdminManagemetBloc>(context).add(GetMultipleEvent());
   }
 
   Timer _startTimer() {
@@ -259,7 +259,7 @@ class _LandingPageState extends State<LandingPage>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('3000',
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kgreyColor, fontSize: 30)),
                       Text('youth trained',
                           style: GoogleFonts.josefinSans(color: bgColor)),
@@ -281,7 +281,7 @@ class _LandingPageState extends State<LandingPage>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('1500',
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kgreyColor, fontSize: 30)),
                       Text('volenteers',
                           style: GoogleFonts.josefinSans(color: bgColor)),

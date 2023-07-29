@@ -56,16 +56,13 @@ class DisableAdminEvent extends AdminManagemetEvent {
   List<Object> get props => [];
 }
 
-
 class CreateNewDeptTypeAdminEvent extends AdminManagemetEvent {
   final AdminModel performedBy;
   final Departments dept;
- 
 
   const CreateNewDeptTypeAdminEvent({
     required this.performedBy,
     required this.dept,
-    
   });
   @override
   List<Object> get props => [];
@@ -79,20 +76,20 @@ class UpdateDeptTypeAdminEvent extends AdminManagemetEvent {
   const UpdateDeptTypeAdminEvent({
     required this.performedBy,
     required this.dept,
-     this.oldvalue,
+    this.oldvalue,
   });
   @override
   List<Object> get props => [];
 }
 
 class GetDeptTypeAdminEvent extends AdminManagemetEvent {
-  final AdminModel performedBy;
-  final Departments dept;
+  const GetDeptTypeAdminEvent();
+  @override
+  List<Object> get props => [];
+}
 
-  const GetDeptTypeAdminEvent({
-    required this.performedBy,
-    required this.dept,
-  });
+class GetMultipleEvent extends AdminManagemetEvent {
+  const GetMultipleEvent();
   @override
   List<Object> get props => [];
 }

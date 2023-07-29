@@ -11,7 +11,7 @@ import '../../landing_page/page_builder/ball.dart';
 import '../app_views/drawer_items/dashboard/main_screen.dart';
 import 'components/components.dart';
 import 'forgotten_password.dart';
-import 'reg.dart';
+import 'registration.dart';
 import '../../widgets/alertify.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../logic/bloc/auth_bloc/authentiction_event.dart';
@@ -38,6 +38,7 @@ class _SignInScreenState extends State<SignInScreen>
   void initState() {
     OverlayService.closeAlert();
     BlocProvider.of<AdminManagemetBloc>(context).add(const GetCodeEvent());
+    BlocProvider.of<AdminManagemetBloc>(context).add(GetMultipleEvent());
 
     _controller = AnimationController(
       vsync: this,
@@ -69,11 +70,11 @@ class _SignInScreenState extends State<SignInScreen>
         textAlign: TextAlign.center,
         text: TextSpan(children: [
           TextSpan(
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.josefinSans(
                   fontWeight: FontWeight.w400, fontSize: 12, color: cardColors),
               text: 'Don\'t have an account? '),
           TextSpan(
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.josefinSans(
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                   color: primaryColor),

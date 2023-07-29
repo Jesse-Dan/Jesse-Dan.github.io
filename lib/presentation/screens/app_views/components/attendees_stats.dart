@@ -42,7 +42,7 @@ class _AttendeesStatsDetailsState extends State<AttendeesStatsDetails> {
             children: [
               Text(
                 "Attendees Age schematics",
-                style: GoogleFonts.dmSans(
+                style: GoogleFonts.josefinSans(
                   color: kSecondaryColor,
                   fontSize: 18,
                   fontWeight: FontWeight.w500,

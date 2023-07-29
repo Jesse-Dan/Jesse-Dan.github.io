@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tyldc_finaalisima/config/constants/responsive.dart';
 import 'package:tyldc_finaalisima/config/overlay_config/overlay_service.dart';
+import 'package:tyldc_finaalisima/logic/bloc/admin_management/admin_managemet_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/contact_us/contact_us_bloc.dart';
 import 'package:tyldc_finaalisima/logic/bloc/contact_us/contact_us_event.dart';
 import 'package:tyldc_finaalisima/logic/bloc/contact_us/contact_us_state.dart';
@@ -498,15 +499,16 @@ Widget buildAboutDeveloper(w, ctx) {
               SizedBox(
                 height: 10,
               ),
-              BlocBuilder<ContactUsBloc, ContactUsState>(
-                bloc: BlocProvider.of<ContactUsBloc>(ctx),
+              BlocBuilder<AdminManagemetBloc, AdminManagemetState>(
+                bloc: BlocProvider.of<AdminManagemetBloc>(ctx),
                 buildWhen: (previous, current) {
-                  return current is SocialsLoadedContactUsState;
+                  return current is AdminManagemetFetchedMultipleForMAINPAGE;
                 },
                 builder: (context, state) {
-                  bool fetched = state is SocialsLoadedContactUsState;
-                  bool error = state is ErrorContactUsState;
-                  bool loading = state is LoadingContactUsState;
+                  bool fetched =
+                      state is AdminManagemetFetchedMultipleForMAINPAGE;
+                  bool error = state is AdminManagemetFailed;
+                  bool loading = state is AdminManagementLoading;
 
                   return error
                       ? Text(
@@ -521,7 +523,7 @@ Widget buildAboutDeveloper(w, ctx) {
                           ? Center(
                               child: CircularProgressIndicator(),
                             )
-                          : fetched && state.socials.socials.length == 0
+                          : fetched && state.socials == 0
                               ? Text(
                                   'An error Occured\nRefesh Page',
                                   textAlign: TextAlign.center,
@@ -536,12 +538,12 @@ Widget buildAboutDeveloper(w, ctx) {
                                       scrollDirection: Axis.horizontal,
                                       shrinkWrap: true,
                                       itemCount: fetched
-                                          ? state.socials.socials.length
+                                          ? state.socials!.socials.length
                                           : 0,
                                       itemBuilder: (_, i) => fetched
                                           ? socialIcon(
                                               socialMedia:
-                                                  state.socials.socials[i],
+                                                  state.socials!.socials[i],
                                               c: ctx)
                                           : SizedBox.shrink()),
                                 );

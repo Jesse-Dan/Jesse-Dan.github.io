@@ -131,39 +131,39 @@ class _NonAdminScreenState extends State<NonAdminScreen> {
                     columns: [
                       DataColumn(
                           label: Text("Fullname",
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.josefinSans(
                                   color: kSecondaryColor, fontSize: 15))),
                       DataColumn(
                           label: Text("Department",
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.josefinSans(
                                   color: kSecondaryColor, fontSize: 15))),
                       DataColumn(
                           label: Text("Id",
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.josefinSans(
                                   color: kSecondaryColor, fontSize: 15))),
                       DataColumn(
                           label: Text("Role",
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.josefinSans(
                                   color: kSecondaryColor, fontSize: 15))),
                       DataColumn(
                           label: Text("Phone",
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.josefinSans(
                                   color: kSecondaryColor, fontSize: 15))),
                       DataColumn(
                           label: Text("Gender",
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.josefinSans(
                                   color: kSecondaryColor, fontSize: 15))),
                       DataColumn(
                           label: Text("Created By",
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.josefinSans(
                                   color: kSecondaryColor, fontSize: 15))),
                       DataColumn(
                           label: Text("Edit",
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.josefinSans(
                                   color: kSecondaryColor, fontSize: 15))),
                       DataColumn(
                           label: Text("Delete",
-                              style: GoogleFonts.dmSans(
+                              style: GoogleFonts.josefinSans(
                                   color: kSecondaryColor, fontSize: 15))),
                     ],
                     row: List.generate(
@@ -212,21 +212,27 @@ DataRow recentFileDataRow(NonAdminModel? registerdNonAdmin, context,
   return DataRow(
     cells: [
       DataCell(Text(registerdNonAdmin!.firstName!.toLowerCase(),
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+          style:
+              GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
       DataCell(Text(registerdNonAdmin.dept!.toLowerCase(),
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+          style:
+              GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
       DataCell(Text(registerdNonAdmin.id!,
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+          style:
+              GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
       DataCell(Text(registerdNonAdmin.role!,
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+          style:
+              GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
       DataCell(Text(
         registerdNonAdmin.phoneNumber!,
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(registerdNonAdmin.gender!.toLowerCase(),
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+          style:
+              GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
       DataCell(Text(registerdNonAdmin.createdBy!.toLowerCase(),
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+          style:
+              GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
       DataCell(IconButton(
           splashRadius: 5,
           icon: Icon(Icons.edit_document, color: kSecondaryColor, size: 20),

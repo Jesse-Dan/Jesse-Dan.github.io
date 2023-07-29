@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/utils.dart';
@@ -36,7 +35,8 @@ class _RecentFilesState extends State<RecentFiles> {
             children: [
               Text(
                 "Recent Registrations",
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 20),
+                style: GoogleFonts.josefinSans(
+                    color: kSecondaryColor, fontSize: 20),
               ),
               TextButton(
                   onPressed: () {
@@ -49,7 +49,7 @@ class _RecentFilesState extends State<RecentFiles> {
                       children: [
                         Text(
                           'more',
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: primaryColor, fontSize: 15),
                         ),
                         const Icon(
@@ -62,9 +62,7 @@ class _RecentFilesState extends State<RecentFiles> {
           ),
           SingleChildScrollView(
             child: BlocConsumer<DashBoardBloc, DashBoardState>(
-              listener: (context, state) {
-                
-              },
+              listener: (context, state) {},
               builder: (context, state) {
                 if (state is DashBoardFetched) {
                   return SizedBox(
@@ -78,21 +76,21 @@ class _RecentFilesState extends State<RecentFiles> {
                               DataColumn(
                                 label: Text(
                                   "Fullname",
-                                  style: GoogleFonts.dmSans(
+                                  style: GoogleFonts.josefinSans(
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "CamperStatus",
-                                  style: GoogleFonts.dmSans(
+                                  style: GoogleFonts.josefinSans(
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "Sex",
-                                  style: GoogleFonts.dmSans(
+                                  style: GoogleFonts.josefinSans(
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
                               )
@@ -101,28 +99,28 @@ class _RecentFilesState extends State<RecentFiles> {
                               DataColumn(
                                 label: Text(
                                   "Fullname",
-                                  style: GoogleFonts.dmSans(
+                                  style: GoogleFonts.josefinSans(
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "CamperStatus",
-                                  style: GoogleFonts.dmSans(
+                                  style: GoogleFonts.josefinSans(
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "Code",
-                                  style: GoogleFonts.dmSans(
+                                  style: GoogleFonts.josefinSans(
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "Commitment Fee",
-                                  style: GoogleFonts.dmSans(
+                                  style: GoogleFonts.josefinSans(
                                       color: kSecondaryColor, fontSize: 15),
                                 ),
                               ),
@@ -158,36 +156,43 @@ DataRow recentFileDataRow(AttendeeModel recentReg, context) {
             DataCell(
               Text(
                 '${recentReg.firstName} ${recentReg.lastName}',
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+                style: GoogleFonts.josefinSans(
+                    color: kSecondaryColor, fontSize: 15),
               ),
             ),
             DataCell(Text(
               recentReg.wouldCamp,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              style:
+                  GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
               recentReg.gender,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              style:
+                  GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
             )),
           ]
         : [
             DataCell(
               Text(
                 recentReg.firstName,
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+                style: GoogleFonts.josefinSans(
+                    color: kSecondaryColor, fontSize: 15),
               ),
             ),
             DataCell(Text(
               recentReg.wouldCamp,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              style:
+                  GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
               recentReg.id,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              style:
+                  GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
             )),
             DataCell(Text(
               recentReg.commitmentFee,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+              style:
+                  GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
             )),
           ],
   );

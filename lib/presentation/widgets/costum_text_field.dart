@@ -13,7 +13,7 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final String? initialValue;
   final Function(String)? onChanged;
-    final Function()? onEditingComplete;
+  final Function()? onEditingComplete;
   final Function()? onTap;
   final bool readOnly;
 
@@ -55,14 +55,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
           maxLines: widget.maxLines,
           controller: widget.controller,
           onChanged: widget.onChanged,
-          onEditingComplete:widget.onEditingComplete ,
-          style: GoogleFonts.dmSans(
+          onEditingComplete: widget.onEditingComplete,
+          style: GoogleFonts.josefinSans(
               fontWeight: FontWeight.w600, color: kSecondaryColor),
           decoration: InputDecoration(
               filled: true,
               fillColor: cardColors,
               hintText: widget.hint,
-              hintStyle: GoogleFonts.dmSans(
+              hintStyle: GoogleFonts.josefinSans(
                   fontWeight: FontWeight.w600, color: kSecondaryColor),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),

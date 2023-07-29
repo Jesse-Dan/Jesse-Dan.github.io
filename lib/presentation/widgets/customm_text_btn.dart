@@ -28,7 +28,7 @@ class TextBtn extends StatelessWidget {
             children: [
               Text(
                 text,
-                style: GoogleFonts.dmSans(
+                style: GoogleFonts.josefinSans(
                     color: textColor ?? primaryColor, fontSize: 15),
               ),
               const SizedBox(

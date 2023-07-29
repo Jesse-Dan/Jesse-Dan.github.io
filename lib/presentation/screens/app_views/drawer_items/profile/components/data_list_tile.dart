@@ -54,7 +54,7 @@ Widget headerText({required String text, Color? textColor}) {
       padding: const EdgeInsets.all(3.0),
       child: Text(
         text,
-        style: GoogleFonts.dmSans(
+        style: GoogleFonts.josefinSans(
           fontWeight: FontWeight.w600,
           color: textColor ?? kSecondaryColor,
           fontSize: 25,

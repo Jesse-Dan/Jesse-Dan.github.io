@@ -103,35 +103,35 @@ class _AdminScreenState extends State<AdminScreen> {
                   columns: [
                     DataColumn(
                         label: Text("Profile Picture",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
                         label: Text("Fullname",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
                         label: Text("Department",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
                         label: Text("Role",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
                         label: Text("Phone",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
                         label: Text("Gender",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
                         label: Text("Edit",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15))),
                     DataColumn(
                         label: Text("Enabled",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15))),
                   ],
                   row: List.generate(
@@ -160,15 +160,20 @@ class _AdminScreenState extends State<AdminScreen> {
       cells: [
         DataCell(AdminUserImage(registerdAdmin: registerdAdmin)),
         DataCell(Text(registerdAdmin!.firstName.toLowerCase(),
-            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+            style:
+                GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
         DataCell(Text(registerdAdmin.dept.toLowerCase(),
-            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+            style:
+                GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
         DataCell(Text(registerdAdmin.role,
-            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+            style:
+                GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
         DataCell(Text(registerdAdmin.phoneNumber,
-            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+            style:
+                GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
         DataCell(Text(registerdAdmin.gender,
-            style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15))),
+            style:
+                GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15))),
         DataCell(IconButton(
           onPressed: () {
             AdminsRegistrationForms(context: context)

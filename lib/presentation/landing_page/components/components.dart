@@ -5,9 +5,10 @@ import '../../../../config/constants/responsive.dart';
 import '../../../../config/overlay_config/overlay_service.dart';
 import '../../../../logic/bloc/auth_bloc/authentiction_bloc.dart';
 import '../../../../logic/bloc/auth_bloc/authentiction_event.dart';
-import '../../../widgets/dropdown_widget.dart';
-import '../../../widgets/index.dart';
 import '../../../../config/theme.dart';
+import '../../widgets/custom_submit_btn.dart';
+import '../../widgets/dialogue_forms.dart';
+import '../../widgets/dropdown_widget.dart';
 
 enum InputType { dropDown, text, radioInput }
 
@@ -51,7 +52,7 @@ class AuthViewComponents extends FormWidget {
       Color? fillColor,
       IconData? iconsData,
       Color? inputColors,
-      required List<String> list}) {
+      List<String>? list}) {
     return buildParentCard(
         fillColor: fillColor != null ? fillColor : null,
         size: size,
@@ -60,7 +61,7 @@ class AuthViewComponents extends FormWidget {
           inputColors: null,
           fillColor: fillColor,
           labelText: 'Department',
-          items: list ,
+          items: list ?? [],
           value: value,
           onChanged: onChanged!,
         ));

@@ -35,7 +35,8 @@ class _MyFilesState extends State<MyFiles> {
           children: [
             Text(
               "Quick Stats",
-              style: GoogleFonts.dmSans(fontSize: 20, color: Palette.white),
+              style:
+                  GoogleFonts.josefinSans(fontSize: 20, color: Palette.white),
             ),
             BlocBuilder<DashBoardBloc, DashBoardState>(
               builder: (context, state) {
@@ -53,7 +54,7 @@ class _MyFilesState extends State<MyFiles> {
                         .registerNewAttandeeForm(
                       title: 'Attendee',
                       attendees: fetched ? state.attendeeModel : null,
-                      admin: fetched ? state.user: null,
+                      admin: fetched ? state.user : null,
                       length: fetched ? state.attendeeModel.length : 0,
                     );
                   },

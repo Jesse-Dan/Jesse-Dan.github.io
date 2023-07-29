@@ -16,7 +16,7 @@ class AttendeeRegistrationForms extends FormWidget {
   AttendeeRegistrationForms({required this.context});
 
   RxString newCode = ''.obs;
-
+  String? val;
   final BuildContext context;
 
   ///[ADMIN AUTH CODE CONTROLLERS]
@@ -66,7 +66,6 @@ class AttendeeRegistrationForms extends FormWidget {
     'Glasses',
     'Chains and Neck-Lace'
   ];
-
 
   viewAuthCodeData({
     title,
@@ -293,11 +292,31 @@ class AttendeeRegistrationForms extends FormWidget {
             hint: 'Would You be Camping?',
             suffix: const Icon(Icons.home),
             controller: wouldCamp),
-        CustomTextField(
-            fieldsType: TextInputType.text,
-            hint: 'Disability Cluster',
-            suffix: const Icon(Icons.hearing_disabled_outlined),
-            controller: disabilityCluster),
+        Padding(
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 10),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: cardColors,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                        style: BorderStyle.solid,
+                        color: kblackColor,
+                        width: 1.2)),
+                height: 50,
+                width: double.infinity,
+                child: ReusableDropdown(
+                    labelFontSize: 20,
+                    inputColors: kSecondaryColor,
+                    labelText: 'Medical Conditions',
+                    items: check,
+                    value: val,
+                    onChanged: (_) {},
+                    iconsData: Icons.abc))),
+        // CustomTextField(
+        //     fieldsType: TextInputType.text,
+        //     hint: 'Disability Cluster',
+        //     suffix: const Icon(Icons.hearing_disabled_outlined),
+        //     controller: disabilityCluster),
         CustomTextField(
             fieldsType: TextInputType.text,
             hint: 'Payment Status (Please take in full / record in full)',
@@ -351,6 +370,12 @@ class AttendeeRegistrationForms extends FormWidget {
                     passIssued: passIssued.text,
                     wouldCamp: wouldCamp.text,
                     dob: DateTime.parse(dob.value.text),
+                    disability: '',
+                    disabilityTypes: [],
+                    medicalCondiiton: '',
+                    valuables: [],
+                    groups: [],
+                    present: true,
                   ),
                 ),
               );

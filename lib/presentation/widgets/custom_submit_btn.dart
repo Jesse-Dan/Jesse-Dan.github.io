@@ -59,7 +59,7 @@ class _CustomButtonState extends State<CustomButton> {
           child: Center(
               child: Text(
             widget.btnText,
-            style: GoogleFonts.dmSans(
+            style: GoogleFonts.josefinSans(
               fontWeight: FontWeight.w600,
               color: kSecondaryColor,
               fontSize: 18,

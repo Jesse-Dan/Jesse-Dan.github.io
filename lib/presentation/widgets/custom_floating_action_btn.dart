@@ -19,7 +19,7 @@ class CustomFloatingActionBtn extends StatelessWidget {
         onPressed: onPressed,
         label: Text(
           "Refresh",
-          style: GoogleFonts.dmSans(color: primaryColor, fontSize: 15),
+          style: GoogleFonts.josefinSans(color: primaryColor, fontSize: 15),
         ),
         icon: const Icon(
           Icons.refresh,

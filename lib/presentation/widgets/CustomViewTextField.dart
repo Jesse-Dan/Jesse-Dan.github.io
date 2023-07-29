@@ -63,13 +63,13 @@ class _CustomViewTextFieldState extends State<CustomViewTextField> {
               maxLines: widget.maxLines,
               obscureText: widget.obscureText,
               // controller: widget.c,
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.josefinSans(
                   fontWeight: FontWeight.w600, color: kSecondaryColor),
               decoration: InputDecoration(
                   filled: true,
                   fillColor: cardColors,
                   hintText: widget.hint,
-                  hintStyle: GoogleFonts.dmSans(
+                  hintStyle: GoogleFonts.josefinSans(
                       fontWeight: FontWeight.w600, color: kSecondaryColor),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),

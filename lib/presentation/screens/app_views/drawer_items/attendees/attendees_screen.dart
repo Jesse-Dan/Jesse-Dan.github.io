@@ -107,63 +107,63 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                     DataColumn(
                       label: Text(
                         "Fullname",
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.josefinSans(
                             color: kSecondaryColor, fontSize: 15),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         "CamperStatus",
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.josefinSans(
                             color: kSecondaryColor, fontSize: 15),
                       ),
                     ),
                     DataColumn(
                         label: Text(
                           "Code",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                         numeric: true),
                     DataColumn(
                       label: Text(
                         "Phone",
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.josefinSans(
                             color: kSecondaryColor, fontSize: 15),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         "Disability Cluster",
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.josefinSans(
                             color: kSecondaryColor, fontSize: 15),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         "Commitment Fee",
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.josefinSans(
                             color: kSecondaryColor, fontSize: 15),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         "Delete Attendee",
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.josefinSans(
                             color: kSecondaryColor, fontSize: 15),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         "Edit Attendee Details",
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.josefinSans(
                             color: kSecondaryColor, fontSize: 15),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         "Generate Attendee ID",
-                        style: GoogleFonts.dmSans(
+                        style: GoogleFonts.josefinSans(
                             color: kSecondaryColor, fontSize: 15),
                       ),
                     ),
@@ -224,28 +224,28 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {admin, id}) {
       DataCell(
         Text(
           registerdUser!.firstName.toLowerCase(),
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+          style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
         ),
       ),
       DataCell(Text(
         registerdUser.wouldCamp.toLowerCase(),
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         registerdUser.id,
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         registerdUser.phoneNo,
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         registerdUser.disabilityCluster,
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         registerdUser.commitmentFee.toLowerCase(),
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(IconButton(
         splashRadius: 5,

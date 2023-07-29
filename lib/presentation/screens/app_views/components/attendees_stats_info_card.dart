@@ -41,7 +41,7 @@ class AgeScematicsInfoCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.josefinSans(
                       color: kSecondaryColor,
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -51,7 +51,7 @@ class AgeScematicsInfoCard extends StatelessWidget {
                   ),
                   Text(
                     "$numOfAttendees Attendees",
-                    style: GoogleFonts.dmSans(
+                    style: GoogleFonts.josefinSans(
                       color: kSecondaryColor,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -63,7 +63,7 @@ class AgeScematicsInfoCard extends StatelessWidget {
           ),
           Text(
             amountOfFiles,
-            style: GoogleFonts.dmSans(
+            style: GoogleFonts.josefinSans(
               color: kSecondaryColor,
               fontSize: 12,
               fontWeight: FontWeight.w500,

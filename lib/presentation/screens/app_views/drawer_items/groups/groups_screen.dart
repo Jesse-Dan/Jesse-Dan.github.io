@@ -114,49 +114,49 @@ class _GroupsScreenState extends State<GroupsScreen> {
                       DataColumn(
                         label: Text(
                           "Group Name",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Group Description",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Members count",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Id",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Created By",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Edit",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           "Delete",
-                          style: GoogleFonts.dmSans(
+                          style: GoogleFonts.josefinSans(
                               color: kSecondaryColor, fontSize: 15),
                         ),
                       ),
@@ -216,26 +216,26 @@ DataRow recentFileDataRow(
       DataCell(
         Text(
           registerdGroup!.name.toLowerCase(),
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+          style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
         ),
       ),
       DataCell(Text(
         registerdGroup.description.length >= 40
             ? '${registerdGroup.description.substring(0, 5)[0]}...'
             : registerdGroup.description.toLowerCase(),
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         registerdGroup.groupMembers.length.toString(),
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         registerdGroup.id,
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         registerdGroup.createdBy,
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(IconButton(
         splashRadius: 5,

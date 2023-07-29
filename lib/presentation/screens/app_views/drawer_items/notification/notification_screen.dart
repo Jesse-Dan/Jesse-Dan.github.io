@@ -33,7 +33,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        
         BlocListener<DashBoardBloc, DashBoardState>(
           listener: (context, state) {
             if (state is DashBoardFetched) {
@@ -80,35 +79,35 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   bool fetched = state is DashBoardFetched;
                   return PageContentWidget(
                       columns: [
-                              DataColumn(
-                                label: Text(
-                                  "Activity",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "time",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Description",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  "Performed by | Action",
-                                  style: GoogleFonts.dmSans(
-                                      color: kSecondaryColor, fontSize: 15),
-                                ),
-                              ),
-                            ],
+                        DataColumn(
+                          label: Text(
+                            "Activity",
+                            style: GoogleFonts.josefinSans(
+                                color: kSecondaryColor, fontSize: 15),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "time",
+                            style: GoogleFonts.josefinSans(
+                                color: kSecondaryColor, fontSize: 15),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "Description",
+                            style: GoogleFonts.josefinSans(
+                                color: kSecondaryColor, fontSize: 15),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "Performed by | Action",
+                            style: GoogleFonts.josefinSans(
+                                color: kSecondaryColor, fontSize: 15),
+                          ),
+                        ),
+                      ],
                       row: List.generate(
                         fetched ? state.notifications.length : 0,
                         (index) => (recentFileDataRow(
@@ -135,24 +134,24 @@ DataRow recentFileDataRow(Notifier? notice, context) {
   return DataRow(
     onLongPress: () {},
     cells: [
-            DataCell(
-              Text(
-                notice!.action,
-                style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-              ),
-            ),
-            DataCell(Text(
-              dateWithTime.format(notice.time!).toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              notice.description..toLowerCase(),
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-            DataCell(Text(
-              notice.data,
-              style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
-            )),
-          ],
+      DataCell(
+        Text(
+          notice!.action,
+          style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
+        ),
+      ),
+      DataCell(Text(
+        dateWithTime.format(notice.time!).toLowerCase(),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        notice.description..toLowerCase(),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
+      )),
+      DataCell(Text(
+        notice.data,
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
+      )),
+    ],
   );
 }

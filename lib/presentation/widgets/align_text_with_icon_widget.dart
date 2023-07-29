@@ -26,7 +26,7 @@ class AlignIconWithTextWidget extends StatelessWidget {
         children: [
           Text(
             text,
-            style: GoogleFonts.dmSans(
+            style: GoogleFonts.josefinSans(
               color: textColor,
               fontSize: 15,
             ),

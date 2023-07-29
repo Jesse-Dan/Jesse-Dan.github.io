@@ -63,11 +63,11 @@ class _ForgottenPasswordScreenState extends State<ForgottenPasswordScreen>
         textAlign: TextAlign.center,
         text: TextSpan(children: [
           TextSpan(
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.josefinSans(
                   fontWeight: FontWeight.w400, fontSize: 12, color: cardColors),
               text: 'Don\'t intend to change your password? '),
           TextSpan(
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.josefinSans(
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                   color: primaryColor),

@@ -108,20 +108,29 @@ class _PageContentWidgetState extends State<PageContentWidget>
                               color: primaryColor.withOpacity(0.7),
                             ),
                           ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              widget.title,
-                              style: GoogleFonts.dmSans(
-                                  color: kSecondaryColor, fontSize: 20),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: widget.actions ?? [],
-                            ),
-                          ],
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                widget.title,
+                                style: GoogleFonts.josefinSans(
+                                    color: kSecondaryColor, fontSize: 20),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: widget.actions ?? [],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         (widget.child) ??
                             SingleChildScrollView(
@@ -130,7 +139,7 @@ class _PageContentWidgetState extends State<PageContentWidget>
                               child: DataTable(
                                 onSelectAll: (all) {},
                                 showBottomBorder: true,
-                                dataTextStyle: GoogleFonts.dmSans(
+                                dataTextStyle: GoogleFonts.josefinSans(
                                     color: kSecondaryColor, fontSize: 15),
                                 sortColumnIndex: widget.searchIndex,
                                 sortAscending: widget.searchAccending!,

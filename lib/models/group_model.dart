@@ -41,7 +41,6 @@ class GroupModel {
         facilitator: '',
       );
 
-
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -58,7 +57,11 @@ class GroupModel {
       id: map['id'] as String,
       name: map['name'] as String,
       description: map['description'] as String,
-      groupMembers: List<AttendeeModel>.from((map['groupMembers'] as List<dynamic>).map<AttendeeModel>((x) => AttendeeModel.fromMap(x as Map<String,dynamic>),),),
+      groupMembers: List<AttendeeModel>.from(
+        (map['groupMembers'] as List<dynamic>).map<AttendeeModel>(
+          (x) => AttendeeModel.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
       createdBy: map['createdBy'] as String,
       facilitator: map['facilitator'] as String,
     );
@@ -66,5 +69,6 @@ class GroupModel {
 
   String toJson() => json.encode(toMap());
 
-  factory GroupModel.fromJson(String source) => GroupModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory GroupModel.fromJson(String source) =>
+      GroupModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

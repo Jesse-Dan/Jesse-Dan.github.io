@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../config/theme.dart';
 import '../../../../models/stats_card.dart';
 
-
 class FileInfoCard extends StatefulWidget {
   const FileInfoCard({
     Key? key,
@@ -56,7 +55,7 @@ class _FileInfoCardState extends State<FileInfoCard> {
             ],
           ),
           Text(
-            style: GoogleFonts.dmSans(color: kSecondaryColor),
+            style: GoogleFonts.josefinSans(color: kSecondaryColor),
             widget.info.title!,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

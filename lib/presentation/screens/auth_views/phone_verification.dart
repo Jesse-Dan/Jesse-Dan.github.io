@@ -64,11 +64,11 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
         textAlign: TextAlign.center,
         text: TextSpan(children: [
           TextSpan(
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.josefinSans(
                   fontWeight: FontWeight.w400, fontSize: 12, color: cardColors),
               text: 'wrong input | consider an update '),
           TextSpan(
-              style: GoogleFonts.dmSans(
+              style: GoogleFonts.josefinSans(
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                   color: primaryColor),
@@ -146,7 +146,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen>
           Alertify.success(message: 'Phone Number Updated successfully');
           Navigator.pop(context);
         }
-       
+
         if (state is PhoneAuthentictionSuccesful) {
           Alertify.success(message: 'Account Created successfully');
           Navigator.pushNamedAndRemoveUntil(

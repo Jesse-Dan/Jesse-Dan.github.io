@@ -82,28 +82,28 @@ class _RecentlyDeletedState extends State<RecentlyDeleted> {
                         DataColumn(
                           label: Text(
                             "DATE TYPE",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15),
                           ),
                         ),
                         DataColumn(
                           label: Text(
                             "DELETED AT",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15),
                           ),
                         ),
                         DataColumn(
                           label: Text(
                             "DESCRIPTION",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15),
                           ),
                         ),
                         DataColumn(
                           label: Text(
                             "Performed by | Action",
-                            style: GoogleFonts.dmSans(
+                            style: GoogleFonts.josefinSans(
                                 color: kSecondaryColor, fontSize: 15),
                           ),
                         ),
@@ -137,20 +137,20 @@ DataRow recentFileDataRow(RecentlyDeletedModel? notice, context) {
       DataCell(
         Text(
           notice!.dataType,
-          style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+          style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
         ),
       ),
       DataCell(Text(
         dateWithTime.format(notice.time!).toLowerCase(),
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         notice.description..toLowerCase(),
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
       DataCell(Text(
         notice.data,
-        style: GoogleFonts.dmSans(color: kSecondaryColor, fontSize: 15),
+        style: GoogleFonts.josefinSans(color: kSecondaryColor, fontSize: 15),
       )),
     ],
   );

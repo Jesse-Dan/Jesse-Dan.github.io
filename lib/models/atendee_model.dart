@@ -1,34 +1,32 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-// To parse this JSON data, do
-//
-//     final attendeeModel = attendeeModelFromJson(jsonString);
 
 import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-import 'group_model.dart';
-
 class AttendeeModel extends Equatable {
-  const AttendeeModel({
-    required this.createdBy,
-    required this.id,
-    this.dob, // Make dob nullable
-    required this.firstName,
-    required this.middleName,
-    required this.lastName,
-    required this.gender,
-    required this.phoneNo,
-    required this.parentName,
-    required this.parentNo,
-    required this.homeAddress,
-    required this.disabilityCluster,
-    required this.commitmentFee,
-    required this.parentConsent,
-    required this.passIssued,
-    required this.wouldCamp,
-  });
+  const AttendeeModel(
+      {required this.createdBy,
+      required this.id,
+      this.dob,
+      required this.firstName,
+      required this.middleName,
+      required this.lastName,
+      required this.gender,
+      required this.phoneNo,
+      required this.parentName,
+      required this.parentNo,
+      required this.homeAddress,
+      required this.disabilityCluster,
+      required this.commitmentFee,
+      required this.parentConsent,
+      required this.passIssued,
+      required this.wouldCamp,
+      required this.medicalCondiiton,
+      required this.disability,
+      required this.disabilityTypes,
+      required this.valuables,
+      required this.present,
+      required this.groups});
 
   final String createdBy;
   final String id;
@@ -46,7 +44,12 @@ class AttendeeModel extends Equatable {
   final String parentConsent;
   final String passIssued;
   final String wouldCamp;
-
+  final String? medicalCondiiton;
+  final String? disability;
+  final List<String>? disabilityTypes;
+  final List<String>? valuables;
+  final bool? present;
+  final List<String>? groups;
   @override
   List<Object?> get props => [
         id,
@@ -64,34 +67,14 @@ class AttendeeModel extends Equatable {
         wouldCamp,
       ];
 
-  factory AttendeeModel.fromMap(Map<String, dynamic> map) {
-    return AttendeeModel(
-      createdBy: map['createdBy'] as String,
-      id: map['id'] as String,
-      dob: (map['dob'] as Timestamp?)?.toDate(), // Handle nullable Timestamp
-      firstName: map['firstName'] as String,
-      middleName: map['middleName'] as String,
-      lastName: map['lastName'] as String,
-      gender: map['gender'] as String,
-      phoneNo: map['phoneNo'] as String,
-      parentName: map['parentName'] as String,
-      parentNo: map['parentNo'] as String,
-      homeAddress: map['homeAddress'] as String,
-      disabilityCluster: map['disabilityCluster'] as String,
-      commitmentFee: map['commitmentFee'] as String,
-      parentConsent: map['parentConsent'] as String,
-      passIssued: map['passIssued'] as String,
-      wouldCamp: map['wouldCamp'] as String,
-    );
-  }
+  @override
+  bool get stringify => true;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'createdBy': createdBy,
       'id': id,
-      'dob': dob != null
-          ? Timestamp.fromDate(dob!)
-          : null, // Convert to nullable Timestamp
+      'dob': dob?.millisecondsSinceEpoch,
       'firstName': firstName,
       'middleName': middleName,
       'lastName': lastName,
@@ -105,7 +88,51 @@ class AttendeeModel extends Equatable {
       'parentConsent': parentConsent,
       'passIssued': passIssued,
       'wouldCamp': wouldCamp,
+      'medicalCondiiton': medicalCondiiton,
+      'disability': disability,
+      'disabilityTypes': disabilityTypes,
+      'valuables': valuables,
+      'present': present,
+      'groups': groups,
     };
+  }
+
+  factory AttendeeModel.fromMap(Map<String, dynamic> map) {
+    return AttendeeModel(
+      createdBy: map['createdBy'] as String,
+      id: map['id'] as String,
+      dob: map['dob'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['dob'] as int)
+          : null,
+      firstName: map['firstName'] as String,
+      middleName: map['middleName'] as String,
+      lastName: map['lastName'] as String,
+      gender: map['gender'] as String,
+      phoneNo: map['phoneNo'] as String,
+      parentName: map['parentName'] as String,
+      parentNo: map['parentNo'] as String,
+      homeAddress: map['homeAddress'] as String,
+      disabilityCluster: map['disabilityCluster'] as String,
+      commitmentFee: map['commitmentFee'] as String,
+      parentConsent: map['parentConsent'] as String,
+      passIssued: map['passIssued'] as String,
+      wouldCamp: map['wouldCamp'] as String,
+      medicalCondiiton: map['medicalCondiiton'] != null
+          ? map['medicalCondition'] as String
+          : null,
+      disability:
+          map['disability'] != null ? map['disability'] as String : null,
+      disabilityTypes: map['disabilityTypes'] != null
+          ? List<String>.from(map['disabilityTypes'] as List<String>)
+          : null,
+      valuables: map['valuables'] != null
+          ? List<String>.from(map['valuables'] as List<String>)
+          : null,
+      present: map['present'] != null ? map['present'] as bool : null,
+      groups: map['groups'] != null
+          ? List<String>.from(map['groups'] as List<String>)
+          : null,
+    );
   }
 
   String toJson() => json.encode(toMap());
@@ -130,6 +157,12 @@ class AttendeeModel extends Equatable {
     String? parentConsent,
     String? passIssued,
     String? wouldCamp,
+    String? medicalCondiiton,
+    String? disability,
+    List<String>? disabilityTypes,
+    List<String>? valuables,
+    bool? present,
+    List<String>? groups,
   }) {
     return AttendeeModel(
       createdBy: createdBy ?? this.createdBy,
@@ -148,32 +181,12 @@ class AttendeeModel extends Equatable {
       parentConsent: parentConsent ?? this.parentConsent,
       passIssued: passIssued ?? this.passIssued,
       wouldCamp: wouldCamp ?? this.wouldCamp,
+      medicalCondiiton: medicalCondiiton ?? this.medicalCondiiton,
+      disability: disability ?? this.disability,
+      disabilityTypes: disabilityTypes ?? this.disabilityTypes,
+      valuables: valuables ?? this.valuables,
+      present: present ?? this.present,
+      groups: groups ?? this.groups,
     );
   }
-}
-
-class UserGroups {
-  final String groupId;
-  final GroupModel groupModel;
-
-  UserGroups({required this.groupId, required this.groupModel});
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'groupId': groupId,
-      'groupModel': groupModel.toMap(),
-    };
-  }
-
-  factory UserGroups.fromMap(Map<String, dynamic> map) {
-    return UserGroups(
-      groupId: map['groupId'] as String,
-      groupModel: GroupModel.fromMap(map['groupModel'] as Map<String, dynamic>),
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory UserGroups.fromJson(String source) =>
-      UserGroups.fromMap(json.decode(source) as Map<String, dynamic>);
 }

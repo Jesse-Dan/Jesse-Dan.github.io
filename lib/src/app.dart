@@ -28,7 +28,7 @@ import '../presentation/screens/app_views/drawer_items/notification/notification
 import '../presentation/screens/app_views/drawer_items/settings/setting_screen.dart';
 import '../presentation/screens/auth_views/login.dart';
 import '../presentation/screens/auth_views/phone_verification.dart';
-import '../presentation/screens/auth_views/reg.dart';
+import '../presentation/screens/auth_views/registration.dart';
 import '../presentation/screens/app_views/drawer_items/admin/admin_screen.dart';
 import '../presentation/screens/app_views/drawer_items/non_admin/non_admins_screen.dart';
 
