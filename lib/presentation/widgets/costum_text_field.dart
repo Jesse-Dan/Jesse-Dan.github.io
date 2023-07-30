@@ -46,6 +46,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         height: 50,
         width: double.infinity,
         child: TextFormField(
+          
           obscureText: widget.obscureText,
           onTap: widget.onTap,
           readOnly: widget.readOnly,
@@ -59,6 +60,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           style: GoogleFonts.josefinSans(
               fontWeight: FontWeight.w600, color: kSecondaryColor),
           decoration: InputDecoration(
+            
               filled: true,
               fillColor: cardColors,
               hintText: widget.hint,

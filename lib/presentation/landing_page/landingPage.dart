@@ -31,11 +31,6 @@ class _LandingPageState extends State<LandingPage>
   final subject = TextEditingController();
   final message = TextEditingController();
   bool _isGlowing = false;
-  void _toggleGlowing() {
-    setState(() {
-      _isGlowing = !_isGlowing;
-    });
-  }
 
   @override
   void initState() {
@@ -46,7 +41,9 @@ class _LandingPageState extends State<LandingPage>
 
   Timer _startTimer() {
     var timer = Timer.periodic(Duration(milliseconds: 800), (_) {
-      _toggleGlowing();
+      setState(() {
+        _isGlowing = !_isGlowing;
+      });
     });
     return timer;
   }

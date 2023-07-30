@@ -55,7 +55,6 @@ class _MyFilesState extends State<MyFiles> {
                       title: 'Attendee',
                       attendees: fetched ? state.attendeeModel : null,
                       admin: fetched ? state.user : null,
-                      length: fetched ? state.attendeeModel.length : 0,
                     );
                   },
                   icon: const Icon(Icons.person_add_rounded),
@@ -127,7 +126,6 @@ class _FileInfoCardGridViewState extends State<FileInfoCardGridView> {
                           title: 'Attendee',
                           attendees: fetched ? state.attendeeModel : null,
                           admin: fetched ? state.user : null,
-                          length: fetched ? state.attendeeModel.length : 0,
                         );
                       }))
               : emptyState(),

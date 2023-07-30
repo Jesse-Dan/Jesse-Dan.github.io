@@ -183,10 +183,9 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                       onTap: () {
                         AttendeeRegistrationForms(context: context)
                             .registerNewAttandeeForm(
-                          attendees: fetched ? state.attendeeModel : null,
+                          attendees: fetched ? state.attendeeModel : [],
                           title: 'Attendee',
                           admin: fetched ? state.user : null,
-                          length: fetched ? state.attendeeModel.length : 0,
                         );
                       },
                     ),

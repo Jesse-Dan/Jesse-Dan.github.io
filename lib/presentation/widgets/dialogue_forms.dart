@@ -15,6 +15,7 @@ class FormWidget extends OverlayManager {
     required BuildContext context,
     required List<Widget> widgetsList,
     required String title,
+    dynamic closeFunct,
   }) {
     List<Widget> columnChilren = [];
     columnChilren.add(Padding(
@@ -38,9 +39,10 @@ class FormWidget extends OverlayManager {
               textAlign: TextAlign.left,
             ),
             IconButton(
-                onPressed: () {
-                  OverlayService.closeAlert();
-                },
+                onPressed: closeFunct ??
+                    () {
+                      OverlayService.closeAlert();
+                    },
                 icon: Icon(
                   Icons.close_rounded,
                   size: 30,
@@ -52,7 +54,9 @@ class FormWidget extends OverlayManager {
     ));
     columnChilren.addAll(widgetsList);
     return Overlayer.showOverlay(
-        child: BottomModal(columnChilren: columnChilren));
+        child: BottomModal(
+      columnChilren: columnChilren,
+    ));
   }
 
   void buildCenterFormField({
@@ -158,10 +162,11 @@ class FormWidget extends OverlayManager {
 class BottomModal extends StatelessWidget {
   const BottomModal({
     super.key,
-    required this.columnChilren,
+    required this.columnChilren, this.closeFunct,
   });
 
   final List<Widget> columnChilren;
+  final dynamic closeFunct;
 
   @override
   Widget build(BuildContext context) {

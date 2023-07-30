@@ -15,7 +15,7 @@ class AttendeeDB {
   Future<void> sendRegisteeData(AttendeeModel attendeeModel) async {
     try {
       await attendeeDB
-          .doc(attendeeModel.id)
+          .doc('${attendeeModel.id.toString()}')
           .set(attendeeModel.toMap())
           .then((value) async {
         log('Attendee Created');
@@ -79,5 +79,4 @@ class AttendeeDB {
       return false;
     }
   }
-
 }

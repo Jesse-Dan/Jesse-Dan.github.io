@@ -41,10 +41,12 @@ class AttendeeRegistrationForms extends FormWidget {
   final Rx<TextEditingController> dob = TextEditingController().obs;
   final Rx<DateTime> picked = DateTime.now().obs;
   final TextEditingController newDeptCtl = TextEditingController();
+  final TextEditingController disabilities = TextEditingController();
+  final TextEditingController medicalCondtions = TextEditingController();
 
   /// gender types
   final List<String> genderType = ['Male', 'Female'];
-  String? genderVal;
+  Rx<String>? genderVal;
 
   /// Check All
   final List<String> check = ['Yes', 'No'];
@@ -217,7 +219,6 @@ class AttendeeRegistrationForms extends FormWidget {
 
   registerNewAttandeeForm(
       {required String title,
-      length,
       List<AttendeeModel>? attendees,
       AdminModel? admin}) {
     buildBottomFormFieldForAttendeeReg(
@@ -239,24 +240,34 @@ class AttendeeRegistrationForms extends FormWidget {
             hint: 'Last Name',
             suffix: const Icon(Icons.person),
             controller: lastName),
-        buildBodyForDD(
-            child: ReusableDropdown(
-                labelFontSize: 20,
-                inputColors: kSecondaryColor,
-                labelText: 'Gender',
-                items: genderType,
-                value: genderVal,
-                onChanged: (_) {},
-                iconsData: Icons.abc)),
+        // buildBodyForDD(
+        //     child: ReusableDropdown(
+        //         labelFontSize: 20,
+        //         inputColors: kSecondaryColor,
+        //         labelText: 'Gender',
+        //         items: genderType,
+        //         value: genderVal?.value,
+        //         onChanged: (String? _) {
+        //           var data = _;
+        //           genderVal?.value = data!;
+        //           log(data.toString());
+        //         },
+        //         iconsData: Icons.person_2_rounded)),
         CustomTextField(
-          readOnly: false,
+            fieldsType: const TextInputType.numberWithOptions(),
+            hint: 'Gender',
+            suffix: const Icon(Icons.macro_off),
+            controller: gender),
+
+        CustomTextField(
+          readOnly: true,
           onTap: () async {
             DateTime? pickedDate = await showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime(1900),
                 lastDate: DateTime.now());
-            dob.value.text = dateWithoutTIme.format(pickedDate!);
+            dob.value.text = dateWithDashesSeperating.format(pickedDate!);
             picked.value = (pickedDate);
           },
           fieldsType: TextInputType.text,
@@ -299,21 +310,49 @@ class AttendeeRegistrationForms extends FormWidget {
             hint: 'Would You be Camping?',
             suffix: const Icon(Icons.home),
             controller: wouldCamp),
-        buildBodyForDD(
-            child: ReusableDropdown(
-                newContext: context,
-                labelFontSize: 20,
-                inputColors: kSecondaryColor,
-                labelText: 'Medical Conditions',
-                items: check,
-                value: checkVal,
-                onChanged: (_) {},
-                iconsData: Icons.abc)),
-        // CustomTextField(
-        //     fieldsType: TextInputType.text,
-        //     hint: 'Disability Cluster',
-        //     suffix: const Icon(Icons.hearing_disabled_outlined),
-        //     controller: disabilityCluster),
+        CustomTextField(
+            fieldsType: const TextInputType.numberWithOptions(),
+            hint: 'Medical Conditions ? ',
+            suffix: const Icon(Icons.phone),
+            controller: medicalCondtions),
+        if (medicalCondtions.text.toLowerCase() == '' ||
+            medicalCondtions.text.toUpperCase() == '')
+          CustomTextField(
+              fieldsType: const TextInputType.numberWithOptions(),
+              hint: 'Condition',
+              suffix: const Icon(Icons.phone),
+              controller: disabilities),
+
+        // buildBodyForDD(
+        //     child: ReusableDropdown(
+        //         newContext: context,
+        //         labelFontSize: 20,
+        //         inputColors: kSecondaryColor,
+        //         labelText: 'Medical Conditions',
+        //         items: check,
+        //         value: checkVal,
+        //         onChanged: (_) {},
+        //         iconsData: Icons.abc)),
+        // buildBodyForDD(
+        //     child: ReusableDropdown(
+        //         labelFontSize: 20,
+        //         inputColors: kSecondaryColor,
+        //         labelText: 'IJ',
+        //         items: genderType,
+        //         value: genderVal?.value,
+        //         onChanged: (String? _) async {
+        //           var data = await _;
+        //           genderVal?.value = data!;
+        //           log(data.toString());
+        //         },
+        //         iconsData: Icons.person_2_rounded)),
+        if (medicalCondtions.text.toLowerCase() == '' ||
+            medicalCondtions.text.toUpperCase() == '')
+          CustomTextField(
+              fieldsType: TextInputType.text,
+              hint: 'Disability Cluster',
+              suffix: const Icon(Icons.hearing_disabled_outlined),
+              controller: disabilityCluster),
         CustomTextField(
             fieldsType: TextInputType.text,
             hint: 'Payment Status (Please take in full / record in full)',
@@ -352,7 +391,9 @@ class AttendeeRegistrationForms extends FormWidget {
                   authCodeController.text,
                   attendeeModel: AttendeeModel(
                     id: generateUniqueCode(getItemList(attendees!)),
-                    createdBy: '${admin!.firstName}_${admin.lastName}',
+                    createdBy: admin != null
+                        ? '${admin.firstName}_${admin.lastName}'
+                        : 'Error ON RegForm Unable to verify admin doing action',
                     firstName: firstName.text,
                     middleName: middleName.text,
                     lastName: lastName.text,
@@ -366,10 +407,10 @@ class AttendeeRegistrationForms extends FormWidget {
                     parentConsent: parentConsent.text,
                     passIssued: passIssued.text,
                     wouldCamp: wouldCamp.text,
-                    dob: DateTime.parse(dob.value.text),
-                    disability: '',
+                    dob: (picked.value),
+                    disability: disabilities.text,
                     disabilityTypes: [],
-                    medicalCondiiton: '',
+                    medicalCondiiton: medicalCondtions.text,
                     valuables: [],
                     groups: [],
                     present: true,
@@ -398,49 +439,60 @@ class AttendeeRegistrationForms extends FormWidget {
   }
 }
 
-
-
-   buildBottomFormFieldForAttendeeReg({
-    required BuildContext context,
-    required List<Widget> widgetsList,
-    required String title,
-  }) {
-    List<Widget> columnChilren = [];
-    columnChilren.add(Padding(
-      padding: const EdgeInsets.only(top: 15.0),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: Responsive.isDesktop(context)
-              ? CrossAxisAlignment.center
-              : CrossAxisAlignment.start,
-          children: [
-            Text(
-              Responsive.isDesktop(context)
-                  ? '$title Registration'
-                  : '$title \nRegistration',
-              style: GoogleFonts.gochiHand(
-                  color: kSecondaryColor,
-                  fontSize: 43,
-                  fontWeight: FontWeight.w600),
-              textAlign: TextAlign.left,
-            ),
-            IconButton(
-                onPressed: () {
-                  OverlayService.closeAlert();
-                },
-                icon: Icon(
-                  Icons.close_rounded,
-                  size: 30,
-                  color: kSecondaryColor,
-                ))
-          ],
-        ),
+buildBottomFormFieldForAttendeeReg({
+  required BuildContext context,
+  required List<Widget> widgetsList,
+  required String title,
+}) {
+  List<Widget> columnChilren = [];
+  columnChilren.add(Padding(
+    padding: const EdgeInsets.only(top: 15.0),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: Responsive.isDesktop(context)
+            ? CrossAxisAlignment.center
+            : CrossAxisAlignment.start,
+        children: [
+          Text(
+            Responsive.isDesktop(context)
+                ? '$title Registration'
+                : '$title \nRegistration',
+            style: GoogleFonts.gochiHand(
+                color: kSecondaryColor,
+                fontSize: 43,
+                fontWeight: FontWeight.w600),
+            textAlign: TextAlign.left,
+          ),
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                Icons.close_rounded,
+                size: 30,
+                color: kSecondaryColor,
+              ))
+        ],
       ),
-    ));
-    columnChilren.addAll(widgetsList);
-  showDialog( 
-    context: context,builder: (context) => 
-         BottomModal(columnChilren: columnChilren));
-  }
+    ),
+  ));
+  columnChilren.addAll(widgetsList);
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      useSafeArea: true,
+      enableDrag: true,
+      isDismissible: true,
+      isScrollControlled: true,
+      showDragHandle: true,
+      context: context,
+      builder: (context) => StatefulBuilder(builder: (contex, t) {
+            return BottomModal(
+              columnChilren: columnChilren,
+              closeFunct: () {
+                Navigator.of(context).pop();
+              },
+            );
+          }));
+}

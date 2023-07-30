@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 /// 17 Jan, 2023 12:30pm
 var dateWithTime = DateFormat.yMMMMd().add_jm();
 
-
 // var dateWithoutTimeButPosition = DateFormat('MMM d\'th\', yyyy');
 
 /// Suffix
@@ -33,7 +32,10 @@ dateWithoutTimeButPosition({required DateTime date}) {
 }
 
 /// 2023/02/02
-var dateWithDashesSeperating = DateFormat('yyyy/MMM/dd');
+var dateWithSlashesSeperating = DateFormat('yyyy/MMM/dd');
+
+/// 2023-02-02
+var dateWithDashesSeperating = DateFormat('yyyy-MMM-dd');
 
 /// 17 Jan, 2023
 var dateWithoutTIme = DateFormat.yMMMMd();

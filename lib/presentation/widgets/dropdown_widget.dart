@@ -3,11 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../config/theme.dart';
 
-class ReusableDropdown<T> extends StatefulWidget {
-  final String labelText;
-  final List<T> items;
-  final T? value;
-  final ValueChanged<T?> onChanged;
+class ReusableDropdown<String> extends StatefulWidget {
+  final dynamic labelText;
+  final List<String> items;
+  final String? value;
+  final ValueChanged<String?> onChanged;
   final Color? fillColor;
   final Color? inputColors;
   final IconData iconsData;
@@ -20,7 +20,7 @@ class ReusableDropdown<T> extends StatefulWidget {
   ReusableDropdown(
       {this.isTextField = false,
       this.suffix,
-      required this.labelText,
+       this.labelText = '',
       required this.items,
       required this.value,
       required this.onChanged,
@@ -31,10 +31,10 @@ class ReusableDropdown<T> extends StatefulWidget {
       this.labelFontSize,  this.newContext});
 
   @override
-  _ReusableDropdownState<T> createState() => _ReusableDropdownState<T>();
+  _ReusableDropdownState<String> createState() => _ReusableDropdownState<String>();
 }
 
-class _ReusableDropdownState<T> extends State<ReusableDropdown<T>> {
+class _ReusableDropdownState<String> extends State<ReusableDropdown<String>> {
   @override
   Widget build(BuildContext newContext) {
     return InputDecorator(
@@ -80,10 +80,10 @@ class _ReusableDropdownState<T> extends State<ReusableDropdown<T>> {
                   color: widget.inputColors ?? Colors.black.withOpacity(.5)),
             ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton<T>(
+        child: DropdownButton<String>(
           value: widget.value,
-          items: widget.items.map((T item) {
-            return DropdownMenuItem<T>(
+          items: widget.items.map((String item) {
+            return DropdownMenuItem<String>(
               value: item,
               child: Text(item.toString()),
             );
