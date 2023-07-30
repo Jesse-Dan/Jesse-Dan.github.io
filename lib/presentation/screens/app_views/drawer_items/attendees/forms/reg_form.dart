@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../../../config/constants/responsive.dart';
+import '../../../../../../config/date_time_formats.dart';
 import '../../../../../../config/overlay_config/overlay_service.dart';
 import '../../../../../../config/theme.dart';
 import '../../../../../../logic/bloc/registeration_bloc/registeration_bloc.dart';
@@ -16,7 +18,6 @@ class AttendeeRegistrationForms extends FormWidget {
   AttendeeRegistrationForms({required this.context});
 
   RxString newCode = ''.obs;
-  String? val;
   final BuildContext context;
 
   ///[ADMIN AUTH CODE CONTROLLERS]
@@ -43,9 +44,11 @@ class AttendeeRegistrationForms extends FormWidget {
 
   /// gender types
   final List<String> genderType = ['Male', 'Female'];
+  String? genderVal;
 
   /// Check All
   final List<String> check = ['Yes', 'No'];
+  String? checkVal;
 
   /// Medical conditions
   final List<String> disabilityClusters = [
@@ -217,7 +220,7 @@ class AttendeeRegistrationForms extends FormWidget {
       length,
       List<AttendeeModel>? attendees,
       AdminModel? admin}) {
-    buildBottomFormField(
+    buildBottomFormFieldForAttendeeReg(
       context: context,
       title: title,
       widgetsList: [
@@ -236,21 +239,25 @@ class AttendeeRegistrationForms extends FormWidget {
             hint: 'Last Name',
             suffix: const Icon(Icons.person),
             controller: lastName),
-        CustomTextField(
-            fieldsType: TextInputType.text,
-            hint: 'Gender(Male / Female)',
-            suffix: const Icon(Icons.male_rounded),
-            controller: gender),
+        buildBodyForDD(
+            child: ReusableDropdown(
+                labelFontSize: 20,
+                inputColors: kSecondaryColor,
+                labelText: 'Gender',
+                items: genderType,
+                value: genderVal,
+                onChanged: (_) {},
+                iconsData: Icons.abc)),
         CustomTextField(
           readOnly: false,
           onTap: () async {
-            // DateTime? pickedDate = await showDatePicker(
-            //     context: context,
-            //     initialDate: DateTime.now(),
-            //     firstDate: DateTime(1900),
-            //     lastDate: DateTime.now());
-            // dob.value.text = dateWithoutTIme.format(pickedDate!);
-            // picked.value = (pickedDate);
+            DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now());
+            dob.value.text = dateWithoutTIme.format(pickedDate!);
+            picked.value = (pickedDate);
           },
           fieldsType: TextInputType.text,
           hint: 'YYYY-MM-DD',
@@ -292,26 +299,16 @@ class AttendeeRegistrationForms extends FormWidget {
             hint: 'Would You be Camping?',
             suffix: const Icon(Icons.home),
             controller: wouldCamp),
-        Padding(
-            padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 10),
-            child: Container(
-                decoration: BoxDecoration(
-                    color: cardColors,
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(
-                        style: BorderStyle.solid,
-                        color: kblackColor,
-                        width: 1.2)),
-                height: 50,
-                width: double.infinity,
-                child: ReusableDropdown(
-                    labelFontSize: 20,
-                    inputColors: kSecondaryColor,
-                    labelText: 'Medical Conditions',
-                    items: check,
-                    value: val,
-                    onChanged: (_) {},
-                    iconsData: Icons.abc))),
+        buildBodyForDD(
+            child: ReusableDropdown(
+                newContext: context,
+                labelFontSize: 20,
+                inputColors: kSecondaryColor,
+                labelText: 'Medical Conditions',
+                items: check,
+                value: checkVal,
+                onChanged: (_) {},
+                iconsData: Icons.abc)),
         // CustomTextField(
         //     fieldsType: TextInputType.text,
         //     hint: 'Disability Cluster',
@@ -385,4 +382,65 @@ class AttendeeRegistrationForms extends FormWidget {
       ],
     );
   }
+
+  Padding buildBodyForDD({required Widget child}) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 10),
+        child: Container(
+            decoration: BoxDecoration(
+                color: cardColors,
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                    style: BorderStyle.solid, color: kblackColor, width: 1.2)),
+            height: 50,
+            width: double.infinity,
+            child: child));
+  }
 }
+
+
+
+   buildBottomFormFieldForAttendeeReg({
+    required BuildContext context,
+    required List<Widget> widgetsList,
+    required String title,
+  }) {
+    List<Widget> columnChilren = [];
+    columnChilren.add(Padding(
+      padding: const EdgeInsets.only(top: 15.0),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: Responsive.isDesktop(context)
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
+          children: [
+            Text(
+              Responsive.isDesktop(context)
+                  ? '$title Registration'
+                  : '$title \nRegistration',
+              style: GoogleFonts.gochiHand(
+                  color: kSecondaryColor,
+                  fontSize: 43,
+                  fontWeight: FontWeight.w600),
+              textAlign: TextAlign.left,
+            ),
+            IconButton(
+                onPressed: () {
+                  OverlayService.closeAlert();
+                },
+                icon: Icon(
+                  Icons.close_rounded,
+                  size: 30,
+                  color: kSecondaryColor,
+                ))
+          ],
+        ),
+      ),
+    ));
+    columnChilren.addAll(widgetsList);
+  showDialog( 
+    context: context,builder: (context) => 
+         BottomModal(columnChilren: columnChilren));
+  }

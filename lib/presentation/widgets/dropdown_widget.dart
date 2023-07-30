@@ -15,6 +15,7 @@ class ReusableDropdown<T> extends StatefulWidget {
   final Widget? suffix;
   final Color? labelcolor;
   final double? labelFontSize;
+  final BuildContext? newContext;
 
   ReusableDropdown(
       {this.isTextField = false,
@@ -27,7 +28,7 @@ class ReusableDropdown<T> extends StatefulWidget {
       this.inputColors,
       required this.iconsData,
       this.labelcolor,
-      this.labelFontSize});
+      this.labelFontSize,  this.newContext});
 
   @override
   _ReusableDropdownState<T> createState() => _ReusableDropdownState<T>();
@@ -35,7 +36,7 @@ class ReusableDropdown<T> extends StatefulWidget {
 
 class _ReusableDropdownState<T> extends State<ReusableDropdown<T>> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext newContext) {
     return InputDecorator(
       decoration: widget.isTextField
           ? InputDecoration(

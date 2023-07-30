@@ -51,12 +51,12 @@ class _LandingPageState extends State<LandingPage>
     return timer;
   }
 
-  @override
-  void dispose() {
-    _startTimer().cancel();
-    super.dispose();
-    _toggleGlowing();
-  }
+  // @override
+  // void dispose() {
+  //   _startTimer().cancel();
+  //   super.dispose();
+  //   _toggleGlowing();
+  // }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
