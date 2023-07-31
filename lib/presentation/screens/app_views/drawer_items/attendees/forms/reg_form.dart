@@ -371,11 +371,11 @@ class AttendeeRegistrationForms extends FormWidget {
             btnText: 'Register',
             onTap: () {
               String generateUniqueCode(List<String> existingCodes) {
-                int counter = 0;
+                int counter = 1;
                 String code;
 
                 do {
-                  code = 'CATY${counter.toString().padLeft(3, '0')}';
+                  code = '${counter.toString().padLeft(3, '0')}';
                   counter++;
                 } while (existingCodes.contains(code));
 
@@ -410,7 +410,7 @@ class AttendeeRegistrationForms extends FormWidget {
                     dob: (picked.value),
                     disability: disabilities.text,
                     disabilityTypes: [],
-                    medicalCondiiton: medicalCondtions.text,
+                    medicalCondition: medicalCondtions.text,
                     valuables: [],
                     groups: [],
                     present: true,

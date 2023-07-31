@@ -41,9 +41,7 @@ class _LandingPageState extends State<LandingPage>
 
   Timer _startTimer() {
     var timer = Timer.periodic(Duration(milliseconds: 800), (_) {
-      setState(() {
-        _isGlowing = !_isGlowing;
-      });
+      _isGlowing = !_isGlowing;
     });
     return timer;
   }

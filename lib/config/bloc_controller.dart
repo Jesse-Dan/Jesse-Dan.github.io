@@ -71,46 +71,55 @@ updatetSuccessBlocState({state, context}) {
   log(state.toString());
   switch (state.runtimeType) {
     case DashBoardFetched:
-      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+
+      ///BlocProvider.of<DashboardBloc>(context).add(DashBoardDataEvent());
       OverlayService.closeAlert();
       break;
     case GroupRegistrationLoaded:
       Alertify.success();
-      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+
+      ///BlocProvider.of<DashboardBloc>(context).add(DashBoardDataEvent());
       OverlayService.closeAlert();
       break;
     case AuthentictionSuccesful:
-      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+
+      ///BlocProvider.of<DashboardBloc>(context).add(DashBoardDataEvent());
       Alertify.success();
       break;
     case AdminManagementENABLEDISABLE:
       Alertify.success();
-      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+
+      ///BlocProvider.of<DashboardBloc>(context).add(DashBoardDataEvent());
       OverlayService.closeAlert();
       break;
     case AttendeeRegistrationLoaded:
       Alertify.success();
-      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+
+      ///BlocProvider.of<DashboardBloc>(context).add(DashBoardDataEvent());
       OverlayService.closeAlert();
       break;
     case UserManagementLoaded:
       Alertify.success();
-      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+
+      ///BlocProvider.of<DashboardBloc>(context).add(DashBoardDataEvent());
       OverlayService.closeAlert();
       break;
     case GroupManagementLoaded:
       Alertify.success();
-      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+
+      ///BlocProvider.of<DashboardBloc>(context).add(DashBoardDataEvent());
       OverlayService.closeAlert();
       break;
     case AdminManagemetAltered:
       Alertify.success();
-      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+
+      ///BlocProvider.of<DashboardBloc>(context).add(DashBoardDataEvent());
       OverlayService.closeAlert();
       break;
     case NonAdminManagementLoaded:
       Alertify.success();
-      BlocProvider.of<DashBoardBloc>(context).add(DashBoardDataEvent());
+
+      ///BlocProvider.of<DashboardBloc>(context).add(DashBoardDataEvent());
       OverlayService.closeAlert();
       break;
     default:
@@ -159,7 +168,6 @@ updateSessionState({state, context}) {
           context, SignInScreen.routeName, (_) => false);
       break;
     case DashBoardFetched:
-     
       break;
     default:
   }

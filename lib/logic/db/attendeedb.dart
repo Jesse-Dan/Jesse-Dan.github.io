@@ -15,7 +15,7 @@ class AttendeeDB {
   Future<void> sendRegisteeData(AttendeeModel attendeeModel) async {
     try {
       await attendeeDB
-          .doc('${attendeeModel.id.toString()}')
+          .doc('${attendeeModel.id}')
           .set(attendeeModel.toMap())
           .then((value) async {
         log('Attendee Created');
@@ -79,4 +79,22 @@ class AttendeeDB {
       return false;
     }
   }
+
+  ///[UPDATE ADMIN DATA]
+  Future<bool> updatePresenceStatus({String? id, newData, field}) async {
+    if (id != null) {
+      try {
+        await attendeeDB.doc(id).update({field: newData});
+        log("Data updated successfully!");
+        return true;
+      } catch (e) {
+        log('error updating data: $e');
+        return false;
+      }
+    } else {
+      log('error updating data ');
+      return false;
+    }
+  }
+
 }

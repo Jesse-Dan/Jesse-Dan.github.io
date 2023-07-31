@@ -27,6 +27,8 @@ class UserManagementBloc
       : super(UserManagementInitial()) {
     deleteUser();
     updateUser();
+    markAbsent();
+    markpresent();
   }
 
   deleteUser() async {
@@ -60,9 +62,9 @@ class UserManagementBloc
   updateUser() async {
     on<UpdateAttendeeEvent>((event, emit) async {
       try {
+        emit(UserManagementLoading());
         if (AppAuthorizations(localStorageService: LocalStorageService())
             .validateAdminAuthCode(event.adminCode)) {
-          emit(UserManagementLoading());
           await AttendeeDB(auth: auth).sendRegisteeData(event.attendeeModel);
           await UtilsDB(auth: auth).sendNotificationData(Notifier.registerAttendee(
               action: '',
@@ -74,6 +76,38 @@ class UserManagementBloc
         } else {
           emit(UserManagementFailed(error: CONTACT_ADMIN));
         }
+      } on FirebaseAuthException catch (e) {
+        emit(UserManagementFailed(error: e.toString()));
+      } catch (e) {
+        emit(UserManagementFailed(error: e.toString()));
+        log(e.toString());
+      }
+    });
+  }
+
+  markAbsent() {
+    on<MarkAttendeeAbsent>((event, emit) async {
+      try {
+        emit(UserManagementLoading());
+        await AttendeeDB(auth: auth).updatePresenceStatus(
+            id: event.id, field: 'present', newData: event.presentStatus);
+        emit(UserManagementLoaded());
+      } on FirebaseAuthException catch (e) {
+        emit(UserManagementFailed(error: e.toString()));
+      } catch (e) {
+        emit(UserManagementFailed(error: e.toString()));
+        log(e.toString());
+      }
+    });
+  }
+
+  markpresent() {
+    on<MarkAttendeePresent>((event, emit) async {
+      try {
+        emit(UserManagementLoading());
+        await AttendeeDB(auth: auth).updatePresenceStatus(
+            id: event.id, field: 'present', newData: event.presentStatus);
+        emit(UserManagementLoaded());
       } on FirebaseAuthException catch (e) {
         emit(UserManagementFailed(error: e.toString()));
       } catch (e) {

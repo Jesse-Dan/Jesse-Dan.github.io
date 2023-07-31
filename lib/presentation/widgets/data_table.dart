@@ -119,6 +119,9 @@ class _PageContentWidgetState extends State<PageContentWidget>
                                 style: GoogleFonts.josefinSans(
                                     color: kSecondaryColor, fontSize: 20),
                               ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 2.5,
+                              ),
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 physics: const BouncingScrollPhysics(),

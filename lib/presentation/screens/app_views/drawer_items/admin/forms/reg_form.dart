@@ -7,6 +7,7 @@ import 'package:tyldc_finaalisima/config/constants/responsive.dart';
 import 'package:tyldc_finaalisima/config/overlay_config/overlay_service.dart';
 import '../../../../../../logic/bloc/admin_management/admin_managemet_bloc.dart';
 import '../../../../../../config/theme.dart';
+import '../../../../../../models/auth_code_model.dart';
 import '../../../../../../models/departments_type_model.dart';
 import '../../../../../../models/user_model.dart';
 import '../../../../../widgets/CustomViewTextField.dart';
@@ -265,60 +266,66 @@ class AdminsRegistrationForms extends FormWidget {
         });
   }
 
-  showOptions({icon, AdminModel? admin}) {
-    List<Map<String, void Function()?>> list = [
-      {
-        'Viewer': () {
-          BlocProvider.of<AdminManagemetBloc>(context).add(AlterCodeEvent(
-              oldCode: oldauthCodeController.text,
-              context: context,
-              newCode: authCodeController.text,
-              field: 'authCode',
-              adminCodeField: 'viewerCode'));
-        }
-      },
-      {
-        'Admin': () {
-          BlocProvider.of<AdminManagemetBloc>(context).add(AlterCodeEvent(
-              oldCode: oldauthCodeController.text,
-              context: context,
-              newCode: authCodeController.text,
-              field: 'authCode',
-              adminCodeField: 'adminCode'));
-        }
-      },
-      {
-        'Super Admin': () {
-          BlocProvider.of<AdminManagemetBloc>(context).add(AlterCodeEvent(
-              context: context,
-              oldCode: oldauthCodeController.text,
-              newCode: authCodeController.text,
-              field: 'authCode',
-              adminCodeField: 'superAdminCode'));
-        }
-      }
-    ];
-    var listOdDept = List.generate(
-      list.length,
-      (index) => PopupMenuItemModel(
-        title:
-            'Change ${list[index].keys.toString().split('(')[1].split(')')[0]} Code',
-        onTap: () => viewAuthCodeData()(
-          admin: admin,
-          title:
-              'Change ${list[index]['${list[index].keys.toString().split('(')[1].split(')')[0]}']}',
-          action: () {
-            log('${list[index]['${list[index].keys.toString().split('(')[1].split(')')[0]}']}');
-            list[index][
-                '${list[index].keys.toString().split('(')[1].split(')')[0]}']!();
-            BlocProvider.of<AdminManagemetBloc>(context)
-                .add(const GetCodeEvent());
-          },
-        ),
-      ),
-    ).toList();
-
-    return PopupMenu(icon: icon ?? Icon(Icons.abc), items: listOdDept);
+  showOptions({icon, AdminModel? admin, AdminCodesModel? codes}) {
+    return PopupMenu(
+      items: [
+        PopupMenuItemModel(
+            title: 'Change Viewer Code',
+            onTap: () {
+              viewAuthCodeData(
+                  admin: admin,
+                  title: 'Change Viewer Code',
+                  action: () {
+                    BlocProvider.of<AdminManagemetBloc>(context).add(
+                        AlterCodeEvent(
+                            oldCode: oldauthCodeController.text,
+                            context: context,
+                            newCode: authCodeController.text,
+                            field: 'authCode',
+                            adminCodeField: 'viewerCode'));
+                    BlocProvider.of<AdminManagemetBloc>(context)
+                        .add(const GetCodeEvent());
+                  });
+            }),
+        PopupMenuItemModel(
+            title: 'Change Admin Code',
+            onTap: () {
+              viewAuthCodeData(
+                  admin: admin,
+                  title: 'Change Admin Code',
+                  action: () {
+                    BlocProvider.of<AdminManagemetBloc>(context).add(
+                        AlterCodeEvent(
+                            oldCode: oldauthCodeController.text,
+                            context: context,
+                            newCode: authCodeController.text,
+                            field: 'authCode',
+                            adminCodeField: 'adminCode'));
+                    BlocProvider.of<AdminManagemetBloc>(context)
+                        .add(const GetCodeEvent());
+                  });
+            }),
+        PopupMenuItemModel(
+            title: 'Change Super Admin Code',
+            onTap: () {
+              viewAuthCodeData(
+                  admin: admin,
+                  title: 'Change Super Admin Code',
+                  action: () {
+                    BlocProvider.of<AdminManagemetBloc>(context).add(
+                        AlterCodeEvent(
+                            context: context,
+                            oldCode: oldauthCodeController.text,
+                            newCode: authCodeController.text,
+                            field: 'authCode',
+                            adminCodeField: 'superAdminCode'));
+                    BlocProvider.of<AdminManagemetBloc>(context)
+                        .add(const GetCodeEvent());
+                  });
+            })
+      ],
+      icon: icon,
+    );
   }
 
   ///[IF ADMIN CODE IS CHANGED TO A HIGHER ACCESS CODE USER ACTIONS  ARE UOPDATED]

@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -167,6 +169,13 @@ class _AttendeesScreenState extends State<AttendeesScreen> {
                             color: kSecondaryColor, fontSize: 15),
                       ),
                     ),
+                    DataColumn(
+                      label: Text(
+                        "Present Status",
+                        style: GoogleFonts.josefinSans(
+                            color: kSecondaryColor, fontSize: 15),
+                      ),
+                    ),
                   ],
                   row: List.generate(
                     fetched ? state.attendeeModel.length : 0,
@@ -293,6 +302,43 @@ DataRow recentFileDataRow(AttendeeModel? registerdUser, context, {admin, id}) {
         onPressed: () =>
             PdfGenerator(context: context).generatePDF(attendee: registerdUser),
       )),
+      DataCell(Container(
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'absent',
+                style: GoogleFonts.josefinSans(
+                    color: kSecondaryColor, fontSize: 15),
+              ),
+              CupertinoSwitch(
+                  dragStartBehavior: DragStartBehavior.down,
+                  value: registerdUser.present!,
+                  onChanged: (val) {
+                    switch (registerdUser.present) {
+                      case true:
+                        BlocProvider.of<UserManagementBloc>(context).add(
+                            MarkAttendeeAbsent(false,
+                                performedBy: admin, id: registerdUser.id));
+                        break;
+                      case false:
+                        BlocProvider.of<UserManagementBloc>(context).add(
+                            MarkAttendeePresent(true,
+                                performedBy: admin, id: registerdUser.id));
+                        break;
+                      default:
+                    }
+                  }),
+              Text(
+                'present',
+                style: GoogleFonts.josefinSans(
+                    color: kSecondaryColor, fontSize: 15),
+              )
+            ],
+          ))),
     ],
   );
 }
